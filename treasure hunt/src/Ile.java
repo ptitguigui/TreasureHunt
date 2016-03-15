@@ -57,6 +57,36 @@ public class Ile {
 		return plateau;
 	}
 	
+	private int nbVoisins(int x, int y){
+		int nb=0;
+		if(grille[x+1][y].getValeur() == 0){
+			nb += 1;
+		}
+		if(grille[x-1][y].getValeur() == 0){
+			nb += 1;
+			
+		}
+		if(grille[x][y+1].getValeur() == 0){
+			nb +=1; 
+		}
+		if(grille[x][y-1].getValeur() == 0){
+			nb += 1;
+		}
+		if(grille[x+1][y+1].getValeur() == 0){
+			nb += 1;
+		}
+		if(grille[x+1][y-1].getValeur() == 0){
+			nb += 1;
+		}
+		if(grille[x-1][y+1].getValeur() == 0){
+			nb += 1;
+		}
+		if(grille[x-1][y-1].getValeur() == 0){
+			nb += 1;
+		}
+		return nb;
+	}
+	
 	/**
 	 * Méthode plaçant la mer.
 	 */
@@ -84,7 +114,7 @@ public class Ile {
 			y=alea.tirage(grille.length-2)+1;
 			if (x==0){ x=grille.length-2;}
 		}
-		while(!grille[x][y].estVide());
+		while(!grille[x][y].estVide() && nbVoisins(x, y)==3);
 		grille[x][y].setValeur(3); // 3 = navire1
 		entites.put("n", new int[] {x,y});
 		
@@ -94,9 +124,12 @@ public class Ile {
 			y= alea.tirage(grille.length-2)+1;
 			if (x==0){ x=grille.length-2;}
 		}
-		while(!grille[y][x].estVide());
+		while(!grille[y][x].estVide()&& nbVoisins(y, x)==3);
 		grille[y][x].setValeur(4); // 4 = navire2
 		entites.put("N", new int[] {y,x});
+		
+			
+		
 	}
 	
 	/**
@@ -108,7 +141,7 @@ public class Ile {
 			x= alea.tirage(grille.length-2)+1;
 			y= alea.tirage(grille.length-2)+1;
 		}
-		while(!grille[x][y].estVide());
+		while(!grille[x][y].estVide() && nbVoisins(x, y)==0);
 		grille[x][y].setValeur(6); // 6 = tresor
 		entites.put("T", new int[] {x,y});
 		grille[x][y].setValeur(2); // 2 = rocher
@@ -139,6 +172,7 @@ public class Ile {
 			do {
 				x= alea.tirage(grille.length-2)+1;
 				y= alea.tirage(grille.length-2)+1;
+				
 			}
 			while(!grille[x][y].estVide());
 			grille[x][y].setValeur(2); // 2 = rocher
