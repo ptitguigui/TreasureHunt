@@ -2,6 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="treasure hunt/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/lepretre/Downloads/tps.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marie/Desktop/Treasure Hunt/Treasure Hunt/lib/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marie/Desktop/Treasure Hunt/Treasure Hunt/lib/jfreechart-1.0.19.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marie/Desktop/Treasure Hunt/Treasure Hunt/lib/tps.jar"/>
 	<classpathentry kind="output" path="treasure hunt/bin"/>
 </classpath>
