@@ -19,10 +19,7 @@ public class Ile {
 	 * Attribut réunissant les coordonnées de tous les éléments positionnés sur l'ile.
 	 */
 	private HashMap<String, int[]> entites =new HashMap<>();
-	
-	
-	
-	
+		
 	
 	/**
 	 * Constructeur créant une ile de taille x par y.
@@ -37,11 +34,7 @@ public class Ile {
 			}
 		}
 	}
-	
-	
-	
-	
-	
+		
 	/**
 	 * Méthode transformant l'objet en une chaine de caractères String pouvant être affichée.
 	 * @return le plateau sous forme de String.
@@ -57,31 +50,31 @@ public class Ile {
 		return plateau;
 	}
 	
-	private int nbVoisins(int x, int y){
+	public int nbVoisinsVide(int x, int y){
 		int nb=0;
-		if(grille[x+1][y].getValeur() == 0){
+		if(grille[x+1][y].estVide()){
 			nb += 1;
 		}
-		if(grille[x-1][y].getValeur() == 0){
+		if(grille[x-1][y].estVide()){
 			nb += 1;
 			
 		}
-		if(grille[x][y+1].getValeur() == 0){
+		if(grille[x][y+1].estVide()){
 			nb +=1; 
 		}
-		if(grille[x][y-1].getValeur() == 0){
+		if(grille[x][y-1].estVide()){
 			nb += 1;
 		}
-		if(grille[x+1][y+1].getValeur() == 0){
+		if(grille[x+1][y+1].estVide()){
 			nb += 1;
 		}
-		if(grille[x+1][y-1].getValeur() == 0){
+		if(grille[x+1][y-1].estVide()){
 			nb += 1;
 		}
-		if(grille[x-1][y+1].getValeur() == 0){
+		if(grille[x-1][y+1].estVide()){
 			nb += 1;
 		}
-		if(grille[x-1][y-1].getValeur() == 0){
+		if(grille[x-1][y-1].estVide()){
 			nb += 1;
 		}
 		return nb;
@@ -104,6 +97,24 @@ public class Ile {
 	}
 	
 	/**
+	 * Méthode plaçant aléatoirement des rochers sur l'ile, le nombre de rochers correspond au pourcentage précisé en paramètre selon la taille de l'ile.
+	 * @params pourcentage entier entre 0 et 100 correspondant au pourcentage de case étant des rochers.
+	 */
+	private void setRochers(int pourcentage) {
+		int x, y;
+		for(int i=0; i<(int)((grille.length-2)*(grille[0].length-2)*(pourcentage/100.00)-2); i++) {
+			do {
+				x= alea.tirage(grille.length-2)+1;
+				y= alea.tirage(grille.length-2)+1;
+			}
+			while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)>6));
+			grille[x][y].setValeur(2); // 2 = rocher
+			entites.put("R"+Integer.toString(i), new int[] {x,y});
+		}
+	}
+	
+	
+	/**
 	 * Méthode qui place les deux navires aléatoirement sur les parcelles en bordure.
 	 */
 	private void setNavires(){
@@ -114,7 +125,7 @@ public class Ile {
 			y=alea.tirage(grille.length-2)+1;
 			if (x==0){ x=grille.length-2;}
 		}
-		while(!grille[x][y].estVide() && nbVoisins(x, y)==3);
+		while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)==5));
 		grille[x][y].setValeur(3); // 3 = navire1
 		entites.put("n", new int[] {x,y});
 		
@@ -124,14 +135,11 @@ public class Ile {
 			y= alea.tirage(grille.length-2)+1;
 			if (x==0){ x=grille.length-2;}
 		}
-		while(!grille[y][x].estVide()&& nbVoisins(y, x)==3);
+		while(!(grille[y][x].estVide()&& nbVoisinsVide(y, x)==5));
 		grille[y][x].setValeur(4); // 4 = navire2
 		entites.put("N", new int[] {y,x});
-		
-			
-		
 	}
-	
+	 
 	/**
 	 * Méthode plaçant aléatoirement le trésor sur l'ile, puis la recouvre d'un rocher.
 	 */
@@ -141,7 +149,7 @@ public class Ile {
 			x= alea.tirage(grille.length-2)+1;
 			y= alea.tirage(grille.length-2)+1;
 		}
-		while(!grille[x][y].estVide() && nbVoisins(x, y)==0);
+		while(!grille[x][y].estVide() && nbVoisinsVide(y, x)>6);
 		grille[x][y].setValeur(6); // 6 = tresor
 		entites.put("T", new int[] {x,y});
 		grille[x][y].setValeur(2); // 2 = rocher
@@ -156,32 +164,30 @@ public class Ile {
 			x= alea.tirage(grille.length-2)+1;
 			y= alea.tirage(grille.length-2)+1;
 		}
-		while(!grille[x][y].estVide());
+		while(!grille[x][y].estVide() && nbVoisinsVide(y, x)>6);
 		grille[x][y].setValeur(5); // 5 = clef
 		entites.put("C", new int[] {x,y});
 		grille[x][y].setValeur(2); // 2 = rocher
 	}
 	
 	/**
-	 * Méthode plaçant aléatoirement des rochers sur l'ile, le nombre de rochers correspond à 10% de la taille de l'ile.
-	 * @params pourcentage entier entre 0 et 100 correspondant au pourcentage de case étant des rochers.
+	 * Méthode retournant les coordonnées de la mer.
+	 * @return les coordonnées de la mer sous forme d'un tableau à deux dimensions int[][].
 	 */
-	private void setRochers(int pourcentage) {
-		int x, y;
-		for(int i=0; i<(int)((grille.length-2)*(grille[0].length-2)*(pourcentage/100.00)-2); i++) {
-			do {
-				x= alea.tirage(grille.length-2)+1;
-				y= alea.tirage(grille.length-2)+1;
-				
-			}
-			while(!grille[x][y].estVide());
-			grille[x][y].setValeur(2); // 2 = rocher
-			entites.put("R"+Integer.toString(i), new int[] {x,y});
-		}
-	}
-	
 	public int[] getMers(){
 		return entites.get("M");
+	}
+	
+	/**
+	 * Méthode retournant les coordonnées des rochers (sans compter la clef et le trésor).
+	 * @return les coordonnées des rochers sous forme d'un tableau à deux dimensions int[][].
+	 */
+	public int[][] getRochers() {
+		int[][] coord=new int[2][(int)(grille.length*grille[0].length*0.1-2)];
+		for(int i=0; i<coord[0].length; i++){
+			coord[i]=entites.get("R"+Integer.toString(i));
+		}
+		return coord;
 	}
 	
 	/**
@@ -209,18 +215,6 @@ public class Ile {
 	}
 	
 	/**
-	 * Méthode retournant les coordonnées des rochers (sans compter la clef et le trésor).
-	 * @return les coordonnées des rochers sous forme d'un tableau à deux dimensions int[][].
-	 */
-	public int[][] getRochers() {
-		int[][] coord=new int[2][(int)(grille.length*grille[0].length*0.1-2)];
-		for(int i=0; i<coord[0].length; i++){
-			coord[i]=entites.get("R"+Integer.toString(i));
-		}
-		return coord;
-	}
-	
-	/**
 	 * Méthode retournant l'ile sous forme de tableau d'entiers à deux dimensions.
 	 * @return un tableau de int à deux dimensions.
 	 */
@@ -240,10 +234,10 @@ public class Ile {
 	 */
 	public void initialiser(int pourcentage){
 		setMers();
-		setNavires();
 		setTresor();
 		setClef();
 		setRochers(pourcentage);		
+		setNavires();
 	}	
 	
 }
