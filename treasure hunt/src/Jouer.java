@@ -1,4 +1,5 @@
 /**
+ * 
  * Classe principale, permettant de lancer le jeu.
  * @author vitsem
  *
@@ -17,8 +18,11 @@ public class Jouer {
 		SuperPlateau grille=new SuperPlateau(imgs,taille);
 		
 		Ile monIle = new Ile(taille,taille);
-		monIle.initialiser(10);
+		int pourcentage=10;
+		monIle.initialiser(pourcentage);
+		
 		 System.out.println(monIle);
+		 
 		grille.setJeu(monIle.getIleTab());
 		grille.affichage();
 	}
