@@ -57,7 +57,6 @@ public class Ile {
 		}
 		if(grille[x-1][y].estVide()){
 			nb += 1;
-			
 		}
 		if(grille[x][y+1].estVide()){
 			nb +=1; 
