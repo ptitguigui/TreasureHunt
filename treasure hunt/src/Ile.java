@@ -107,7 +107,7 @@ public class Ile {
 				x= alea.tirage(grille.length-2)+1;
 				y= alea.tirage(grille.length-2)+1;
 			}
-			while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)>6));
+			while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)>7));
 			grille[x][y].setValeur(2); // 2 = rocher
 			entites.put("R"+Integer.toString(i), new int[] {x,y});
 		}
@@ -149,7 +149,7 @@ public class Ile {
 			x= alea.tirage(grille.length-2)+1;
 			y= alea.tirage(grille.length-2)+1;
 		}
-		while(!grille[x][y].estVide() && nbVoisinsVide(y, x)>6);
+		while(!(grille[x][y].estVide() && nbVoisinsVide(y, x)>7));
 		grille[x][y].setValeur(6); // 6 = tresor
 		entites.put("T", new int[] {x,y});
 		grille[x][y].setValeur(2); // 2 = rocher
@@ -164,7 +164,7 @@ public class Ile {
 			x= alea.tirage(grille.length-2)+1;
 			y= alea.tirage(grille.length-2)+1;
 		}
-		while(!grille[x][y].estVide() && nbVoisinsVide(y, x)>6);
+		while(!(grille[x][y].estVide() && nbVoisinsVide(y, x)>7));
 		grille[x][y].setValeur(5); // 5 = clef
 		entites.put("C", new int[] {x,y});
 		grille[x][y].setValeur(2); // 2 = rocher
