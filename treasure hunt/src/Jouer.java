@@ -14,13 +14,15 @@ public class Jouer {
 				// image clef à trouver
 				"treasure hunt/images/coffre.png.jpg"};
 		
-		int taille=15;
+		int taille=10;
 		SuperPlateau grille=new SuperPlateau(imgs,taille);
 		
 		Ile monIle = new Ile(taille,taille);
 		int pourcentage=10;
 		monIle.initialiser(pourcentage);
 		
+		 System.out.println(monIle);
+		 
 		grille.setJeu(monIle.getIleTab());
 		grille.affichage();
 	}
