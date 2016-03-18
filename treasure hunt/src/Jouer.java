@@ -18,10 +18,10 @@ public class Jouer {
 		
 		//demande de la taille
 		JOptionPane j=new JOptionPane();
-		String rep=new String(j.showInputDialog(null,"Entrer la taille du plateau (entre 8 et 14) :"));
-		while(!(rep.matches("[1-9][0-9]*")&& Integer.parseInt(rep)>=8 && Integer.parseInt(rep)<=14)){
+		String rep=new String(j.showInputDialog(null,"Entrer la taille du plateau (entre 8 et 20) :"));
+		while(!(rep.matches("[1-9][0-9]*")&& Integer.parseInt(rep)>=8 && Integer.parseInt(rep)<=20)){
 				j.showMessageDialog(null, "Veuillez entrer un nombre correct.", "Erreur", 0);
-				rep=j.showInputDialog(null,"Entrer la taille du plateau (entre 8 et 14) :");
+				rep=j.showInputDialog(null,"Entrer la taille du plateau (entre 8 et 20) :");
 		}
 		int taille=Integer.parseInt(rep);
 		
