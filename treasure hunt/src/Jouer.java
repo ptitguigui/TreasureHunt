@@ -13,7 +13,7 @@ public class Jouer {
 				"treasure hunt/images/rocher.png.jpg",
 				"treasure hunt/images/1.navire.png",
 				"treasure hunt/images/2.navire.png",
-				// image clef à trouver
+				"treasure hunt/images/cle.png",
 				"treasure hunt/images/coffre.png.jpg"};
 		
 		//demande de la taille

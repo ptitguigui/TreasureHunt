@@ -50,32 +50,22 @@ public class Ile {
 		return plateau;
 	}
 	
+	/**
+	 * Méthode comptant le nombre de cases vides autour d'une case (compte les 8 cases autours, c'est-à-dire les diagonales inclues).
+	 * @param x un entier correspondant à la première coordonnée
+	 * @param y un entier correspondant à la deuxième coordonnée
+	 * @return le nombre de cases vides autour de la case correspondant aux coordonnées passées en paramètre.
+	 */
 	public int nbVoisinsVide(int x, int y){
 		int nb=0;
-		if(grille[x+1][y].estVide()){
-			nb += 1;
-		}
-		if(grille[x-1][y].estVide()){
-			nb += 1;
-		}
-		if(grille[x][y+1].estVide()){
-			nb +=1; 
-		}
-		if(grille[x][y-1].estVide()){
-			nb += 1;
-		}
-		if(grille[x+1][y+1].estVide()){
-			nb += 1;
-		}
-		if(grille[x+1][y-1].estVide()){
-			nb += 1;
-		}
-		if(grille[x-1][y+1].estVide()){
-			nb += 1;
-		}
-		if(grille[x-1][y-1].estVide()){
-			nb += 1;
-		}
+		if(grille[x+1][y].estVide()){ nb += 1; }
+		if(grille[x-1][y].estVide()){ nb += 1; }
+		if(grille[x][y+1].estVide()){ nb += 1; }
+		if(grille[x][y-1].estVide()){ nb += 1; }
+		if(grille[x+1][y+1].estVide()){	nb += 1; }
+		if(grille[x+1][y-1].estVide()){ nb += 1; }
+		if(grille[x-1][y+1].estVide()){ nb += 1; }
+		if(grille[x-1][y-1].estVide()){	nb += 1; }
 		return nb;
 	}
 	
@@ -97,7 +87,7 @@ public class Ile {
 	
 	/**
 	 * Méthode plaçant aléatoirement des rochers sur l'ile, le nombre de rochers correspond au pourcentage précisé en paramètre selon la taille de l'ile.
-	 * @params pourcentage entier entre 0 et 100 correspondant au pourcentage de case étant des rochers.
+	 * @params pourcentage entier entre 0 et 100 correspondant au pourcentage de cases étants des rochers.
 	 */
 	private void setRochers(int pourcentage) {
 		int x, y;
