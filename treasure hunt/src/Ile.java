@@ -96,7 +96,7 @@ public class Ile {
 				x= alea.tirage(grille.length-2)+1;
 				y= alea.tirage(grille.length-2)+1;
 			}
-			while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)>7));
+			while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)>6));
 			grille[x][y].setValeur(2); // 2 = rocher
 			entites.put("R"+Integer.toString(i), new int[] {x,y});
 		}
