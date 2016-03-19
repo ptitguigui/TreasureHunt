@@ -18,18 +18,20 @@ public class Jouer {
 		
 		//demande de la taille
 		JOptionPane j=new JOptionPane();
-		String rep=new String(j.showInputDialog(null,"Entrer la taille du plateau (entre 8 et 20) :"));
-		while(!(rep.matches("[1-9][0-9]*")&& Integer.parseInt(rep)>=8 && Integer.parseInt(rep)<=20)){
+		String rep=new String(j.showInputDialog(null,"Entrer la taille du plateau (entre 10 et 20) :"));
+		//Tant que le pourcentage soit un chiffre et qu'il soit entre 10 et 20
+		while(!(rep.matches("[1-9][0-9]*")&& Integer.parseInt(rep)>=10 && Integer.parseInt(rep)<=20)){
 				j.showMessageDialog(null, "Veuillez entrer un nombre correct.", "Erreur", 0);
-				rep=j.showInputDialog(null,"Entrer la taille du plateau (entre 8 et 20) :");
+				rep=j.showInputDialog(null,"Entrer la taille du plateau (entre 10 et 20) :");
 		}
 		int taille=Integer.parseInt(rep);
 		
 		//demande du pourcentage de rocher
 		rep=new String(j.showInputDialog(null,"Entrer le pourcentage de rocher :"));
-		while(!(rep.matches("[1-9][0-9]*")
-				&& (int)((taille-2)*(taille-2)*Integer.parseInt(rep)/100.00-2)>=1 
-				&& (int)((taille-2)*(taille-2)*Integer.parseInt(rep)/100.00-2)<=(taille-4)*(taille-4)*0.20-2)){
+		//Tant que le pourcentage soit un chiffre et que le nombre de rochers soit >=3 et que'il soit <20% 
+		while(!(rep.matches("[1-9][0-9]*")   
+				&& (int)((taille-2)*(taille-2)*Integer.parseInt(rep)/100.00)>=3 
+				&& (int)((taille-2)*(taille-2)*Integer.parseInt(rep)/100.00)<(taille-2)*(taille-2)*0.20-1)){
 				j.showMessageDialog(null, "Nombre incorrecte ou pourcentage impossible à réaliser.", "Erreur", 0);
 				rep=j.showInputDialog(null,"Entrer le pourcentage de rocher :");
 		}
