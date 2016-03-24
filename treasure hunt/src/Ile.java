@@ -96,7 +96,7 @@ public class Ile {
 		for(int i=0; i<(int)((grille.length-2)*(grille[0].length-2)*(pourcentage/100.00)-2); i++) {
 			do {
 				x= alea.tirage(grille.length-2)+1;
-				y= alea.tirage(grille.length-2)+1;
+				y= alea.tirage(grille[0].length-2)+1;
 			}
 			while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)>6));
 			grille[x][y].setValeur(2); // 2 = rocher
@@ -113,7 +113,7 @@ public class Ile {
 		int x, y;
 		do {
 			x=alea.tirage(2);
-			y=alea.tirage(grille.length-2)+1;
+			y=alea.tirage(grille[0].length-2)+1;
 			if (x==0){ x=grille.length-2;}
 		}
 		while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)==5));
@@ -122,13 +122,13 @@ public class Ile {
 		
 		//placement du 2e navire
 		do {
-			x= alea.tirage(2);
-			y= alea.tirage(grille.length-2)+1;
-			if (x==0){ x=grille.length-2;}
+			x= alea.tirage(grille.length-2)+1;
+			y= alea.tirage(2);
+			if (y==0){ y=grille[0].length-2;}
 		}
-		while(!(grille[y][x].estVide()&& nbVoisinsVide(y, x)==5));
-		grille[y][x].setValeur(4); // 4 = navire2
-		entites.put("N", new int[] {y,x});
+		while(!(grille[x][y].estVide()&& nbVoisinsVide(x, y)==5));
+		grille[x][y].setValeur(4); // 4 = navire2
+		entites.put("N", new int[] {x,y});
 	}
 	 
 	/**
@@ -138,9 +138,9 @@ public class Ile {
 		int x, y;
 		do {
 			x= alea.tirage(grille.length-2)+1;
-			y= alea.tirage(grille.length-2)+1;
+			y= alea.tirage(grille[0].length-2)+1;
 		}
-		while(!(grille[x][y].estVide() && nbVoisinsVide(y, x)>7));
+		while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)>7));
 		grille[x][y].setValeur(6); // 6 = tresor
 		entites.put("T", new int[] {x,y});
 		grille[x][y].setValeur(2); // 2 = rocher
@@ -153,9 +153,9 @@ public class Ile {
 		int x, y;
 		do {
 			x= alea.tirage(grille.length-2)+1;
-			y= alea.tirage(grille.length-2)+1;
+			y= alea.tirage(grille[0].length-2)+1;
 		}
-		while(!(grille[x][y].estVide() && nbVoisinsVide(y, x)>7));
+		while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)>7));
 		grille[x][y].setValeur(5); // 5 = clef
 		entites.put("C", new int[] {x,y});
 		grille[x][y].setValeur(2); // 2 = rocher
@@ -224,10 +224,10 @@ public class Ile {
 	 * @params pourcentage entier entre 0 et 100 correspondant au pourcentage de case étant des rochers.
 	 */
 	public void initialiser(int pourcentage){
-		setMers();
+		setMers();	
 		setTresor();
 		setClef();
-		setRochers(pourcentage);		
+		setRochers(pourcentage);	
 		setNavires();
 	}	
 	

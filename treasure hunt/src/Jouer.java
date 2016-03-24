@@ -44,7 +44,7 @@ public class Jouer {
 		//Tant que la saisie soit un chiffre et que le nombre de rochers soit >=3 et que'il soit <20% 
 		while(!(rep.matches("[1-9][0-9]*")   
 				&& (int)((nbColonnes-2)*(nbLignes-2)*Integer.parseInt(rep)/100.00)>=3 
-				&& (int)((nbColonnes-2)*(nbLignes-2)*Integer.parseInt(rep)/100.00)<(nbColonnes-2)*(nbLignes-2)*0.20-2)){
+				&& (int)((nbColonnes-2)*(nbLignes-2)*Integer.parseInt(rep)/100.00)<(nbColonnes-2)*(nbLignes-2)*0.2-1)){
 				j.showMessageDialog(null, "Nombre incorrecte ou pourcentage impossible à réaliser.", "Erreur", 0);
 				rep=j.showInputDialog(null,"Entrer le pourcentage de rocher :");
 		}
