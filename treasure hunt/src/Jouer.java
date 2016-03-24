@@ -49,16 +49,26 @@ public class Jouer {
 		int pourcentage=Integer.parseInt(rep);
 		
 		//Création de l'ile
+<<<<<<< HEAD
 		SuperPlateau grille=new SuperPlateau(imgs,nbColonnes);
+=======
+		SuperPlateau[] grille = new SuperPlateau[3];
+		grille[0]=new SuperPlateau(imgs,taille,true);
+		grille[0].close();
+		grille[1]=new SuperPlateau(imgs,taille,true);
+		grille[1].close();
+		grille[2]=new SuperPlateau(imgs,taille,true);
+		grille[2].close();
+>>>>>>> branch 'master' of https://github.com/ptitguigui/TreasureHunt.git
 		
 		Ile monIle = new Ile(nbColonnes,nbLignes);
 		monIle.initialiser(pourcentage);
-		grille.setJeu(monIle.getIleTab());
+		grille[0].setJeu(monIle.getIleTab());
 		
 		//affichage texte
 		//System.out.println(monIle);
 		
-		grille.affichage();
+		grille[0].affichage();
 	}
 
 }
