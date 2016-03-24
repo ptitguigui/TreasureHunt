@@ -26,8 +26,8 @@ public class Ile {
 	 * @param x un entier
 	 * @param y un entier
 	 */
-	Ile(int x, int y) {
-		grille=new Parcelle[x][y];
+	Ile(int nbColonnes, int nbLignes) {
+		grille=new Parcelle[nbColonnes][nbLignes];
 		for(int l=0; l<grille[0].length; l++){
 			for(int c=0; c<grille.length; c++){
 				grille[l][c]=new Parcelle();
