@@ -18,7 +18,7 @@ public class SuperPlateau {
 	 * @param taille taille du plateau (il s'agit d'un carré)
 	 */
 	SuperPlateau(String[] gifs, int taille){
-		p = new Plateau(gifs, taille);
+		p = new Plateau(gifs, taille, true);
 	}	
 	
 	/**
