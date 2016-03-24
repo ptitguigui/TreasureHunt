@@ -16,7 +16,7 @@ public class SuperPlateau {
 	private Plateau p;
 	
 	/**
-	 * Constructeur de la classe Plateau qui crée un plateau de jeu vide de dimension taille x taille cellules vides.
+	 * Constructeur de la classe Plateau qui crée un plateau de jeu vide; de dimension taille x taille cellules vides.
 	 * @param gifs tableau d'images
 	 * @param taille taille du plateau (il s'agit d'un carré)
 	 */
