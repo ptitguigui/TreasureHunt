@@ -9,6 +9,8 @@ import javax.swing.JOptionPane;
 public class Jouer {
 
 	public static void main(String[] args) {
+		Menu lancer = new Menu();
+		
 		String[] imgs={"treasure hunt/images/mer.png",
 				"treasure hunt/images/rocher.png.jpg",
 				"treasure hunt/images/1.navire.png",
