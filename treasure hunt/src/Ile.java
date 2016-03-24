@@ -28,9 +28,9 @@ public class Ile {
 	 */
 	Ile(int nbColonnes, int nbLignes) {
 		grille=new Parcelle[nbColonnes][nbLignes];
-		for(int l=0; l<grille[0].length; l++){
-			for(int c=0; c<grille.length; c++){
-				grille[l][c]=new Parcelle();
+		for(int c=0; c<grille.length; c++){
+			for(int l=0; l<grille[0].length; l++){
+				grille[c][l]=new Parcelle();
 			}
 		}
 	}
@@ -73,15 +73,17 @@ public class Ile {
 	 * Méthode plaçant la mer.
 	 */
 	private void setMers(){
-		for(int i=0; i<grille.length; i++) {
-			grille[0][i].setValeur(1); // 1 = mer
-			entites.put("M", new int[] {0,i});
-			grille[grille.length-1][i].setValeur(1);
-			entites.put("M", new int[] {grille.length-1,i});
-			grille[i][0].setValeur(1);
-			entites.put("M", new int[] {i,0});
-			grille[i][grille.length-1].setValeur(1);
-			entites.put("M", new int[] {i,grille.length-1});
+		for(int c=0; c<grille.length; c++) {
+			for(int l=0; l<grille[0].length; l++) {
+			grille[0][l].setValeur(1); // 1 = mer
+			entites.put("M", new int[] {0,l});
+			grille[grille.length-1][l].setValeur(1);
+			entites.put("M", new int[] {grille.length-1,l});
+			grille[c][0].setValeur(1);
+			entites.put("M", new int[] {c,0});
+			grille[c][grille[0].length-1].setValeur(1);
+			entites.put("M", new int[] {c,grille[0].length-1});
+			}
 		}
 	}
 	

@@ -1,4 +1,3 @@
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.AbstractButton;
@@ -17,7 +16,7 @@ public class Menu extends JPanel implements ActionListener{
 		jouer.setHorizontalTextPosition(AbstractButton.CENTER);
 		jouer.addActionListener(this);
 		jouer.setToolTipText("Clic sur jouer");
-		jouer.setActionCommand("disable");
+		
 		add(jouer);
 		
 	}
@@ -53,17 +52,6 @@ public class Menu extends JPanel implements ActionListener{
 	            }
 	        });
 	    }
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if("disable".equals(e.getActionCommand())){
-			jouer.setEnabled(false);
-			
-		}else{
-			jouer.setEnabled(true);
-			
-		}
-		
-	}
 }
 	
 
