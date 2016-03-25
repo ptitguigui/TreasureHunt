@@ -71,7 +71,11 @@ public class Ile {
 		return nb;
 	}
 	
-	void setPersonnage(int nbPersonnages){
+	/**
+	 * Méthode plaçant aléatoirement les personnage sur l'ile, le nombre de personnages correspond à l'entier précisé en paramètre selon la taille de l'ile.
+	 * @params nombres de personnage par équipe entre 1 et 4.
+	 */
+	private void setPersonnage(int nbPersonnages){
 		int x, y;
 		for(int i=0; i<nbPersonnages; i++){
 			//placement explorateurs J1
@@ -81,6 +85,7 @@ public class Ile {
 				}
 				while(!(grille[x][y].estVide()));
 				grille[x][y].setValeur(7); // 7 = explorateur1
+				entites.put("E"+Integer.toString(i), new int[] {x,y});
 			//placement explorateurs J2
 				do{
 					x= alea.tirage(grille.length-2)+1;
@@ -88,9 +93,8 @@ public class Ile {
 				}
 				while(!(grille[x][y].estVide()));
 				grille[x][y].setValeur(8); // 8 = explorateur2
+				entites.put("e"+Integer.toString(i), new int[] {x,y});
 			}
-			
-		
 	}
 	
 	/**
@@ -186,13 +190,28 @@ public class Ile {
 	}
 	
 	/**
-	 * Méthode retournant les coordonnées de la mer.
-	 * @return les coordonnées de la mer sous forme d'un tableau à deux dimensions int[][].
+	 * Méthode retournant les coordonnées des personnages du J1.
+	 * @return les coordonnées des personnages sous forme d'un tableau à deux dimensions int[][].
 	 */
-	public int[] getMers(){
-		return entites.get("M");
+	public int[][] getPersonnagesJ1(int nbPersonnages) {
+		int[][]coord = new int[2][nbPersonnages];
+		for(int i=0; i<coord[0].length; i++){
+			coord[i]=entites.get("E"+Integer.toString(i));
+		}
+		return coord;
 	}
-	
+	/**
+	 * Méthode retournant les coordonnées des personnages du J2.
+	 * @return les coordonnées des personnages sous forme d'un tableau à deux dimensions int[][].
+	 */
+	public int[][] getPersonnagesJ2(int nbPersonnages) {
+		int[][]coord = new int[2][nbPersonnages];
+		for(int i=0; i<coord[0].length; i++){
+			coord[i]=entites.get("e"+Integer.toString(i));
+		}
+		return coord;
+	}
+		
 	/**
 	 * Méthode retournant les coordonnées des rochers (sans compter la clef et le trésor).
 	 * @return les coordonnées des rochers sous forme d'un tableau à deux dimensions int[][].
@@ -206,17 +225,25 @@ public class Ile {
 	}
 	
 	/**
-	 * Méthode retournant les coordonnées des navires.
-	 * @return les coordonnées des navires sous forme d'un tableau à deux dimensions int[][].
+	 * Méthode retournant les coordonnées du navire de J2.
+	 * @return les coordonnées du navire J1 sous forme d'un tableau int[]
 	 */
-	public int[][] getNavires(){
-		return new int[][] {entites.get("n"),entites.get("N")};
+	public int[] getNavireJ1(){
+		return entites.get("n");
+	}
+	/**
+	 * Méthode retournant les coordonnées du navire de J2.
+	 * @return les coordonnées du navire J2 sous forme d'un tableau int[].
+	 */
+	public int[] getNavireJ2(){
+		return entites.get("N");
 	}
 	
 	/**
 	 * Méthode retournant les coordonnées du trésor.
 	 * @return les coordonnées du trésor sous forme d'un tableau int[].
 	 */
+		
 	public int[] getTresor() {
 		return entites.get("T");
 	}
