@@ -14,7 +14,9 @@ public class Parcelle {
 	 * 3 = navire1
 	 * 4 = navire2
 	 * 5 = clef
-	 * 6 = tresor.
+	 * 6 = tresor
+	 * 7 = explorateur1
+	 * 8= explorateur2
 	 */
 	private int valeur = 0;
 

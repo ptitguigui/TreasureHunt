@@ -19,6 +19,8 @@ public class Ile {
 	 * Attribut réunissant les coordonnées de tous les éléments positionnés sur l'ile.
 	 */
 	private HashMap<String, int[]> entites =new HashMap<>();
+	
+	
 		
 	
 	/**
@@ -67,6 +69,28 @@ public class Ile {
 		if(grille[x-1][y+1].estVide()){ nb += 1; }
 		if(grille[x-1][y-1].estVide()){	nb += 1; }
 		return nb;
+	}
+	
+	void setPersonnage(int nbPersonnages){
+		int x, y;
+		for(int i=0; i<nbPersonnages; i++){
+			//placement explorateurs J1
+				do{
+					x= alea.tirage(grille.length-2)+1;
+					y= alea.tirage(grille[0].length-2)+1;
+				}
+				while(!(grille[x][y].estVide()));
+				grille[x][y].setValeur(7); // 7 = explorateur1
+			//placement explorateurs J2
+				do{
+					x= alea.tirage(grille.length-2)+1;
+					y= alea.tirage(grille[0].length-2)+1;
+				}
+				while(!(grille[x][y].estVide()));
+				grille[x][y].setValeur(8); // 8 = explorateur2
+			}
+			
+		
 	}
 	
 	/**
@@ -223,12 +247,13 @@ public class Ile {
 	 * Méthode permettant d'initialiser l'ile en plaçant tous les éléments nécessaires.
 	 * @params pourcentage entier entre 0 et 100 correspondant au pourcentage de case étant des rochers.
 	 */
-	public void initialiser(int pourcentage){
+	public void initialiser(int pourcentage, int nbPersonnage){
 		setMers();	
 		setTresor();
 		setClef();
 		setRochers(pourcentage);	
 		setNavires();
+		setPersonnage(nbPersonnage);
 	}	
 	
 }
