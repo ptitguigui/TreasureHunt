@@ -54,7 +54,7 @@ public class Jouer {
 						rep=j.showInputDialog(null,"Entrer le nombre de personnage :");
 				}
 		int nbPersonnages=Integer.parseInt(rep);
-		
+		/*
 		//Création de l'ile				
 		Ile monIle = new Ile(nbColonnes,nbLignes);
 		monIle.initialiser(pourcentage, nbPersonnages);
@@ -99,7 +99,7 @@ public class Jouer {
 		//System.out.println(monIle);
 		
 		grille[0].affichage();
-		grille[1].affichage();
+		grille[1].affichage();*/
 	}
 
 }
