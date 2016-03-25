@@ -50,18 +50,36 @@ public class Jouer {
 		}
 		int pourcentage=Integer.parseInt(rep);
 		
-		//Création de l'ile
 		SuperPlateau[] grille = new SuperPlateau[3];
+		//tableau joueur1
 		grille[0]=new SuperPlateau(imgs,10,true);
 		grille[0].close();
+		//tableau joueur2
 		grille[1]=new SuperPlateau(imgs,10,true);
 		grille[1].close();
-		grille[2]=new SuperPlateau(imgs,10,true);
-		grille[2].close();
 		
+		//Création de l'ile
 		Ile monIle = new Ile(nbColonnes,nbLignes);
 		monIle.initialiser(pourcentage);
-		grille[0].setJeu(monIle.getIleTab());
+			//jeu=tableau omniscient
+		int[][]jeu=monIle.getIleTab();
+		
+		//initialisation des tableaux des joueurs = aucune visibilité
+		boolean[][]jeuJ1=new boolean[nbColonnes][nbLignes];
+		boolean[][]jeuJ2=new boolean[nbColonnes][nbLignes];
+		for(int c=0; c<nbColonnes; c++) {
+			for(int l=0; l<nbLignes; l++){
+				jeuJ1[c][l]=false;
+				jeuJ2[c][l]=false;
+			}
+		}
+		int[][]navires=monIle.getNavires();
+		jeuJ1[navires[0][0]][navires[0][1]]=true;
+		jeuJ2[navires[1][0]][navires[1][1]]=true;
+		
+
+		grille[0].setJeu(jeu);
+		grille[1].setJeu(jeu);
 		
 		//affichage texte
 		//System.out.println(monIle);
