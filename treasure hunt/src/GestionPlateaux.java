@@ -35,8 +35,21 @@ public class GestionPlateaux {
 				jeuJ2b[c][l]=false;
 			}
 		}
-		jeuJ1b[monIle.getNavireJ1()[0]][monIle.getNavireJ1()[1]]=true;
-		jeuJ2b[monIle.getNavireJ2()[0]][monIle.getNavireJ2()[1]]=true;
+		int x=monIle.getNavireJ1()[0];
+		int y=monIle.getNavireJ1()[1];
+		jeuJ1b[x][y]=true;
+		jeuJ1b[x+1][y]=true;
+		jeuJ1b[x-1][y]=true;
+		jeuJ1b[x][y+1]=true;
+		jeuJ1b[x][y-1]=true;
+
+		int a=monIle.getNavireJ2()[0];
+		int b=monIle.getNavireJ2()[1];
+		jeuJ2b[a][b]=true;
+		jeuJ2b[a+1][b]=true;
+		jeuJ2b[a-1][b]=true;
+		jeuJ2b[a][b+1]=true;
+		jeuJ2b[a][b-1]=true;
 		update();
 	}
 	
