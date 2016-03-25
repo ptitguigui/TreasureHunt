@@ -9,7 +9,8 @@ public class GestionPlateaux {
 			"treasure hunt/images/coffre.png.jpg",
 			"treasure hunt/images/1.explorateur.png",
 			"treasure hunt/images/2.explorateur.png"};
-	private int[][] ile;
+		//tableau omniscient
+	private int[][] jeu;
 	private Ile monIle;
 	private boolean[][] jeuJ1b;
 	private boolean[][] jeuJ2b;
@@ -20,23 +21,48 @@ public class GestionPlateaux {
 		this.monIle=monIle;
 		plateaux[0]=new SuperPlateau(IMGS,10);
 		plateaux[1]=new SuperPlateau(IMGS,10);
-		ile=monIle.getIleTab();
-		jeuJ1b=new boolean[ile.length][ile[0].length];
-		jeuJ2b=new boolean[ile.length][ile[0].length];
-		jeuJ1=new int[ile.length][ile[0].length];
-		jeuJ2=new int[ile.length][ile[0].length];
+		jeu=monIle.getIleTab();
+		jeuJ1b=new boolean[jeu.length][jeu[0].length];
+		jeuJ2b=new boolean[jeu.length][jeu[0].length];
+		jeuJ1=new int[jeu.length][jeu[0].length];
+		jeuJ2=new int[jeu.length][jeu[0].length];
 	}
 	
 	public void initialiser(){
-		for(int c=0; c<ile.length; c++) {
-			for(int l=0; l<ile[0].length; l++){
+		for(int c=0; c<jeu.length; c++) {
+			for(int l=0; l<jeu[0].length; l++){
 				jeuJ1b[c][l]=false;
 				jeuJ2b[c][l]=false;
 			}
 		}
+		jeuJ1b[monIle.getNavireJ1()[0]][monIle.getNavireJ1()[1]]=true;
+		jeuJ2b[monIle.getNavireJ2()[0]][monIle.getNavireJ2()[1]]=true;
+		update();
 	}
 	
 	public void update(){
-		
+		for(int c=0; c<jeu.length; c++) {
+			for(int l=0; l<jeu[0].length; l++){
+				if(jeuJ1b[c][l]==true) {
+					jeuJ1[c][l]=jeu[c][l];
+				} else {
+					jeuJ1[c][l]=0;
+				}
+				if(jeuJ2b[c][l]==true) {
+					jeuJ2[c][l]=jeu[c][l];
+				} else {
+					jeuJ2[c][l]=0;
+				}
+			}
+		}
+		plateaux[0].setJeu(jeuJ1);
+		plateaux[1].setJeu(jeuJ2);
+	}
+	
+	public void affichageJ1(){
+		plateaux[0].affichage();
+	}
+	public void affichageJ2(){
+		plateaux[1].affichage();
 	}
 }

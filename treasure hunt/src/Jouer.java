@@ -54,52 +54,17 @@ public class Jouer {
 						rep=j.showInputDialog(null,"Entrer le nombre de personnage :");
 				}
 		int nbPersonnages=Integer.parseInt(rep);
-		/*
+		
 		//Création de l'ile				
 		Ile monIle = new Ile(nbColonnes,nbLignes);
 		monIle.initialiser(pourcentage, nbPersonnages);
 		
 		GestionPlateaux gestion=new GestionPlateaux(monIle);
-		
-		//initialisation des tableaux des joueurs = aucune visibilité
-		boolean[][]jeuJ1b=new boolean[nbColonnes][nbLignes];
-		boolean[][]jeuJ2b=new boolean[nbColonnes][nbLignes];
-		for(int c=0; c<nbColonnes; c++) {
-			for(int l=0; l<nbLignes; l++){
-				jeuJ1b[c][l]=false;
-				jeuJ2b[c][l]=false;
-			}
-		}
-		int[][]navires=monIle.getNavires();
-		jeuJ1b[navires[0][0]][navires[0][1]]=true;
-		jeuJ2b[navires[1][0]][navires[1][1]]=true;
-		
-		//tableaux de int des joueurs, créant une "vue" de l'ile, en fonction de ce qu'ils ont déjà visité.
-		int[][]jeuJ1=new int[nbColonnes][nbLignes];
-		int[][]jeuJ2=new int[nbColonnes][nbLignes];
-		for(int c=0; c<nbColonnes; c++) {
-			for(int l=0; l<nbLignes; l++){
-				if(jeuJ1b[c][l]==true) {
-					jeuJ1[c][l]=jeu[c][l];
-				} else {
-					jeuJ1[c][l]=0;
-				}
-				if(jeuJ2b[c][l]==true) {
-					jeuJ2[c][l]=jeu[c][l];
-				} else {
-					jeuJ2[c][l]=0;
-				}
-			}
-		}
-		
-		grille[0].setJeu(jeuJ1);
-		grille[1].setJeu(jeuJ2);
-		
+		gestion.initialiser();
+		gestion.affichageJ1();
+		gestion.affichageJ2();
 		//affichage texte
 		//System.out.println(monIle);
-		
-		grille[0].affichage();
-		grille[1].affichage();*/
 	}
 
 }
