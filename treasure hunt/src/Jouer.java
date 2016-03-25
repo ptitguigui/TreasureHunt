@@ -11,14 +11,6 @@ public class Jouer {
 	public static void main(String[] args) {
 		Menu lancer = new Menu();
 		
-		String[] imgs={"treasure hunt/images/mer.png",
-				"treasure hunt/images/rocher.png.jpg",
-				"treasure hunt/images/1.navire.png",
-				"treasure hunt/images/2.navire.png",
-				"treasure hunt/images/cle.png",
-				"treasure hunt/images/coffre.png.jpg",
-				"treasure hunt/images/1.explorateur.png",
-				"treasure hunt/images/2.explorateur.png"};
 		
 		
 		JOptionPane j=new JOptionPane();
@@ -63,39 +55,51 @@ public class Jouer {
 				}
 		int nbPersonnages=Integer.parseInt(rep);
 		
-		//Création de l'ile
-		SuperPlateau[] grille = new SuperPlateau[2];
-		grille[0]=new SuperPlateau(imgs,10);
-		grille[0].close();
-		grille[1]=new SuperPlateau(imgs,10);
-		grille[1].close();
-				
+		//Création de l'ile				
 		Ile monIle = new Ile(nbColonnes,nbLignes);
 		monIle.initialiser(pourcentage, nbPersonnages);
-			//jeu=tableau omniscient
-		int[][]jeu=monIle.getIleTab();
+		
+		GestionPlateaux gestion=new GestionPlateaux(monIle);
 		
 		//initialisation des tableaux des joueurs = aucune visibilité
-		boolean[][]jeuJ1=new boolean[nbColonnes][nbLignes];
-		boolean[][]jeuJ2=new boolean[nbColonnes][nbLignes];
+		boolean[][]jeuJ1b=new boolean[nbColonnes][nbLignes];
+		boolean[][]jeuJ2b=new boolean[nbColonnes][nbLignes];
 		for(int c=0; c<nbColonnes; c++) {
 			for(int l=0; l<nbLignes; l++){
-				jeuJ1[c][l]=false;
-				jeuJ2[c][l]=false;
+				jeuJ1b[c][l]=false;
+				jeuJ2b[c][l]=false;
 			}
 		}
 		int[][]navires=monIle.getNavires();
-		jeuJ1[navires[0][0]][navires[0][1]]=true;
-		jeuJ2[navires[1][0]][navires[1][1]]=true;
+		jeuJ1b[navires[0][0]][navires[0][1]]=true;
+		jeuJ2b[navires[1][0]][navires[1][1]]=true;
 		
-
-		grille[0].setJeu(jeu);
-		grille[1].setJeu(jeu);
+		//tableaux de int des joueurs, créant une "vue" de l'ile, en fonction de ce qu'ils ont déjà visité.
+		int[][]jeuJ1=new int[nbColonnes][nbLignes];
+		int[][]jeuJ2=new int[nbColonnes][nbLignes];
+		for(int c=0; c<nbColonnes; c++) {
+			for(int l=0; l<nbLignes; l++){
+				if(jeuJ1b[c][l]==true) {
+					jeuJ1[c][l]=jeu[c][l];
+				} else {
+					jeuJ1[c][l]=0;
+				}
+				if(jeuJ2b[c][l]==true) {
+					jeuJ2[c][l]=jeu[c][l];
+				} else {
+					jeuJ2[c][l]=0;
+				}
+			}
+		}
+		
+		grille[0].setJeu(jeuJ1);
+		grille[1].setJeu(jeuJ2);
 		
 		//affichage texte
-		System.out.println(monIle);
+		//System.out.println(monIle);
 		
 		grille[0].affichage();
+		grille[1].affichage();
 	}
 
 }
