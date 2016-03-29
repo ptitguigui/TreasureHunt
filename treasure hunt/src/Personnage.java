@@ -1,25 +1,33 @@
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 /**
- * classe permettant de creer les personnages.
+ * Classe permettant de créer un personnage.
  * @author bataillj
  *
  */
 public class Personnage {
-	String nom;
-	int energie;
-	int equipe;
+	private String nom;
+	private int energie;
+	private int numEquipe;
 	
 /**
- * Methode permettant d'initialiser l'energie, le nom et l'equipe.
- * @param nom
- * @param equipe
- * @param energie
+ * Constructeur créant un personnage avec un nom, un numéro d'équipe et de l'énergie.
+ * @param nom String.
+ * @param numEquipe int.
+ * @param energie int.
  */
-	Personnage(String nom, int equipe, int energie){
+	Personnage(String nom, int numEquipe, int energie){
 		this.nom=nom;
 		this.energie = energie;
-		this.equipe = equipe;
+		this.numEquipe = numEquipe;
+	}
+	
+	/**
+	 * Méthode retournant le numéro d'équipe du personnage.
+	 * @return le numéro d'équipe du personnage.
+	 */
+	public int getNumEquipe(){
+		return numEquipe;
 	}
 	
 	/*
