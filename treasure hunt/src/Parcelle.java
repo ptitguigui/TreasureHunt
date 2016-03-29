@@ -9,16 +9,19 @@ public class Parcelle {
 	/**
 	 * Attribut correspondant à la valeur de la parcelle, initialié à 0.
 	 * 0 = vide
-	 * 1 = mer
-	 * 2 = rocher
-	 * 3 = navire1
-	 * 4 = navire2
-	 * 5 = clef
-	 * 6 = tresor
-	 * 7 = explorateur1
-	 * 8= explorateur2
+	 * 1 = sable
+	 * 2 = mer
+	 * 3 = rocher
+	 * 4 = clef
+	 * 5 = cofre
+	 * 6 = navire1
+	 * 7 = navire2
+	 * 8 = explorateur1
+	 * 9 = explorateur2
+	 * 10 = voleur1
+	 * 11 = voleur2
 	 */
-	private int valeur = 0;
+	private int valeur = 1;
 
 	/**
 	 * Méthode permettant de changer la valeur de la parcelle
@@ -47,6 +50,6 @@ public class Parcelle {
 	 * @return vrai si la parcelle est vide, faux sinon.
 	 */
 	public boolean estVide() {
-		return (getValeur()==0);
+		return (getValeur() == 1);
 	}
 }
