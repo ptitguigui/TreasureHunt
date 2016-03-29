@@ -23,14 +23,18 @@ public class Jouer  {
 		if(Integer.parseInt(menu)== 1){
 		JOptionPane.showMessageDialog(null, "Lancement du jeu");
 		
-		final String[] IMGS={"treasure hunt/images/mer.png",
+		final String[] IMGS={"treasure hunt/images/sable.jpg",
+				"treasure hunt/images/mer.png",
 				"treasure hunt/images/rocher.png.jpg",
-				"treasure hunt/images/1.navire.png",
-				"treasure hunt/images/2.navire.png",
 				"treasure hunt/images/cle.png",
 				"treasure hunt/images/coffre.png.jpg",
+				"treasure hunt/images/arbre.png",
+				"treasure hunt/images/1.navire.png",
+				"treasure hunt/images/2.navire.png",
 				"treasure hunt/images/1.explorateur.png",
-				"treasure hunt/images/2.explorateur.png"};
+				"treasure hunt/images/2.explorateur.png",
+				"treasure hunt/images/1.piegeur.png",
+				"treasure hunt/images/2.piegeur.png"};
 		
 		JOptionPane j=new JOptionPane();
 		//demande de la taille
