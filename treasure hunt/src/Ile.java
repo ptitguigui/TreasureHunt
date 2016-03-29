@@ -99,7 +99,7 @@ public class Ile {
 				}
 				y=Integer.parseInt(saisie);
 				
-				if (j==0){
+				if (j==1){
 					grille[x][y].setValeur(7); // 7 = explorateur1
 					entites.put("E"+Integer.toString(i), new int[] {x,y});
 				} else {
