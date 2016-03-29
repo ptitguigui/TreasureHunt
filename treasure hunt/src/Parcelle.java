@@ -22,13 +22,25 @@ public class Parcelle {
 	 * 11 = voleur1
 	 * 12 = voleur2
 	 */
-	protected int valeur = 1;
+	protected int valeur;
 	/**
 	 * Attribut correspondant à un personnage, initialisé à null, avec la possibilité de le modifier via un setter.
 	 */
-	protected Personnage personnage=null;
+	protected Personnage personnage;
 
+	/**
+	 * Constructeur permettant de créer un terrain clair avec un personnage par dessus.
+	 * @param p un personnage
+	 */
+	Parcelle(Personnage p){
+		personnage=p;
+		valeur=p.getValeur();
+	}
 	
+	Parcelle(){
+		valeur=1;
+		personnage=null;
+	}
 	
 	
 	/**
@@ -45,6 +57,11 @@ public class Parcelle {
 	 */
 	public void setPersonnage(Personnage p){
 		personnage=p;
+		if (p!=null){
+			valeur=p.getValeur();
+		} else {
+			valeur=1;
+		}
 	}
 	
 	/**

@@ -116,13 +116,13 @@ public class Ile {
 	private void setMers(){
 		for(int c=0; c<grille.length; c++) {
 			for(int l=0; l<grille[0].length; l++) {
-			grille[0][l].setValeur(2); // 2 = mer
+			grille[0][l]=new ParcelleMer();
 			entites.put("M", new int[] {0,l});
-			grille[grille.length-1][l].setValeur(2);
+			grille[grille.length-1][l]=new ParcelleMer();
 			entites.put("M", new int[] {grille.length-1,l});
-			grille[c][0].setValeur(2);
+			grille[c][0]=new ParcelleMer();
 			entites.put("M", new int[] {c,0});
-			grille[c][grille[0].length-1].setValeur(2);
+			grille[c][grille[0].length-1]=new ParcelleMer();
 			entites.put("M", new int[] {c,grille[0].length-1});
 			}
 		}
@@ -140,7 +140,7 @@ public class Ile {
 				y= alea.tirage(grille[0].length-2)+1;
 			}
 			while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)>6));
-			grille[x][y].setValeur(3); // 3 = rocher
+			grille[x][y]=new ParcelleRocher();
 			entites.put("R"+Integer.toString(i), new int[] {x,y});
 		}
 	}
@@ -158,7 +158,7 @@ public class Ile {
 			if (x==0){ x=grille.length-2;}
 		}
 		while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)==5));
-		grille[x][y].setValeur(7); // 7 = navire1
+		grille[x][y]=new ParcelleNavire(1);
 		entites.put("n", new int[] {x,y});
 		
 		//placement du 2e navire
@@ -168,7 +168,7 @@ public class Ile {
 			if (y==0){ y=grille[0].length-2;}
 		}
 		while(!(grille[x][y].estVide()&& nbVoisinsVide(x, y)==5));
-		grille[x][y].setValeur(8); // 8 = navire2
+		grille[x][y]=new ParcelleNavire(2);
 		entites.put("N", new int[] {x,y});
 	}
 	 
@@ -182,9 +182,9 @@ public class Ile {
 			y= alea.tirage(grille[0].length-2)+1;
 		}
 		while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)>7));
-		grille[x][y].setValeur(5); // 5 = tresor
+		grille[x][y]=new ParcelleRocher();
+		((ParcelleRocher)grille[x][y]).setTresor();
 		entites.put("T", new int[] {x,y});
-		grille[x][y].setValeur(3); // 3 = rocher
 	}
 	
 	/**
@@ -197,9 +197,9 @@ public class Ile {
 			y= alea.tirage(grille[0].length-2)+1;
 		}
 		while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)>7));
-		grille[x][y].setValeur(4); // 4 = clef
+		grille[x][y]=new ParcelleRocher();
+		((ParcelleRocher)grille[x][y]).setClef();
 		entites.put("C", new int[] {x,y});
-		grille[x][y].setValeur(3); // 3 = rocher
 	}
 	
 	/**

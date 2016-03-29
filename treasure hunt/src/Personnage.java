@@ -9,17 +9,20 @@ public class Personnage {
 	private String nom;
 	private int energie;
 	private int numEquipe;
+	private int valeur;
 	
 /**
  * Constructeur créant un personnage avec un nom, un numéro d'équipe et de l'énergie.
  * @param nom String.
  * @param numEquipe int.
  * @param energie int.
+ * @param valeur int.
  */
-	Personnage(String nom, int numEquipe, int energie){
+	Personnage(String nom, int numEquipe, int energie, int valeur){
 		this.nom=nom;
 		this.energie = energie;
 		this.numEquipe = numEquipe;
+		this.valeur=valeur;
 	}
 	
 	/**
@@ -28,6 +31,14 @@ public class Personnage {
 	 */
 	public int getNumEquipe(){
 		return numEquipe;
+	}
+	
+	/**
+	 * Méthode retournant la valeur du personnage.
+	 * @return la valeur du personnage.
+	 */
+	public int getValeur(){
+		return valeur;
 	}
 	
 	/*
