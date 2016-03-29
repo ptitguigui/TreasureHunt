@@ -67,14 +67,13 @@ public class Jouer  {
 		}
 		int pourcentage=Integer.parseInt(rep);
 		
-		//demande nombres de personnage pour les différentes
-		rep=new String(j.showInputDialog(null,"Entrer le nombre de personnage:"));
-				//Tant que la saisie soit un chiffre et que le nombre de rochers soit >=3 et que'il soit <20% 
+		//demande nombres de personnage pour les différentes équipes
+		rep=new String(j.showInputDialog(null,"Entrer le nombre de personnages :"));
 				while(!(rep.matches("[1-9][0-9]*")   
 						&& (int) Integer.parseInt(rep)>0 
 						&& (int)Integer.parseInt(rep)<5)){
-						j.showMessageDialog(null, "Nombre incorrecte ou pourcentage impossible à réaliser.", "Erreur", 0);
-						rep=j.showInputDialog(null,"Entrer le nombre de personnage :");
+						j.showMessageDialog(null, "Saisie incorrecte ou trop élevée.", "Erreur", 0);
+						rep=j.showInputDialog(null,"Entrer le nombre de personnages :");
 				}
 		int nbPersonnages=Integer.parseInt(rep);
 		

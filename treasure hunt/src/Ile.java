@@ -75,13 +75,13 @@ public class Ile {
 	
 	/**
 	 * Méthode plaçant aléatoirement les personnage sur l'ile, le nombre de personnages correspond à l'entier précisé en paramètre selon la taille de l'ile.
-	 * @params nombres de personnage par équipe entre 1 et 4.
+	 * @params nombres de personnages par équipe entre 1 et 4.
 	 */
-	private void setPersonnage(int nbPersonnages){
+	private void setExplorateur(int nbExplorateurs){
 		int x, y;
 		
 		for(int j=1; j<=2;j++) {
-			for(int i=1; i<=nbPersonnages; i++){
+			for(int i=1; i<=nbExplorateurs; i++){
 				
 				String saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée x du personnage n°" + i + " de l'équipe " + j));
 				//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
@@ -100,10 +100,10 @@ public class Ile {
 				y=Integer.parseInt(saisie);
 				
 				if (j==1){
-					grille[x][y].setValeur(9); // 9 = explorateur1
+					grille[x][y]=new Parcelle(new Explorateur("Explorateur", j, 9));
 					entites.put("E"+Integer.toString(i), new int[] {x,y});
 				} else {
-					grille[x][y].setValeur(10); // 10 = explorateur2
+					grille[x][y]=new Parcelle(new Explorateur("Explorateur", j, 10));
 					entites.put("e"+Integer.toString(i), new int[] {x,y});
 				}
 			}
@@ -202,28 +202,29 @@ public class Ile {
 		entites.put("C", new int[] {x,y});
 	}
 	
-	/**
-	 * Méthode retournant les coordonnées des personnages du J1.
-	 * @return les coordonnées des personnages sous forme d'un tableau à deux dimensions int[][].
-	 */
-	public int[][] getPersonnagesJ1(int nbPersonnages) {
-		int[][]coord = new int[2][nbPersonnages];
-		for(int i=0; i<coord[0].length; i++){
-			coord[i]=entites.get("E"+Integer.toString(i));
-		}
-		return coord;
-	}
-	/**
-	 * Méthode retournant les coordonnées des personnages du J2.
-	 * @return les coordonnées des personnages sous forme d'un tableau à deux dimensions int[][].
-	 */
-	public int[][] getPersonnagesJ2(int nbPersonnages) {
-		int[][]coord = new int[2][nbPersonnages];
-		for(int i=0; i<coord[0].length; i++){
-			coord[i]=entites.get("e"+Integer.toString(i));
-		}
-		return coord;
-	}
+	
+//	/**
+//	 * Méthode retournant les coordonnées des personnages du J1.
+//	 * @return les coordonnées des personnages sous forme d'un tableau à deux dimensions int[][].
+//	 */
+//	public int[][] getPersonnagesJ1(int nbPersonnages) {
+//		int[][]coord = new int[2][nbPersonnages];
+//		for(int i=0; i<coord[0].length; i++){
+//			coord[i]=entites.get("E"+Integer.toString(i));
+//		}
+//		return coord;
+//	}
+//	/**
+//	 * Méthode retournant les coordonnées des personnages du J2.
+//	 * @return les coordonnées des personnages sous forme d'un tableau à deux dimensions int[][].
+//	 */
+//	public int[][] getPersonnagesJ2(int nbPersonnages) {
+//		int[][]coord = new int[2][nbPersonnages];
+//		for(int i=0; i<coord[0].length; i++){
+//			coord[i]=entites.get("e"+Integer.toString(i));
+//		}
+//		return coord;
+//	}
 		
 	/**
 	 * Méthode retournant les coordonnées des rochers (sans compter la clef et le trésor).
@@ -287,13 +288,13 @@ public class Ile {
 	 * Méthode permettant d'initialiser l'ile en plaçant tous les éléments nécessaires.
 	 * @params pourcentage entier entre 0 et 100 correspondant au pourcentage de case étant des rochers.
 	 */
-	public void initialiser(int pourcentage, int nbPersonnages){
+	public void initialiser(int pourcentage, int nbExplorateurs){
 		setMers();	
 		setTresor();
 		setClef();
 		setRochers(pourcentage);	
 		setNavires();
-		setPersonnage(nbPersonnages);
+		setExplorateur(nbExplorateurs);
 	}	
 	
 }

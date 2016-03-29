@@ -6,24 +6,22 @@ import java.awt.event.MouseEvent;
  *
  */
 public class Personnage {
-	private String nom;
-	private int energie;
-	private int numEquipe;
-	private int valeur;
+	protected String nom;
+	protected int energie;
+	protected int numEquipe;
+	protected int valeur;
 	
 /**
- * Constructeur créant un personnage avec un nom, un numéro d'équipe et de l'énergie.
- * @param nom String.
- * @param numEquipe int.
- * @param energie int.
- * @param valeur int.
+ * Constructeur créant un personnage en initialisant ses attributs à 0 ou la chaine vide.
  */
-	Personnage(String nom, int numEquipe, int energie, int valeur){
-		this.nom=nom;
-		this.energie = energie;
-		this.numEquipe = numEquipe;
-		this.valeur=valeur;
+	Personnage(){
+		this.nom="";
+		this.energie = 0;
+		this.numEquipe = 0;
+		this.valeur=0;
 	}
+	
+	
 	
 	/**
 	 * Méthode retournant le numéro d'équipe du personnage.
@@ -39,6 +37,17 @@ public class Personnage {
 	 */
 	public int getValeur(){
 		return valeur;
+	}
+	
+	/**
+	 * Méthode permettant de déplacer un personnage.
+	 */
+	public void deplacer(){
+		
+	}
+	
+	public void echanger(){
+		
 	}
 	
 	/*
