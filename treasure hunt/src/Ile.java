@@ -1,5 +1,7 @@
 import java.util.HashMap;
 
+import javax.swing.JOptionPane;
+
 /**
  * Class créant le plateau de jeu, l'ile en l'occurence.
  * @author vitsem
@@ -77,24 +79,35 @@ public class Ile {
 	 */
 	private void setPersonnage(int nbPersonnages){
 		int x, y;
-		for(int i=0; i<nbPersonnages; i++){
-			//placement explorateurs J1
-				do{
-					x= alea.tirage(grille.length-2)+1;
-					y= alea.tirage(grille[0].length-2)+1;
+		
+		for(int j=1; j<=2;j++) {
+			for(int i=1; i<=nbPersonnages; i++){
+				
+				String saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée x du personnage n°" + i + " de l'équipe " + j));
+				//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
+				while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>1 && Integer.parseInt(saisie)<grille.length-1)){
+						JOptionPane.showMessageDialog(null, "Saisie incorrecte.", "Erreur", 0);
+						saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée x du personnage n°" + i + " de l'équipe " + j);
 				}
-				while(!(grille[x][y].estVide()));
-				grille[x][y].setValeur(7); // 7 = explorateur1
-				entites.put("E"+Integer.toString(i), new int[] {x,y});
-			//placement explorateurs J2
-				do{
-					x= alea.tirage(grille.length-2)+1;
-					y= alea.tirage(grille[0].length-2)+1;
+				x=Integer.parseInt(saisie);
+				
+				saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée y du personnage n°" + i + " de l'équipe " + j));
+				//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
+				while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>1 && Integer.parseInt(saisie)<grille[0].length-1 && grille[x][Integer.parseInt(saisie)].estVide())){
+						JOptionPane.showMessageDialog(null, "Saisie incorrecte ou case déjà occupée.", "Erreur", 0);
+						saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée y du personnage n°" + i + " de l'équipe " + j);
 				}
-				while(!(grille[x][y].estVide()));
-				grille[x][y].setValeur(8); // 8 = explorateur2
-				entites.put("e"+Integer.toString(i), new int[] {x,y});
+				y=Integer.parseInt(saisie);
+				
+				if (j==0){
+					grille[x][y].setValeur(7); // 7 = explorateur1
+					entites.put("E"+Integer.toString(i), new int[] {x,y});
+				} else {
+					grille[x][y].setValeur(8); // 8 = explorateur2
+					entites.put("e"+Integer.toString(i), new int[] {x,y});
+				}
 			}
+		}
 	}
 	
 	/**
@@ -274,13 +287,13 @@ public class Ile {
 	 * Méthode permettant d'initialiser l'ile en plaçant tous les éléments nécessaires.
 	 * @params pourcentage entier entre 0 et 100 correspondant au pourcentage de case étant des rochers.
 	 */
-	public void initialiser(int pourcentage, int nbPersonnage){
+	public void initialiser(int pourcentage, int nbPersonnages){
 		setMers();	
 		setTresor();
 		setClef();
 		setRochers(pourcentage);	
 		setNavires();
-		setPersonnage(nbPersonnage);
+		setPersonnage(nbPersonnages);
 	}	
 	
 }
