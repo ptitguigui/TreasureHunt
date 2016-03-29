@@ -85,7 +85,7 @@ public class Ile {
 				
 				String saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée x du personnage n°" + i + " de l'équipe " + j));
 				//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
-				while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>1 && Integer.parseInt(saisie)<grille.length-1)){
+				while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>=1 && Integer.parseInt(saisie)<grille.length-1)){
 						JOptionPane.showMessageDialog(null, "Saisie incorrecte.", "Erreur", 0);
 						saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée x du personnage n°" + i + " de l'équipe " + j);
 				}
@@ -93,17 +93,17 @@ public class Ile {
 				
 				saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée y du personnage n°" + i + " de l'équipe " + j));
 				//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
-				while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>1 && Integer.parseInt(saisie)<grille[0].length-1 && grille[x][Integer.parseInt(saisie)].estVide())){
+				while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>=1 && Integer.parseInt(saisie)<grille[0].length-1 && grille[x][Integer.parseInt(saisie)].estVide())){
 						JOptionPane.showMessageDialog(null, "Saisie incorrecte ou case déjà occupée.", "Erreur", 0);
 						saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée y du personnage n°" + i + " de l'équipe " + j);
 				}
 				y=Integer.parseInt(saisie);
 				
 				if (j==1){
-					grille[x][y].setValeur(7); // 7 = explorateur1
+					grille[x][y].setValeur(8); // 8 = explorateur1
 					entites.put("E"+Integer.toString(i), new int[] {x,y});
 				} else {
-					grille[x][y].setValeur(8); // 8 = explorateur2
+					grille[x][y].setValeur(9); // 9 = explorateur2
 					entites.put("e"+Integer.toString(i), new int[] {x,y});
 				}
 			}
@@ -116,13 +116,13 @@ public class Ile {
 	private void setMers(){
 		for(int c=0; c<grille.length; c++) {
 			for(int l=0; l<grille[0].length; l++) {
-			grille[0][l].setValeur(1); // 1 = mer
+			grille[0][l].setValeur(2); // 2 = mer
 			entites.put("M", new int[] {0,l});
-			grille[grille.length-1][l].setValeur(1);
+			grille[grille.length-1][l].setValeur(2);
 			entites.put("M", new int[] {grille.length-1,l});
-			grille[c][0].setValeur(1);
+			grille[c][0].setValeur(2);
 			entites.put("M", new int[] {c,0});
-			grille[c][grille[0].length-1].setValeur(1);
+			grille[c][grille[0].length-1].setValeur(2);
 			entites.put("M", new int[] {c,grille[0].length-1});
 			}
 		}
@@ -140,7 +140,7 @@ public class Ile {
 				y= alea.tirage(grille[0].length-2)+1;
 			}
 			while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)>6));
-			grille[x][y].setValeur(2); // 2 = rocher
+			grille[x][y].setValeur(3); // 3 = rocher
 			entites.put("R"+Integer.toString(i), new int[] {x,y});
 		}
 	}
@@ -158,7 +158,7 @@ public class Ile {
 			if (x==0){ x=grille.length-2;}
 		}
 		while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)==5));
-		grille[x][y].setValeur(3); // 3 = navire1
+		grille[x][y].setValeur(6); // 6 = navire1
 		entites.put("n", new int[] {x,y});
 		
 		//placement du 2e navire
@@ -168,7 +168,7 @@ public class Ile {
 			if (y==0){ y=grille[0].length-2;}
 		}
 		while(!(grille[x][y].estVide()&& nbVoisinsVide(x, y)==5));
-		grille[x][y].setValeur(4); // 4 = navire2
+		grille[x][y].setValeur(7); // 7 = navire2
 		entites.put("N", new int[] {x,y});
 	}
 	 
@@ -182,9 +182,9 @@ public class Ile {
 			y= alea.tirage(grille[0].length-2)+1;
 		}
 		while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)>7));
-		grille[x][y].setValeur(6); // 6 = tresor
+		grille[x][y].setValeur(5); // 5 = tresor
 		entites.put("T", new int[] {x,y});
-		grille[x][y].setValeur(2); // 2 = rocher
+		grille[x][y].setValeur(3); // 3 = rocher
 	}
 	
 	/**
@@ -197,9 +197,9 @@ public class Ile {
 			y= alea.tirage(grille[0].length-2)+1;
 		}
 		while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)>7));
-		grille[x][y].setValeur(5); // 5 = clef
+		grille[x][y].setValeur(4); // 4 = clef
 		entites.put("C", new int[] {x,y});
-		grille[x][y].setValeur(2); // 2 = rocher
+		grille[x][y].setValeur(3); // 3 = rocher
 	}
 	
 	/**
