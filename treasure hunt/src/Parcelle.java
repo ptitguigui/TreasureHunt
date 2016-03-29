@@ -13,13 +13,14 @@ public class Parcelle {
 	 * 2 = mer
 	 * 3 = rocher
 	 * 4 = clef
-	 * 5 = cofre
-	 * 6 = navire1
-	 * 7 = navire2
-	 * 8 = explorateur1
-	 * 9 = explorateur2
-	 * 10 = voleur1
-	 * 11 = voleur2
+	 * 5 = coffre
+	 * 6 = arbre
+	 * 7 = navire1
+	 * 8 = navire2
+	 * 9 = explorateur1
+	 * 10 = explorateur2
+	 * 11 = voleur1
+	 * 12 = voleur2
 	 */
 	private int valeur = 1;
 

@@ -100,10 +100,10 @@ public class Ile {
 				y=Integer.parseInt(saisie);
 				
 				if (j==1){
-					grille[x][y].setValeur(8); // 8 = explorateur1
+					grille[x][y].setValeur(9); // 9 = explorateur1
 					entites.put("E"+Integer.toString(i), new int[] {x,y});
 				} else {
-					grille[x][y].setValeur(9); // 9 = explorateur2
+					grille[x][y].setValeur(10); // 10 = explorateur2
 					entites.put("e"+Integer.toString(i), new int[] {x,y});
 				}
 			}
@@ -158,7 +158,7 @@ public class Ile {
 			if (x==0){ x=grille.length-2;}
 		}
 		while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)==5));
-		grille[x][y].setValeur(6); // 6 = navire1
+		grille[x][y].setValeur(7); // 7 = navire1
 		entites.put("n", new int[] {x,y});
 		
 		//placement du 2e navire
@@ -168,7 +168,7 @@ public class Ile {
 			if (y==0){ y=grille[0].length-2;}
 		}
 		while(!(grille[x][y].estVide()&& nbVoisinsVide(x, y)==5));
-		grille[x][y].setValeur(7); // 7 = navire2
+		grille[x][y].setValeur(8); // 8 = navire2
 		entites.put("N", new int[] {x,y});
 	}
 	 
