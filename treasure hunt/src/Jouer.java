@@ -11,7 +11,14 @@ public class Jouer {
 	public static void main(String[] args) {
 		Menu lancer = new Menu();
 		
-		
+		final String[] IMGS={"treasure hunt/images/mer.png",
+				"treasure hunt/images/rocher.png.jpg",
+				"treasure hunt/images/1.navire.png",
+				"treasure hunt/images/2.navire.png",
+				"treasure hunt/images/cle.png",
+				"treasure hunt/images/coffre.png.jpg",
+				"treasure hunt/images/1.explorateur.png",
+				"treasure hunt/images/2.explorateur.png"};
 		
 		JOptionPane j=new JOptionPane();
 		//demande de la taille
@@ -58,11 +65,23 @@ public class Jouer {
 		//Création de l'ile				
 		Ile monIle = new Ile(nbColonnes,nbLignes);
 		monIle.initialiser(pourcentage, nbPersonnages);
+		int[][] jeu=monIle.getIleTab();
 		
+		SuperPlateau[] plateaux=new SuperPlateau[2];
+		plateaux[0]=new SuperPlateau(IMGS,10);
+		plateaux[1]=new SuperPlateau(IMGS,10);
+		plateaux[0].setJeu(jeu);
+		plateaux[1].setJeu(jeu);
+		plateaux[0].affichage();
+		plateaux[1].affichage();
+		
+		//DEBUT BROUILLARD DE GUERRE
+		/*
 		GestionPlateaux gestion=new GestionPlateaux(monIle);
 		gestion.initialiser();
 		gestion.affichageJ1();
-		gestion.affichageJ2();
+		gestion.affichageJ2();*/
+		
 		//affichage texte
 		//System.out.println(monIle);
 	}

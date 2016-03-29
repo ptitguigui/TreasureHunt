@@ -13,11 +13,11 @@ public class Personnage {
 		this.equipe = equipe;
 	}
 	
-	void action(InputEvent event){
-		 if (event instanceof MouseEvent) {
-			 int x = grille[equipe].getX((MouseEvent) event) ;
-			 int y = grille[equipe].getY((MouseEvent) event) ;
-			 grille[equipe].println("ligne " + x + " colonne : " + y ) ;			 
+	void actionJ1(InputEvent event){
+		if (event instanceof MouseEvent) {
+			 int x = jeuJ1b.getX((MouseEvent) event) ;
+			 int y = jeuJ1b.getY((MouseEvent) event) ;
+			 [equipe].println("ligne " + x + " colonne : " + y ) ;			 
 		 }
 	}
 }
