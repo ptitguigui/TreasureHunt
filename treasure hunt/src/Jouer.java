@@ -66,5 +66,4 @@ public class Jouer {
 		//affichage texte
 		//System.out.println(monIle);
 	}
-
 }
