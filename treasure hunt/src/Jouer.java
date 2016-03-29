@@ -1,3 +1,4 @@
+
 import javax.swing.JOptionPane;
 
 /**
@@ -6,11 +7,20 @@ import javax.swing.JOptionPane;
  * @author vitsem
  *
  */
-public class Jouer {
+public class Jouer  {
+
 
 	public static void main(String[] args) {
-		Menu lancer = new Menu();
 		
+		JOptionPane j2 = new JOptionPane();
+		String menu =j2.showInputDialog(null, "1- Jouer\n2- Quitter");
+		while(!(menu.matches("[1-2]") && Integer.parseInt(menu)>= 1 && Integer.parseInt(menu)<= 2)){
+			j2.showMessageDialog(null, "Veuillez entrer un nombre correct.", "Erreur", 0);
+			menu =j2.showInputDialog(null, "1- Jouer\n2- Option");
+			
+		}
+		if(Integer.parseInt(menu)== 1){
+		JOptionPane.showMessageDialog(null, "Lancement du jeu");
 		String[] imgs={"treasure hunt/images/mer.png",
 				"treasure hunt/images/rocher.png.jpg",
 				"treasure hunt/images/1.navire.png",
@@ -67,6 +77,7 @@ public class Jouer {
 		//System.out.println(monIle);
 		
 		grille[0].affichage();
+		}
 	}
 
 }
