@@ -34,20 +34,20 @@ public class Jouer  {
 		
 		JOptionPane j=new JOptionPane();
 		//demande de la taille
-			//nombre de colonnes
+		//nombre de colonnes
 		String rep=new String(j.showInputDialog(null,"Entrer la taille x du plateau (entre 10 et 20) :"));
 		//Tant que la saisie soit un chiffre et qu'il soit entre 10 et 20
 		while(!(rep.matches("[1-9][0-9]*")&& Integer.parseInt(rep)>=10 && Integer.parseInt(rep)<=20)){
-				j.showMessageDialog(null, "Veuillez entrer un nombre correct.", "Erreur", 0);
-				rep=j.showInputDialog(null,"Entrer la taille du plateau (entre 10 et 20) :");
+			j.showMessageDialog(null, "Veuillez entrer un nombre correct.", "Erreur", 0);
+			rep=j.showInputDialog(null,"Entrer la taille du plateau (entre 10 et 20) :");
 		}
 		int nbColonnes=Integer.parseInt(rep);
-			//nombre de lignes
+		//nombre de lignes
 		rep=new String(j.showInputDialog(null,"Entrer la taille y du plateau (entre 10 et 20) :"));
 		//Tant que la saisie soit un chiffre et qu'il soit entre 10 et 20
 		while(!(rep.matches("[1-9][0-9]*")&& Integer.parseInt(rep)>=10 && Integer.parseInt(rep)<=20)){
-				j.showMessageDialog(null, "Veuillez entrer un nombre correct.", "Erreur", 0);
-				rep=j.showInputDialog(null,"Entrer la taille du plateau (entre 10 et 20) :");
+			j.showMessageDialog(null, "Veuillez entrer un nombre correct.", "Erreur", 0);
+			rep=j.showInputDialog(null,"Entrer la taille du plateau (entre 10 et 20) :");
 		}
 		int nbLignes=Integer.parseInt(rep);
 		
