@@ -112,6 +112,8 @@ public class Jouer  {
 		    	}else if(monIle.getValeurParcelle(x,y)==10 && equipe == 1){
 		        	plateaux[equipe].println("Vous avez choisis un explorateur J2, faites une action") ;
 		        }
+		    		event = plateaux[equipe].waitEvent(1000) ;	// Délai pour permettre la lecture.
+		    		plateaux[equipe].masquer();
 		        	equipe = 1-equipe ; // Passe à l'équipe suivante.
 		    } while (!boucleInfinis) ;
 		 		
