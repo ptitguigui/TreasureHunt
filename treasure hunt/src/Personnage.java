@@ -7,22 +7,26 @@ import java.awt.event.MouseEvent;
  */
 public class Personnage {
 	protected String nom;
-	protected int energie;
+	protected int energie = 100;
 	protected int numEquipe;
 	protected int valeur;
+	protected boolean aClef = false;
+	protected boolean aTresor = false;
 	
-/**
- * Constructeur créant un personnage en initialisant ses attributs à 0 ou la chaine vide.
- */
+	/**
+	 * Constructeur créant un personnage en initialisant ses attributs à 0 ou la chaine vide.
+	 */
 	Personnage(){
-		this.nom="";
-		this.energie = 0;
+		this.nom="test";
 		this.numEquipe = 0;
 		this.valeur=0;
 	}
 	
+	Personnage(int numEquipe){
+		this.numEquipe = numEquipe;
+	}
 	
-	
+		
 	/**
 	 * Méthode retournant le numéro d'équipe du personnage.
 	 * @return le numéro d'équipe du personnage.
@@ -45,25 +49,16 @@ public class Personnage {
 	public void deplacer(){
 		
 	}
-	
+	/**
+	 * Méthode permettant de soulever un rocher si cela est possible
+	 */
+	public void soulever(){
+		
+	}
+	/**
+	 * Méthode permettant d'échanger les objets entre les personnages
+	 */
 	public void echanger(){
 		
 	}
-	
-	/*
-	void action(int id, InputEvent event){
-		if(id = 1){
-			if (event instanceof MouseEvent) {
-				 int x = jeuJ1b.getX((MouseEvent) event) ;
-				 int y = jeuJ1b.getY((MouseEvent) event) ;
-				 [equipe].println("ligne " + x + " colonne : " + y ) ;			 
-			 }
-		}else{
-			if (event instanceof MouseEvent) {
-				 int x = jeuJ2b.getX((MouseEvent) event) ;
-				 int y = jeuJ2b.getY((MouseEvent) event) ;
-				 [equipe].println("ligne " + x + " colonne : " + y ) ;			 
-			 }
-		}
-	}*/
 }

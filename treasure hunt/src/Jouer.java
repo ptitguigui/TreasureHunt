@@ -1,4 +1,8 @@
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -83,12 +87,36 @@ public class Jouer  {
 		int[][] jeu=monIle.getIleTab();
 		
 		SuperPlateau[] plateaux=new SuperPlateau[2];
-		plateaux[0]=new SuperPlateau(IMGS,10);
-		plateaux[1]=new SuperPlateau(IMGS,10);
+		plateaux[0]=new SuperPlateau(IMGS,10,true);
+		plateaux[1]=new SuperPlateau(IMGS,10,true);
 		plateaux[0].setJeu(jeu);
 		plateaux[1].setJeu(jeu);
 		plateaux[0].affichage();
 		plateaux[1].affichage();
+		
+		//test des actions
+		 do {
+		        InputEvent event ;
+		        int equipe = 0 ;
+		        boolean boucleInfinis = true;
+		        boolean action = false;
+		        int x,y =0;
+		        plateaux[equipe].println("Au tour du joueur" + equipe) ;
+		    	plateaux[equipe].affichage();
+		    	if (event instanceof MouseEvent) {
+		        	 x = plateaux[equipe].getX((MouseEvent) event) ;
+		        	 y = plateaux[equipe].getY((MouseEvent) event) ;
+		        	if(getValeur.jeu[x][y]==9 && equipe == 0){
+		        	plateaux[equipe].println("Vous avez choisis un explorateur"+equipe+", faites une action") ;
+		    	}else if(event instanceof MouseEvent) {
+		        	x = plateaux[equipe].getX((MouseEvent) event) ;
+		        	y = plateaux[equipe].getY((MouseEvent) event) ;
+		        	if(getValeur.jeu[x][y]==10 && equipe == 1){
+		        	plateaux[equipe].println("Vous avez choisis un explorateur "+equipe+", faites une action") ;
+		        }
+		        	equipe = 1-equipe ; // Passe à l'équipe suivante.
+		    } while (!boucleInfinis) ;
+		 		
 		
 		//DEBUT BROUILLARD DE GUERRE
 		/*

@@ -42,7 +42,7 @@ public class SuperPlateau {
 	 * @return vrai si la case est vide, faux sinon
 	 */
 	public boolean deplacable(int[][] tab, int a, int b){
-		if(tab[a][b] == 0){
+		if(tab[a][b] == 1 ){
 			return true;
 		}	
 		return false;
