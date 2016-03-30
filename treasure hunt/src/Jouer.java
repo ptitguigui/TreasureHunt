@@ -101,20 +101,32 @@ public class Jouer  {
 		 do {
 		        InputEvent event ;
 		        int equipe = 0 ;
-		        int x,y =0;
+		        int x,y,a,b =0;
 		        plateaux[equipe].println("Au tour du joueur" + equipe) ;
 		    	plateaux[equipe].affichage();
 		    	event=  plateaux[equipe].waitEvent(20000);
 		    	x = plateaux[equipe].getX((MouseEvent) event) ;
 		    	y = plateaux[equipe].getY((MouseEvent) event) ;
+		    	
 		    	if(monIle.getValeurParcelle(x,y) == 9 && equipe == 0){
 			        	plateaux[equipe].println("Vous avez choisis un explorateur J1, faites une action") ;
-		    	}else if(monIle.getValeurParcelle(x,y)==10 && equipe == 1){
+			        	event=  plateaux[equipe].waitEvent(20000);
+			        	a = plateaux[equipe].getX((MouseEvent) event) ;
+				    	b = plateaux[equipe].getY((MouseEvent) event) ;
+				    	if(plateaux[equipe].deplacable(jeu,a,b)){
+				    		plateaux[equipe].deplacer(x, y, a, b);
+				    	}
+		    	}else if(monIle.getValeurParcelle(x,y)== 10 && equipe == 1){
 		        	plateaux[equipe].println("Vous avez choisis un explorateur J2, faites une action") ;
+		        	event=  plateaux[equipe].waitEvent(20000);
+		        	a = plateaux[equipe].getX((MouseEvent) event) ;
+			    	b = plateaux[equipe].getY((MouseEvent) event) ;
+			    	if(plateaux[equipe].deplacable(jeu,a,b)){
+			    		plateaux[equipe].deplacer(x, y, a, b);
+			    	}
 		        }
-		    		event = plateaux[equipe].waitEvent(1000) ;	// Délai pour permettre la lecture.
-		    		plateaux[equipe].masquer();
-		        	equipe = 1-equipe ; // Passe à l'équipe suivante.
+		    		event = plateaux[equipe].waitEvent(250) ;	// Délai pour permettre la lecture.
+		    		equipe = 1-equipe ; // Passe à l'équipe suivante.
 		    } while (!boucleInfinis) ;
 		 		
 		
