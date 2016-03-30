@@ -94,25 +94,23 @@ public class Jouer  {
 		plateaux[0].affichage();
 		plateaux[1].affichage();
 		
+		
 		//test des actions
+		boolean boucleInfinis= true;
+		
 		 do {
 		        InputEvent event ;
 		        int equipe = 0 ;
-		        boolean boucleInfinis = true;
-		        boolean action = false;
 		        int x,y =0;
 		        plateaux[equipe].println("Au tour du joueur" + equipe) ;
 		    	plateaux[equipe].affichage();
-		    	if (event instanceof MouseEvent) {
-		        	 x = plateaux[equipe].getX((MouseEvent) event) ;
-		        	 y = plateaux[equipe].getY((MouseEvent) event) ;
-		        	if(getValeur.jeu[x][y]==9 && equipe == 0){
-		        	plateaux[equipe].println("Vous avez choisis un explorateur"+equipe+", faites une action") ;
-		    	}else if(event instanceof MouseEvent) {
-		        	x = plateaux[equipe].getX((MouseEvent) event) ;
-		        	y = plateaux[equipe].getY((MouseEvent) event) ;
-		        	if(getValeur.jeu[x][y]==10 && equipe == 1){
-		        	plateaux[equipe].println("Vous avez choisis un explorateur "+equipe+", faites une action") ;
+		    	event=  plateaux[equipe].waitEvent(20000);
+		    	x = plateaux[equipe].getX((MouseEvent) event) ;
+		    	y = plateaux[equipe].getY((MouseEvent) event) ;
+		    	if(monIle.getValeurParcelle(x,y) == 9 && equipe == 0){
+			        	plateaux[equipe].println("Vous avez choisis un explorateur J1, faites une action") ;
+		    	}else if(monIle.getValeurParcelle(x,y)==10 && equipe == 1){
+		        	plateaux[equipe].println("Vous avez choisis un explorateur J2, faites une action") ;
 		        }
 		        	equipe = 1-equipe ; // Passe à l'équipe suivante.
 		    } while (!boucleInfinis) ;

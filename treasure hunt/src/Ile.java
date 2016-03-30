@@ -38,6 +38,10 @@ public class Ile {
 			}
 		}
 	}
+	
+	int getValeurParcelle(int x, int y){
+		return grille[x][y].getValeur();
+	}
 		
 	/**
 	 * Méthode transformant l'objet en une chaine de caractères String pouvant être affichée.
