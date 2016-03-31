@@ -1,6 +1,5 @@
 
 import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JOptionPane;
@@ -16,15 +15,14 @@ public class Jouer  {
 
 	public static void main(String[] args) {
 		
-
+		Object[] option = {"Jouer" , "Quitter"};
 		JOptionPane j2 = new JOptionPane();
-		String menu =j2.showInputDialog(null, "1- Jouer\n2- Quitter");
-		while(!(menu.matches("[1-2]") && Integer.parseInt(menu)>= 1 && Integer.parseInt(menu)<= 2)){
-			j2.showMessageDialog(null, "Veuillez entrer un nombre correct.", "Erreur", 0);
-			menu =j2.showInputDialog(null, "1- Jouer\n2- Option");
+		int menu = j2.showOptionDialog(null, "Bienvenue, que voulez-vous faire ?", "Treasure hunt", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[0]);
+		
 			
-		}
-		if(Integer.parseInt(menu)== 1){
+			
+		
+		if(menu== 0){
 		JOptionPane.showMessageDialog(null, "Lancement du jeu");
 		
 		final String[] IMGS={"treasure hunt/images/sable.jpg",
@@ -139,7 +137,7 @@ public class Jouer  {
 		    		equipe = 1-equipe ; // Passe à l'équipe suivante.
 		    } while (!boucleInfinis) ;
 		 		
-		
+		}
 		//DEBUT BROUILLARD DE GUERRE
 		/*
 		GestionPlateaux gestion=new GestionPlateaux(monIle);
@@ -150,5 +148,7 @@ public class Jouer  {
 		//affichage texte
 		//System.out.println(monIle);
 		}
-	}
+			
 }
+
+
