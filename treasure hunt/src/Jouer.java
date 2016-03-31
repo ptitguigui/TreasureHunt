@@ -104,49 +104,37 @@ public class Jouer  {
 		        int x,y,a,b =0;
 		        boolean valide = false;
 		        boolean action = false;
-		        plateaux[equipe].println("Au tour du joueur" + equipe) ;
-		    	plateaux[equipe].affichage();
+		        plateaux[equipe].affichage();
 		    		    	
 		    	while(!valide){
+		    		
 		    		event=  plateaux[equipe].waitEvent();
 			    	x = plateaux[equipe].getX((MouseEvent) event) ;
 			    	y = plateaux[equipe].getY((MouseEvent) event) ;
-			    	if(monIle.getValeurParcelle(x,y) == 9 && equipe == 0){ 
-				        	plateaux[equipe].println("Vous avez choisis un explorateur J1, faites une action") ;
-				        	valide = true;
-				        	while(!action){
-				        		event=  plateaux[equipe].waitEvent();
-				        		a = plateaux[equipe].getX((MouseEvent) event) ;
-						    	b = plateaux[equipe].getY((MouseEvent) event) ;
-						    	if(plateaux[equipe].deplacable(jeu,a,b)){
-						    		plateaux[equipe].deplacer(x, y, b, a);
-						    		plateaux[equipe].println("Déplacement effectué") ;
-						    		//faire une update de monIle
-						    		action = true;
-						    	}
-				        	}
-				     action = false;
+			    	for(int i=0; i<2; i++){
+			    		plateaux[i].println("A votre tour J" + (i+1)) ;
+			    		plateaux[1-i].println("Au tour de votre adversaire") ;
+				    	if(monIle.getValeurParcelle(x,y) == 9+i && equipe == i){ 
+					        	plateaux[equipe].println("Vous avez choisis un explorateur J"+(i+1)+", faites une action") ;
+					        	valide = true;
+					        	while(!action){
+					        		event=  plateaux[equipe].waitEvent();
+					        		a = plateaux[equipe].getX((MouseEvent) event) ;
+							    	b = plateaux[equipe].getY((MouseEvent) event) ;
+							    	if(plateaux[equipe].deplacable(jeu,a,b)){
+							    		monIle.echangeParcelles(x, y, a, b);
+							    		plateaux[0].setJeu(monIle.getIleTab());
+							    		plateaux[1].setJeu(monIle.getIleTab());
+							    		plateaux[i].println("Déplacement effectué") ;
+							    		action = true;
+							    	}
+					        	}
+				    	}
+				    	 action = false;
 			    	}
-			    	if(monIle.getValeurParcelle(x,y)== 10 && equipe == 1){
-			        	plateaux[equipe].println("Vous avez choisis un explorateur J2, faites une action") ;
-			        	valide = true;
-			        	while(!action){
-				        	event=  plateaux[equipe].waitEvent();
-				        	a = plateaux[equipe].getX((MouseEvent) event) ;
-					    	b = plateaux[equipe].getY((MouseEvent) event) ;
-					    	if(plateaux[equipe].deplacable(jeu,a,b)){
-					    		plateaux[equipe].deplacer(x, y, b, a);
-					    		plateaux[equipe].println("Déplacement effectué") ;
-					    		//faire une update de monIle, 
-					    		action = true;
-					    	}
-			        	}
-			    	}
-			    	action = false;
-		    	}
-			    valide = false;
-		 
-		    		event = plateaux[equipe].waitEvent(1000) ;	// Délai pour permettre la lecture.
+			    }
+			    	valide = false;
+			    	event = plateaux[equipe].waitEvent(1000) ;	// Délai pour permettre la lecture.
 		    		//plateaux[equipe].masquer();
 		    		equipe = 1-equipe ; // Passe à l'équipe suivante.
 		    } while (!boucleInfinis) ;
