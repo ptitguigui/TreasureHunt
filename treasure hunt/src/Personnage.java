@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
  * @author bataillj
  *
  */
-public class Personnage {
+public class Personnage extends Parcelle{
 	protected String nom;
 	protected int energie = 100;
 	protected int numEquipe;
@@ -33,6 +33,9 @@ public class Personnage {
 	 */
 	public int getNumEquipe(){
 		return numEquipe;
+	}
+	public String getNom(){
+		return nom;
 	}
 	
 	/**

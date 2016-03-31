@@ -21,7 +21,13 @@ public class ParcelleRocher extends Parcelle{
 		super.valeur=3;
 		super.personnage=null;
 	}
+	public boolean getTresor(){
+		return tresor;
+	}
 	
+	public boolean getClef(){
+		return clef;
+	}
 	/**
 	 * Méthode permettant d'ajouter une clef sur la parcelle.
 	 */

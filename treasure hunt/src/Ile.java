@@ -38,7 +38,9 @@ public class Ile {
 			}
 		}
 	}
-	
+	public Parcelle getParcelle(int x, int y){
+		return grille[x][y];
+	}
 	public int getValeurParcelle(int x, int y){
 		return grille[x][y].getValeur();
 	}
@@ -47,6 +49,12 @@ public class Ile {
 		 Parcelle p = grille[x][y];
 		 grille[x][y] = grille[a][b];
 		 grille[a][b] = p;
+	}
+	public boolean parcelleValide(int x, int y, int a, int b){
+		return((a == x+1 && b == y) || (a==x-1 && b==y) || (a==x && b==y+1) || (a==x && b==y-1));			
+	}
+	public boolean rocherACote(int x, int y, int a, int b){
+		return (grille[a][b].getValeur() == 3)&&((a == x+1 && b == y) || (a==x-1 && b==y) || (a==x && b==y+1) || (a==x && b==y-1));
 	}
 		
 	/**
