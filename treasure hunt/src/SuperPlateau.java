@@ -42,7 +42,7 @@ public class SuperPlateau {
 	 * @return vrai si la case est vide, faux sinon
 	 */
 	public boolean deplacable(int[][] tab, int a, int b){
-		if(tab[a][b] == 0){
+		if(tab[a][b] == 1 ){
 			return true;
 		}	
 		return false;
@@ -57,11 +57,10 @@ public class SuperPlateau {
 	 */
 	public void deplacer(int x, int y, int a, int b) {
 		int[][] tab = p.getJeu();
-		if(deplacable(tab,a,b)){
 			tab[a][b]= tab[x][y];
-			tab[x][y]= 0;
+			tab[x][y]= 1;
 			setJeu(tab);
-		}
+		
 	}
 	
 	

@@ -1,41 +1,64 @@
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 /**
- * classe permettant de creer les personnages.
+ * Classe permettant de créer un personnage.
  * @author bataillj
  *
  */
 public class Personnage {
-	String nom;
-	int energie;
-	int equipe;
+	protected String nom;
+	protected int energie = 100;
+	protected int numEquipe;
+	protected int valeur;
+	protected boolean aClef = false;
+	protected boolean aTresor = false;
 	
-/**
- * Methode permettant d'initialiser l'energie, le nom et l'equipe.
- * @param nom
- * @param equipe
- * @param energie
- */
-	Personnage(String nom, int equipe, int energie){
-		this.nom=nom;
-		this.energie = energie;
-		this.equipe = equipe;
+	/**
+	 * Constructeur créant un personnage en initialisant ses attributs à 0 ou la chaine vide.
+	 */
+	Personnage(){
+		this.nom="test";
+		this.numEquipe = 0;
+		this.valeur=0;
 	}
 	
-	/*
-	void action(int id, InputEvent event){
-		if(id = 1){
-			if (event instanceof MouseEvent) {
-				 int x = jeuJ1b.getX((MouseEvent) event) ;
-				 int y = jeuJ1b.getY((MouseEvent) event) ;
-				 [equipe].println("ligne " + x + " colonne : " + y ) ;			 
-			 }
-		}else{
-			if (event instanceof MouseEvent) {
-				 int x = jeuJ2b.getX((MouseEvent) event) ;
-				 int y = jeuJ2b.getY((MouseEvent) event) ;
-				 [equipe].println("ligne " + x + " colonne : " + y ) ;			 
-			 }
-		}
-	}*/
+	Personnage(int numEquipe){
+		this.numEquipe = numEquipe;
+	}
+	
+		
+	/**
+	 * Méthode retournant le numéro d'équipe du personnage.
+	 * @return le numéro d'équipe du personnage.
+	 */
+	public int getNumEquipe(){
+		return numEquipe;
+	}
+	
+	/**
+	 * Méthode retournant la valeur du personnage.
+	 * @return la valeur du personnage.
+	 */
+	public int getValeur(){
+		return valeur;
+	}
+	
+	/**
+	 * Méthode permettant de déplacer un personnage.
+	 */
+	public void deplacer(){
+		
+	}
+	/**
+	 * Méthode permettant de soulever un rocher si cela est possible
+	 */
+	public void soulever(){
+		
+	}
+	/**
+	 * Méthode permettant d'échanger les objets entre les personnages
+	 */
+	public void echanger(){
+		
+	}
 }
