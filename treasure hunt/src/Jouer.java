@@ -197,16 +197,7 @@ public class Jouer  {
 		gestion.affichageJ1();
 		gestion.affichageJ2();*/
 		
-<<<<<<< HEAD
-		
-		}
 	}
-=======
-		//affichage texte
-		//System.out.println(monIle);
-		}
-			
->>>>>>> branch 'master' of https://github.com/ptitguigui/TreasureHunt.git
 }
 
 
