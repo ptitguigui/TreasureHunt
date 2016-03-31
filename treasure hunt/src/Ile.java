@@ -39,8 +39,14 @@ public class Ile {
 		}
 	}
 	
-	int getValeurParcelle(int x, int y){
+	public int getValeurParcelle(int x, int y){
 		return grille[x][y].getValeur();
+	}
+	
+	public void echangeParcelles(int x, int y, int a, int b) {
+		Parcelle p=grille[x][y];
+		grille[x][y]=grille[a][b];
+		grille[a][b]=p;
 	}
 		
 	/**
