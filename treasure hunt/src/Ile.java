@@ -69,7 +69,7 @@ public class Ile {
 			    	b = plateaux[i].getY((MouseEvent) event) ;
 			    	
 			    	//déplacement
-			    	if(plateaux[i].deplacable(jeu,a,b) && parcelleValide(x, y, a, b)){
+			    	if(plateaux[i].deplacable(jeu,a,b) && parcelleValideExplorateur(x, y, a, b)){ //a changer en une methode deplacableExplorateur
 			    		echangeParcelles(x, y, a, b);
 			    		jeu=getIleTab();
 			    		plateaux[0].setJeu(jeu);
@@ -93,9 +93,37 @@ public class Ile {
 			    			plateaux[0].setJeu(jeu);
 				    		plateaux[1].setJeu(jeu);
 				    		plateaux[i].println("Vous avez trouvé la clef") ;
-			    		}else{ // Si rien
+			    		}else{ // Sinon rien
 				    		plateaux[i].println("Mais vous avez rien trouve en dessous...") ;
 			    		}
+			    		action = true;
+			    	}					    	
+		    	}
+	    	}
+		    //Action si voleur
+		    if(getValeurParcelle(x,y) == 11+i){ 
+		    	plateaux[i].println("Vous avez choisis un voleur de J"+(i+1)+", faites une action") ;
+		    	while(!action){
+	        		event=  plateaux[i].waitEvent();
+	        		a = plateaux[i].getX((MouseEvent) event) ;
+			    	b = plateaux[i].getY((MouseEvent) event) ;
+			    	
+			    	//déplacement
+			    	if(plateaux[i].deplacable(jeu,a,b) && parcelleValideVoleur(x, y, a, b)){ //a changer en une methode deplacableVoleur
+			    		echangeParcelles(x, y, a, b);
+			    		jeu=getIleTab();
+			    		plateaux[0].setJeu(jeu);
+			    		plateaux[1].setJeu(jeu);
+			    		plateaux[i].println("Déplacement effectué") ;
+			    		action = true;
+			    	}
+			    	
+			    	//Fouille un personnage
+			    	if(getValeurParcelle(x,y) == 11+i && personnageACote(x, y, a, b)){
+			    		plateaux[i].println("Vous fouillez un personnage...") ;
+			    		//si le personnage porte la clef
+			    		//si le personnage porte le trésor
+			    		//sinon rien
 			    		action = true;
 			    	}					    	
 		    	}
@@ -141,11 +169,17 @@ public class Ile {
 	
 	
 	
-	public boolean parcelleValide(int x, int y, int a, int b){
+	public boolean parcelleValideExplorateur(int x, int y, int a, int b){
 		return((a == x+1 && b == y) || (a==x-1 && b==y) || (a==x && b==y+1) || (a==x && b==y-1));			
+	}
+	public boolean parcelleValideVoleur(int x, int y, int a, int b){
+		return((a == x+1 && b == y) || (a==x-1 && b==y) || (a==x && b==y+1) || (a==x && b==y-1) || (a==x+1 && b==y+1) ||(a==x-1 && b==y-1) || (a==x+1 && b==y-1) || (a==x-1 && b==y+1)  );			
 	}
 	public boolean rocherACote(int x, int y, int a, int b){
 		return (grille[a][b].getValeur() == 3)&&((a == x+1 && b == y) || (a==x-1 && b==y) || (a==x && b==y+1) || (a==x && b==y-1));
+	}
+	public boolean personnageACote(int x, int y, int a, int b){
+		return (grille[a][b].getValeur() > 8)&&((a == x+1 && b == y) || (a==x-1 && b==y) || (a==x && b==y+1) || (a==x && b==y-1));
 	}
 	
 	

@@ -64,21 +64,30 @@ public class Jouer  {
 		}
 		int pourcentage=Integer.parseInt(rep);
 		
+		//demande nombres de personnage pour les différentes équipes
+				String nb=new String(JOptionPane.showInputDialog(null,"Entrer le nombre de personnage(s) :"));
+						while(!(nb.matches("[1-9][0-9]*")   
+								&& (int) Integer.parseInt(nb)>0 
+								&& (int)Integer.parseInt(nb)<5)){
+								JOptionPane.showMessageDialog(null, "Saisie incorrecte ou trop élevée.", "Erreur", 0);
+								nb=JOptionPane.showInputDialog(null,"Entrer le nombre de personnage(s) :");
+						}
+						
 		//demande nombres d'explorateur pour les différentes équipes
 		rep=new String(JOptionPane.showInputDialog(null,"Entrer le nombre d'explorateur(s) :"));
 				while(!(rep.matches("[1-9][0-9]*")   
-						&& (int) Integer.parseInt(rep)>0 
-						&& (int)Integer.parseInt(rep)<5)){
+						&& (int) Integer.parseInt(rep)>=0 
+						&& (int)Integer.parseInt(rep)<=Integer.parseInt(nb))){
 						JOptionPane.showMessageDialog(null, "Saisie incorrecte ou trop élevée.", "Erreur", 0);
 						rep=JOptionPane.showInputDialog(null,"Entrer le nombre d'explorateur(s) :");
 				}
-		int nbExplo=Integer.parseInt(rep);
-		
+		int nbExplo= Integer.parseInt(rep);
+		int nombre = (int)(Integer.parseInt(nb) - nbExplo);
+		System.out.println(nombre);
 		//demande nombres de voleur pour les différentes équipes
 		rep=new String(JOptionPane.showInputDialog(null,"Entrer le nombre de voleur(s) :"));
 				while(!(rep.matches("[1-9][0-9]*")   
-						&& (int) Integer.parseInt(rep)>0 
-						&& (int)Integer.parseInt(rep)<5)){
+						&& (int) Integer.parseInt(rep)==nombre)){
 						JOptionPane.showMessageDialog(null, "Saisie incorrecte ou trop élevée.", "Erreur", 0);
 						rep=JOptionPane.showInputDialog(null,"Entrer le nombre de voleur(s) :");
 				}
