@@ -1,3 +1,5 @@
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 
 import javax.swing.JOptionPane;
@@ -40,6 +42,68 @@ public class Ile {
 	}
 	
 	
+	public void action(SuperPlateau[] plateaux, int i) {
+		InputEvent event ;
+		int x,y,a,b =0;
+		boolean action = false;
+
+		plateaux[i].affichage();
+		plateaux[i].println("A votre tour J" + (i+1)) ;
+		plateaux[1-i].println("Au tour de votre adversaire") ;
+		
+		int[][] jeu=getIleTab();
+		
+		// Vérification de la selection : doit être un personnage de son équipe
+    	do {
+    		event=  plateaux[i].waitEvent();
+		   	x = plateaux[i].getX((MouseEvent) event) ;
+	    	y = plateaux[i].getY((MouseEvent) event) ;
+    	} while(!(getValeurParcelle(x, y)>=9 && getValeurParcelle(x, y)%2!=i));
+		    
+		    //Actions si explorateur
+		    if(getValeurParcelle(x,y) == 9+i){ 
+		    	plateaux[i].println("Vous avez choisis un explorateur de J"+(i+1)+", faites une action") ;
+		    	while(!action){
+	        		event=  plateaux[i].waitEvent();
+	        		a = plateaux[i].getX((MouseEvent) event) ;
+			    	b = plateaux[i].getY((MouseEvent) event) ;
+			    	
+			    	//déplacement
+			    	if(plateaux[i].deplacable(jeu,a,b) && parcelleValide(x, y, a, b)){
+			    		echangeParcelles(x, y, a, b);
+			    		jeu=getIleTab();
+			    		plateaux[0].setJeu(jeu);
+			    		plateaux[1].setJeu(jeu);
+			    		plateaux[i].println("Déplacement effectué") ;
+			    		action = true;
+			    	}
+			    	
+			    	//soulever un rocher
+			    	if(getValeurParcelle(x,y) == 9+i && rocherACote(x, y, a, b)){
+			    		plateaux[i].println("L'explorateur soulève un rocher") ;
+			    		if(((ParcelleRocher)getParcelle(a,b)).getTresor()){ //Si trésor
+			    			((ParcelleRocher)getParcelle(a, b)).visible();
+				    		plateaux[i].println("Vous avez trouvé le trésor") ;
+				    		jeu=getIleTab();
+				    		plateaux[0].setJeu(jeu);
+				    		plateaux[1].setJeu(jeu);
+			    		}else if(((ParcelleRocher)getParcelle(a,b)).getClef()){ //Si clef
+			    			((ParcelleRocher)getParcelle(a, b)).visible();
+				    		jeu=getIleTab();
+			    			plateaux[0].setJeu(jeu);
+				    		plateaux[1].setJeu(jeu);
+				    		plateaux[i].println("Vous avez trouvé la clef") ;
+			    		}else{ // Si rien
+				    		plateaux[i].println("Mais vous avez rien trouve en dessous...") ;
+			    		}
+			    		action = true;
+			    	}					    	
+		    	}
+	    	}
+
+		    action = false;
+		    event = plateaux[i].waitEvent(200) ;	// Délai pour permettre la lecture.
+	}
 	
 	
 	/**

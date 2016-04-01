@@ -102,101 +102,15 @@ public class Jouer  {
 		//affichage texte
 				System.out.println(monIle);
 		
-		//test des actions
-		boolean boucleInfinis= false;
-		 do {
-		        InputEvent event ;
-		        int x,y,a,b =0;
-		        boolean action = false;
-		        		        
-		        for(int i=0; i<2; i++){
-		        	plateaux[i].affichage();
-				    plateaux[i].println("A votre tour J" + (i+1)) ;
-				    plateaux[1-i].println("Au tour de votre adversaire") ;
-			    		
-				    	
-				    // Vérification de la selection : doit être un personnage de son équipe
-			    	do {
-			    		event=  plateaux[i].waitEvent();
-					   	x = plateaux[i].getX((MouseEvent) event) ;
-				    	y = plateaux[i].getY((MouseEvent) event) ;
-			    	} while(!(monIle.getValeurParcelle(x, y)>=9 && monIle.getValeurParcelle(x, y)%2!=i));
-					    
-					    //Actions si explorateur
-					    if(monIle.getValeurParcelle(x,y) == 9+i){ 
-					    	plateaux[i].println("Vous avez choisis un explorateur de J"+(i+1)+", faites une action") ;
-					    	while(!action){
-				        		event=  plateaux[i].waitEvent();
-				        		a = plateaux[i].getX((MouseEvent) event) ;
-						    	b = plateaux[i].getY((MouseEvent) event) ;
-						    	if(plateaux[i].deplacable(jeu,a,b) && monIle.parcelleValide(x, y, a, b)){
-						    		monIle.echangeParcelles(x, y, a, b);
-						    		plateaux[0].setJeu(monIle.getIleTab());
-						    		plateaux[1].setJeu(monIle.getIleTab());
-						    		plateaux[i].println("Déplacement effectué") ;
-						    		action = true;
-						    	}
-						    	if(monIle.getValeurParcelle(x,y) == 9+i && monIle.rocherACote(x, y, a, b)){
-						    		plateaux[i].println("L'explorateur soulève un rocher") ;
-						    		if(((ParcelleRocher)monIle.getParcelle(a,b)).getTresor()){
-						    			((ParcelleRocher)monIle.getParcelle(a, b)).visible();
-							    		plateaux[i].println("Vous avez trouvé le trésor") ;
-							    		plateaux[0].setJeu(monIle.getIleTab());
-							    		plateaux[1].setJeu(monIle.getIleTab());
-						    		}else if(((ParcelleRocher)monIle.getParcelle(a,b)).getClef()){
-						    			((ParcelleRocher)monIle.getParcelle(a, b)).visible();
-						    			plateaux[0].setJeu(monIle.getIleTab());
-							    		plateaux[1].setJeu(monIle.getIleTab());
-							    		plateaux[i].println("Vous avez trouvé la clef") ;
-						    		}else{
-							    		plateaux[i].println("Mais vous avez rien trouve en dessous...") ;
-						    		}
-						    		action = true;
-						    	}					    	
-					    	}
-				    	}/*
-					  //Actions si voleur
-					    if(monIle.getValeurParcelle(x,y) == 11+i){ 
-					    	plateaux[i].println("Vous avez choisis un " + monIle.getParcelle(x,y).getPersonnage().getNom()+ " de J"+(i+1)+", faites une action") ;
-					    	while(!action){
-				        		event=  plateaux[i].waitEvent();
-				        		a = plateaux[i].getX((MouseEvent) event) ;
-						    	b = plateaux[i].getY((MouseEvent) event) ;
-						    	if(plateaux[i].deplacable(jeu,a,b) && monIle.parcelleValide(x, y, a, b)){
-						    		monIle.echangeParcelles(x, y, a, b);
-						    		plateaux[0].setJeu(monIle.getIleTab());
-						    		plateaux[1].setJeu(monIle.getIleTab());
-						    		plateaux[i].println("Déplacement effectué") ;
-						    		action = true;
-						    	}
-						    	if(monIle.getValeurParcelle(x,y) == 11+i && monIle.joueurACote(x, y, a, b)){
-						    		plateaux[i].println("L'explorateur soulève un rocher") ;
-						    		if(((ParcelleRocher)monIle.getParcelle(a,b)).getTresor()){
-						    			((ParcelleRocher)monIle.getParcelle(a, b)).visible();
-							    		plateaux[i].println("Vous avez trouvé le trésor") ;
-							    		plateaux[0].setJeu(monIle.getIleTab());
-							    		plateaux[1].setJeu(monIle.getIleTab());
-						    		}else if(((ParcelleRocher)monIle.getParcelle(a,b)).getClef()){
-						    			((ParcelleRocher)monIle.getParcelle(a, b)).visible();
-						    			plateaux[0].setJeu(monIle.getIleTab());
-							    		plateaux[1].setJeu(monIle.getIleTab());
-							    		plateaux[i].println("Vous avez trouvé la clef") ;
-						    		}else{
-							    		plateaux[i].println("Mais vous avez rien trouve en dessous...") ;
-						    		}
-						    		action = true;
-						    	}					    	
-					    	}
-					    }*/
-					    action = false;
-					    event = plateaux[i].waitEvent(200) ;	// Délai pour permettre la lecture.
-		        }
-				 
-				    	
-			    		
-		 } while (!boucleInfinis) ;
+		//déplacement
+		while(true){		        		        
+			for(int i=0; i<2; i++){
+				monIle.action(plateaux, i);
+			}
+		}
 		 		
 		}
+		
 		//DEBUT BROUILLARD DE GUERRE
 		/*
 		GestionPlateaux gestion=new GestionPlateaux(monIle);
