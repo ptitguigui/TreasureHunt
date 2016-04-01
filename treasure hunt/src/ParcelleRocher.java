@@ -13,6 +13,10 @@ public class ParcelleRocher extends Parcelle{
 	 * Attribut indiquant si le rocher cache un trésor ou non.
 	 */
 	private boolean tresor=false;
+	/**
+	 * Attribut correspondant au message affiché si le rocher est soulevé.
+	 */
+	private String msg="Mais vous n'avez rien trouvé en dessous...";
 	
 	/**
 	 * Constructeur initialisant le rocher avec aucun personnage dessus.
@@ -20,10 +24,19 @@ public class ParcelleRocher extends Parcelle{
 	ParcelleRocher(){
 		super.valeur=3;
 	}
+	
+	/**
+	 * Méthode permettant de savoir s'il y a un trésor ou non sous le rocher.
+	 * @return vrai s'il y a un trésor, faux sinon.
+	 */
 	public boolean getTresor(){
 		return tresor;
 	}
 	
+	/**
+	 * Méthode permettant de savoir s'il y a une clef ou non sous le rocher.
+	 * @return vrai s'il y a une clef, faux sinon.
+	 */
 	public boolean getClef(){
 		return clef;
 	}
@@ -31,6 +44,7 @@ public class ParcelleRocher extends Parcelle{
 	 * Méthode permettant d'ajouter une clef sur la parcelle.
 	 */
 	public void setClef(){
+		msg="Vous avez trouvé la clef !";
 		clef=true;
 	}
 	
@@ -38,6 +52,7 @@ public class ParcelleRocher extends Parcelle{
 	 * Méthode permettant d'ajouter un trésor sur la parcelle.
 	 */
 	public void setTresor() {
+		msg="Vous avez trouvé le trésor !";
 		tresor=true;
 	}
 	

@@ -60,49 +60,53 @@ public class Ile {
 	    	y = plateaux[i].getY((MouseEvent) event) ;
     	} while(!(getValeurParcelle(x, y)>=9 && getValeurParcelle(x, y)%2!=i));
 		    
-		    //Actions si explorateur
-		    if(getValeurParcelle(x,y) == 9+i){ 
-		    	plateaux[i].println("Vous avez choisis un explorateur de J"+(i+1)+", faites une action") ;
-		    	while(!action){
-	        		event=  plateaux[i].waitEvent();
-	        		a = plateaux[i].getX((MouseEvent) event) ;
-			    	b = plateaux[i].getY((MouseEvent) event) ;
+    	//Actions si explorateur
+    	if(getValeurParcelle(x,y) == 9+i){ 
+    		plateaux[i].println("Vous avez choisis un explorateur de J"+(i+1)+", il a " + ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faite ?") ;
+    		while(!action){
+    			event=  plateaux[i].waitEvent();
+    			a = plateaux[i].getX((MouseEvent) event) ;
+    			b = plateaux[i].getY((MouseEvent) event) ;
 			    	
-			    	//déplacement
-			    	if(plateaux[i].deplacable(jeu,a,b) && parcelleValide(x, y, a, b)){
-			    		echangeParcelles(x, y, a, b);
-			    		jeu=getIleTab();
-			    		plateaux[0].setJeu(jeu);
-			    		plateaux[1].setJeu(jeu);
-			    		plateaux[i].println("Déplacement effectué") ;
-			    		action = true;
-			    	}
-			    	
-			    	//soulever un rocher
-			    	if(getValeurParcelle(x,y) == 9+i && rocherACote(x, y, a, b)){
-			    		plateaux[i].println("L'explorateur soulève un rocher") ;
-			    		if(((ParcelleRocher)getParcelle(a,b)).getTresor()){ //Si trésor
-			    			((ParcelleRocher)getParcelle(a, b)).visible();
-				    		plateaux[i].println("Vous avez trouvé le trésor") ;
-				    		jeu=getIleTab();
-				    		plateaux[0].setJeu(jeu);
-				    		plateaux[1].setJeu(jeu);
-			    		}else if(((ParcelleRocher)getParcelle(a,b)).getClef()){ //Si clef
-			    			((ParcelleRocher)getParcelle(a, b)).visible();
-				    		jeu=getIleTab();
-			    			plateaux[0].setJeu(jeu);
-				    		plateaux[1].setJeu(jeu);
-				    		plateaux[i].println("Vous avez trouvé la clef") ;
-			    		}else{ // Si rien
-				    		plateaux[i].println("Mais vous avez rien trouve en dessous...") ;
-			    		}
-			    		action = true;
-			    	}					    	
-		    	}
-	    	}
-
-		    action = false;
-		    event = plateaux[i].waitEvent(200) ;	// Délai pour permettre la lecture.
+    			//déplacement
+    			if(plateaux[i].deplacable(jeu,a,b) && parcelleValide(x, y, a, b)){
+    				echangeParcelles(x, y, a, b);
+    				jeu=getIleTab();
+    				plateaux[0].setJeu(jeu);
+    				plateaux[1].setJeu(jeu);
+    				plateaux[i].println("Déplacement effectué") ;
+    				action = true;
+    				
+    			//Soulève un rocher
+    			} else if (getValeurParcelle(x,y) == 9+i && rocherACote(x, y, a, b)){
+    				plateaux[i].println("L'explorateur soulève un rocher") ;
+    				if(((ParcelleRocher)getParcelle(a,b)).getTresor()){ //Si trésor
+    					((ParcelleRocher)getParcelle(a, b)).visible();
+    					plateaux[i].println("Vous avez trouvé le trésor !") ;
+    					jeu=getIleTab();
+    					plateaux[0].setJeu(jeu);
+    					plateaux[1].setJeu(jeu);
+    					if (((Personnage)getParcelle(x,y)).porteClef()){
+    						((Explorateur)getParcelle(x,y)).setPorteTresor();
+    					}
+    				}else if(((ParcelleRocher)getParcelle(a,b)).getClef()){ //Si clef
+    					((ParcelleRocher)getParcelle(a, b)).visible();
+    					jeu=getIleTab();
+    					plateaux[0].setJeu(jeu);
+    					plateaux[1].setJeu(jeu);
+    					((Explorateur)getParcelle(x,y)).setPorteClef();
+    					plateaux[i].println("Vous avez trouvé la clef !") ;
+    				}else{ // Si rien
+    					plateaux[i].println("Mais vous avez rien trouvé en dessous...") ;
+    				}
+    				action = true;
+    			}	
+    			//Rentrer dans le bateau
+    				//ajouter le perso dans la liste de parcelleNavire et remplacé sa case par une parcelle
+    		}
+    	}
+    	action = false;
+    	event = plateaux[i].waitEvent(200) ;	// Délai pour permettre la lecture.
 	}
 	
 	
@@ -142,6 +146,7 @@ public class Ile {
 	
 	
 	public boolean parcelleValide(int x, int y, int a, int b){
+		//bug : déplacement sur un autre personnage
 		return((a == x+1 && b == y) || (a==x-1 && b==y) || (a==x && b==y+1) || (a==x && b==y-1));			
 	}
 	public boolean rocherACote(int x, int y, int a, int b){
