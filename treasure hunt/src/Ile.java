@@ -151,10 +151,10 @@ public class Ile {
 				y=Integer.parseInt(saisie);
 				
 				if (j==1){
-					grille[x][y]=new Parcelle(new Explorateur("Explorateur", j));
+					grille[x][y]=new Explorateur("Explorateur", j);
 					entites.put("E"+Integer.toString(i), new int[] {x,y});
 				} else {
-					grille[x][y]=new Parcelle(new Explorateur("Explorateur", j));
+					grille[x][y]=new Explorateur("Explorateur", j);
 					entites.put("e"+Integer.toString(i), new int[] {x,y});
 				}
 			}

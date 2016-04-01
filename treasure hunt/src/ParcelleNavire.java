@@ -33,9 +33,10 @@ public class ParcelleNavire extends Parcelle {
 	/**
 	 * Méthode permettant d'ajouter un personnage sur le navire.
 	 * @param p un personnage.
+	 * @param nbPersonnages le nombre de personnage du joueur.
 	 */
-	public void addPersonnage(Personnage p){
-		if (p.getNumEquipe()==valeur-6){
+	public void addPersonnage(Personnage p, int nbPersonnages){
+		if (peutMonterABord(nbPersonnages, p)){
 			equipage.add(p);
 		}
 	}
@@ -57,6 +58,18 @@ public class ParcelleNavire extends Parcelle {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Méthode permettant de savoir si un personnage peut monter dans le navire.
+	 * @param nbPersonnages le nombre de personnages du joueur.
+	 * @return p un personnage.
+	 */
+	public boolean peutMonterABord(int nbPersonnages, Personnage p){
+		if (equipage.size()>=nbPersonnages+1 && p.getNumEquipe()==valeur-6){
+			return false;
+		}
+		return true;
 	}
 
 }

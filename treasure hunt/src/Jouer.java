@@ -115,7 +115,7 @@ public class Jouer  {
 					    
 					    //Actions si explorateur
 					    if(monIle.getValeurParcelle(x,y) == 9+i){ 
-					    	plateaux[i].println("Vous avez choisis un " + monIle.getParcelle(x,y).getPersonnage().getNom()+ " de J"+(i+1)+", faites une action") ;
+					    	plateaux[i].println("Vous avez choisis un explorateur de J"+(i+1)+", faites une action") ;
 					    	while(!action){
 				        		event=  plateaux[i].waitEvent();
 				        		a = plateaux[i].getX((MouseEvent) event) ;

@@ -82,4 +82,16 @@ public class Personnage extends Parcelle{
 	public boolean porteTresor() {
 		return items[1];
 	}
+	
+	/**
+	 * Méthode permettant de donner un objet d'un personnage à un autre.
+	 * @param p l'autre personnage.
+	 * @param i l'objet (0 pour la clef, 1 pour le trésor)
+	 */
+	public void donneItem(Personnage p, int i){
+		if(items[i]==true){
+		p.items[i]=items[i];
+		items[i]=false;
+		}
+	}
 }

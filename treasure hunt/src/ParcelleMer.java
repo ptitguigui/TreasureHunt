@@ -6,11 +6,10 @@
 public class ParcelleMer extends Parcelle{
 	
 	/**
-	 * Constructeur initialisant la mer avec aucun personnage.
+	 * Constructeur initialisant la mer.
 	 */
 	ParcelleMer(){
 		super.valeur=2;
-		super.personnage=null;
 	}
 	
 }

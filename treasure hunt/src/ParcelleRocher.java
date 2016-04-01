@@ -19,7 +19,6 @@ public class ParcelleRocher extends Parcelle{
 	 */
 	ParcelleRocher(){
 		super.valeur=3;
-		super.personnage=null;
 	}
 	public boolean getTresor(){
 		return tresor;

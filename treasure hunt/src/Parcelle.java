@@ -23,23 +23,12 @@ public class Parcelle {
 	 * 12 = voleur2
 	 */
 	protected int valeur;
-	/**
-	 * Attribut correspondant à un personnage, initialisé à null, avec la possibilité de le modifier via un setter.
-	 */
-	protected Personnage personnage;
-
-	/**
-	 * Constructeur permettant de créer un terrain clair avec un personnage par dessus.
-	 * @param p un personnage
-	 */
-	Parcelle(Personnage p){
-		personnage=p;
-		valeur=p.getValeur();
-	}
 	
+	/**
+	 * Constructeur permettant de créer un terrain clair.
+	 */
 	Parcelle(){
 		valeur=1;
-		personnage=null;
 	}
 	
 	
@@ -49,27 +38,6 @@ public class Parcelle {
 	 */
 	public void setValeur(int v){
 		valeur=v;
-	}
-	
-	/**
-	 * Méthode permettant de changer le personnage dans la parcelle.
-	 * @param p un Personnage.
-	 */
-	public void setPersonnage(Personnage p){
-		personnage=p;
-		if (p!=null){
-			valeur=p.getValeur();
-		} else {
-			valeur=1;
-		}
-	}
-	
-	/**
-	 * Méthode retournant le personnage dans la parcelle.
-	 * @return le personnage dans la parcelle.
-	 */
-	public Personnage getPersonnage(){
-		return personnage;
 	}
 	
 	/**
@@ -87,10 +55,10 @@ public class Parcelle {
 		return ""+valeur;
 	}
 	/**
-	 * Méthode vérifiant si la parcelle est vide ou non (c'est à dire s'il s'agit d'un terrain clair et n'ayant aucun personnage dessus).
+	 * Méthode vérifiant si la parcelle est vide ou non (c'est à dire s'il s'agit d'un terrain clair ou non).
 	 * @return vrai si la parcelle est vide, faux sinon.
 	 */
 	public boolean estVide() {
-		return (getValeur() == 1 && personnage==null);
+		return (getValeur() == 1);
 	}
 }
