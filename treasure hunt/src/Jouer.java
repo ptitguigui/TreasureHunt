@@ -83,15 +83,19 @@ public class Jouer  {
 				}
 		int nbExplo= Integer.parseInt(rep);
 		int nombre = (int)(Integer.parseInt(nb) - nbExplo);
-		System.out.println(nombre);
-		//demande nombres de voleur pour les différentes équipes
-		rep=new String(JOptionPane.showInputDialog(null,"Entrer le nombre de voleur(s) :"));
-				while(!(rep.matches("[1-9][0-9]*")   
-						&& (int) Integer.parseInt(rep)==nombre)){
-						JOptionPane.showMessageDialog(null, "Saisie incorrecte ou trop élevée.", "Erreur", 0);
-						rep=JOptionPane.showInputDialog(null,"Entrer le nombre de voleur(s) :");
-				}
-		int nbVoleurs=Integer.parseInt(rep);
+		int nbVoleurs= 0;
+		if(nombre !=0){
+			System.out.println(nombre);
+			//demande nombres de voleur pour les différentes équipes
+			rep=new String(JOptionPane.showInputDialog(null,"Entrer le nombre de voleur(s) :"));
+					while(!(rep.matches("[1-9][0-9]*")   
+							&& (int) Integer.parseInt(rep)==nombre)){
+							JOptionPane.showMessageDialog(null, "Saisie incorrecte ou trop élevée.", "Erreur", 0);
+							rep=JOptionPane.showInputDialog(null,"Entrer le nombre de voleur(s) :");
+					}
+			nbVoleurs=Integer.parseInt(rep);
+		}
+		JOptionPane.showMessageDialog(null, "Vous avez choisis de faire des équipes de "+nbExplo+" explorateur et de "+nbVoleurs+" voleur");
 		
 		//Création de l'ile				
 		Ile monIle = new Ile(nbColonnes,nbLignes);
