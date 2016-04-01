@@ -3,7 +3,7 @@ import java.util.HashMap;
 import javax.swing.JOptionPane;
 
 /**
- * Class créant le plateau de jeu, l'ile en l'occurence.
+ * Classe créant le plateau de jeu, l'ile en l'occurence.
  * @author vitsem
  *
  */
@@ -38,24 +38,57 @@ public class Ile {
 			}
 		}
 	}
+	
+	
+	
+	
+	/**
+	 * Méthode retournant la parcelle de coordonnée x,y.
+	 * @param x un entier.
+	 * @param y un entier.
+	 * @return la parcelle correspondante.
+	 */
 	public Parcelle getParcelle(int x, int y){
 		return grille[x][y];
 	}
+	
+	/**
+	 * Méthode retournant la valeur de la parcelle de coordonnée x,y.
+	 * @param x un entier.
+	 * @param y un entier.
+	 * @return la valeur de la parcelle correspondante.
+	 */
 	public int getValeurParcelle(int x, int y){
 		return grille[x][y].getValeur();
 	}
 	
+	/**
+	 * Méthode permetant d'échanger de position la parcelle de coordonnée a,b avec celle de coordonnée x,y.
+	 * @param x un entier.
+	 * @param y un entier.
+	 * @param a un entier.
+	 * @param b un entier.
+	 */
 	public void echangeParcelles(int x, int y, int a, int b){
 		 Parcelle p = grille[x][y];
 		 grille[x][y] = grille[a][b];
 		 grille[a][b] = p;
 	}
+	
+	
+	
+	
+	
 	public boolean parcelleValide(int x, int y, int a, int b){
 		return((a == x+1 && b == y) || (a==x-1 && b==y) || (a==x && b==y+1) || (a==x && b==y-1));			
 	}
 	public boolean rocherACote(int x, int y, int a, int b){
 		return (grille[a][b].getValeur() == 3)&&((a == x+1 && b == y) || (a==x-1 && b==y) || (a==x && b==y+1) || (a==x && b==y-1));
 	}
+	
+	
+	
+	
 		
 	/**
 	 * Méthode transformant l'objet en une chaine de caractères String pouvant être affichée.
@@ -95,7 +128,7 @@ public class Ile {
 	 * Méthode plaçant aléatoirement les personnage sur l'ile, le nombre de personnages correspond à l'entier précisé en paramètre selon la taille de l'ile.
 	 * @params nombres de personnages par équipe entre 1 et 4.
 	 */
-	private void setExplorateur(int nbExplorateurs){
+	private void setExplorateurs(int nbExplorateurs){
 		int x, y;
 		
 		for(int j=1; j<=2;j++) {
@@ -118,10 +151,10 @@ public class Ile {
 				y=Integer.parseInt(saisie);
 				
 				if (j==1){
-					grille[x][y]=new Parcelle(new Explorateur("Explorateur", j, 9));
+					grille[x][y]=new Parcelle(new Explorateur("Explorateur", j));
 					entites.put("E"+Integer.toString(i), new int[] {x,y});
 				} else {
-					grille[x][y]=new Parcelle(new Explorateur("Explorateur", j, 10));
+					grille[x][y]=new Parcelle(new Explorateur("Explorateur", j));
 					entites.put("e"+Integer.toString(i), new int[] {x,y});
 				}
 			}
@@ -312,7 +345,7 @@ public class Ile {
 		setClef();
 		setRochers(pourcentage);	
 		setNavires();
-		setExplorateur(nbExplorateurs);
+		setExplorateurs(nbExplorateurs);
 	}	
 	
 }

@@ -1,30 +1,46 @@
-import java.awt.event.InputEvent;
-import java.awt.event.MouseEvent;
 /**
  * Classe permettant de créer un personnage.
  * @author bataillj
  *
  */
 public class Personnage extends Parcelle{
+	/**
+	 * Attribut correspondant au nom du personnage.
+	 */
 	protected String nom;
-	protected int energie = 100;
+	/**
+	 * Attribut correspondant à l'énergie du personnage.
+	 */
+	protected int energie;
+	/**
+	 * Attribut correspondant au numéro d'équipe auquel le personnage appartient.
+	 */
 	protected int numEquipe;
+	/**
+	 * Attribut indicant la valeur du personnage, afin qu'il soit représenté par la bonne image sur le plateau de jeu.
+	 */
 	protected int valeur;
-	protected boolean aClef = false;
-	protected boolean aTresor = false;
+	/**
+	 * Attribut créant un tableau de boolean correspondant aux items du personnage.
+	 * items[0] => clef
+	 * item[1] => trésor
+	 */
+	protected boolean[] items=new boolean[2];
+	
+	
 	
 	/**
 	 * Constructeur créant un personnage en initialisant ses attributs à 0 ou la chaine vide.
 	 */
 	Personnage(){
-		this.nom="test";
+		this.nom="Personnage non initialisé (classe Personnage)";
 		this.numEquipe = 0;
 		this.valeur=0;
-	}
+		this.energie=0;
+		items[0]=false;
+		items[1]=false;
+	}	
 	
-	Personnage(int numEquipe){
-		this.numEquipe = numEquipe;
-	}
 	
 		
 	/**
@@ -34,6 +50,11 @@ public class Personnage extends Parcelle{
 	public int getNumEquipe(){
 		return numEquipe;
 	}
+	
+	/**
+	 * Méthode retournant le nom du personnage.
+	 * @return le nom du personnage.
+	 */
 	public String getNom(){
 		return nom;
 	}
@@ -47,21 +68,18 @@ public class Personnage extends Parcelle{
 	}
 	
 	/**
-	 * Méthode permettant de déplacer un personnage.
+	 * Méthode permettant de savoir si le personnage porte la clef ou non.
+	 * @return vrai s'il possède la clef, faux sinon.
 	 */
-	public void deplacer(){
-		
+	public boolean porteClef(){
+		return items[0];
 	}
+	
 	/**
-	 * Méthode permettant de soulever un rocher si cela est possible
+	 * Méthode permettant de savoir si le personnage porte le trésor ou non.
+	 * @return vrai s'il possède le trésor, faux sinon.
 	 */
-	public void soulever(){
-		
-	}
-	/**
-	 * Méthode permettant d'échanger les objets entre les personnages
-	 */
-	public void echanger(){
-		
+	public boolean porteTresor() {
+		return items[1];
 	}
 }

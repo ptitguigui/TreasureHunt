@@ -3,7 +3,6 @@
 /GestionPlateaux.class
 /Ile.class
 /Jouer.class
-/Menu$1.class
 /Menu.class
 /Parcelle.class
 /ParcelleMer.class
@@ -11,7 +10,3 @@
 /ParcelleRocher.class
 /Personnage.class
 /SuperPlateau.class
-<<<<<<< HEAD
-=======
-/Bouton.class
->>>>>>> branch 'master' of https://github.com/ptitguigui/TreasureHunt.git

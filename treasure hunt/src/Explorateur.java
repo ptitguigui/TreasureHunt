@@ -1,28 +1,28 @@
-
 public class Explorateur extends Personnage {
 
-	private boolean clef=false;
 	
-	Explorateur(String nom, int numEquipe, int valeur){
+	
+	Explorateur(String nom, int numEquipe){
+		if (numEquipe>0 && numEquipe <3){
 		super.nom=nom;
 		super.numEquipe=numEquipe;
 		super.energie=100;
-		super.valeur=valeur;
+		super.valeur=8+numEquipe;
+		} else {
+			super.nom="Problème d'initialisation, mauvais n° d'équipe (classe Explorateur)";
+			super.numEquipe=numEquipe;
+			super.energie=0;
+			super.valeur=0;
+		}
+		super.items[0]=false;
+		super.items[1]=false;
 	}
 	
-	public void setClefTrouvee(){
-		clef=true;
+	public void setPorteClef(){
+		items[0]=true;
 	}
-	
-	public boolean clefTrouvee(){
-		return clef;
-	}
-	
-	public void deplacer() {
-		
-	}
-	
-	public void soulever() {
-		
+
+	public void setPorteTresor(){
+		items[1]=true;
 	}
 }
