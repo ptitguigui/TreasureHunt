@@ -68,6 +68,22 @@ public class Personnage extends Parcelle{
 	}
 	
 	/**
+	 * Méthode retournant l'energie du personnage.
+	 * @return l'energie du personnage.
+	 */
+	public int getEnergie(){
+		return energie;
+	}
+	
+	/**
+	 * Méthode permettant de modifier l'energie du personnage.
+	 * @param nrj la nouvelle valeur de l'energie.
+	 */
+	public void setEnergie(int nrj){
+		energie=nrj;
+	}
+	
+	/**
 	 * Méthode permettant de savoir si le personnage porte la clef ou non.
 	 * @return vrai s'il possède la clef, faux sinon.
 	 */

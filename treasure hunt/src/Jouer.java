@@ -1,7 +1,3 @@
-
-import java.awt.event.InputEvent;
-import java.awt.event.MouseEvent;
-
 import javax.swing.JOptionPane;
 
 /**
@@ -133,18 +129,17 @@ public class Jouer  {
 		while(true){		        		        
 			for(int i=0; i<2; i++){
 				monIle.action(plateaux, i);
+			}	 		
 			}
+			
+			//DEBUT BROUILLARD DE GUERRE
+			/*
+			GestionPlateaux gestion=new GestionPlateaux(monIle);
+			gestion.initialiser();
+			gestion.affichageJ1();
+			gestion.affichageJ2();*/
+			
 		}
-		 		
-		}
-		
-		//DEBUT BROUILLARD DE GUERRE
-		/*
-		GestionPlateaux gestion=new GestionPlateaux(monIle);
-		gestion.initialiser();
-		gestion.affichageJ1();
-		gestion.affichageJ2();*/
-		
 	}
 }
 
