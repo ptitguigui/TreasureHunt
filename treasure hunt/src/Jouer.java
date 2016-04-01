@@ -36,72 +36,86 @@ public class Jouer  {
 		
 		//demande de la taille
 		//nombre de colonnes
-		String rep=new String(JOptionPane.showInputDialog(null,"Entrer la taille x du plateau (entre 10 et 20) :"));
+		String rep=new String(JOptionPane.showInputDialog(null,"Entrez la taille x du plateau (entre 10 et 20) :"));
 		//Tant que la saisie soit un chiffre et qu'il soit entre 10 et 20
 		while(!(rep.matches("[1-9][0-9]*")&& Integer.parseInt(rep)>=10 && Integer.parseInt(rep)<=20)){
 			JOptionPane.showMessageDialog(null, "Veuillez entrer un nombre correct.", "Erreur", 0);
-			rep=JOptionPane.showInputDialog(null,"Entrer la taille du plateau (entre 10 et 20) :");
+			rep=JOptionPane.showInputDialog(null,"Entrez la taille du plateau (entre 10 et 20) :");
 		}
 		int nbColonnes=Integer.parseInt(rep);
 		//nombre de lignes
-		rep=new String(JOptionPane.showInputDialog(null,"Entrer la taille y du plateau (entre 10 et 20) :"));
+		rep=new String(JOptionPane.showInputDialog(null,"Entrez la taille y du plateau (entre 10 et 20) :"));
 		//Tant que la saisie soit un chiffre et qu'il soit entre 10 et 20
 		while(!(rep.matches("[1-9][0-9]*")&& Integer.parseInt(rep)>=10 && Integer.parseInt(rep)<=20)){
 			JOptionPane.showMessageDialog(null, "Veuillez entrer un nombre correct.", "Erreur", 0);
-			rep=JOptionPane.showInputDialog(null,"Entrer la taille du plateau (entre 10 et 20) :");
+			rep=JOptionPane.showInputDialog(null,"Entrez la taille du plateau (entre 10 et 20) :");
 		}
 		int nbLignes=Integer.parseInt(rep);
 		
 		
 		//demande du pourcentage de rocher
-		rep=new String(JOptionPane.showInputDialog(null,"Entrer le pourcentage de rocher :"));
+		rep=new String(JOptionPane.showInputDialog(null,"Entrez le pourcentage de rocher :"));
 		//Tant que la saisie soit un chiffre et que le nombre de rochers soit >=3 et que'il soit <20% 
 		while(!(rep.matches("[1-9][0-9]*")   
 				&& (int)((nbColonnes-2)*(nbLignes-2)*Integer.parseInt(rep)/100.00)>=3 
 				&& (int)((nbColonnes-2)*(nbLignes-2)*Integer.parseInt(rep)/100.00)<(nbColonnes-2)*(nbLignes-2)*0.2-1)){
 				JOptionPane.showMessageDialog(null, "Nombre incorrecte ou pourcentage impossible à réaliser.", "Erreur", 0);
-				rep=JOptionPane.showInputDialog(null,"Entrer le pourcentage de rocher :");
+				rep=JOptionPane.showInputDialog(null,"Entrez le pourcentage de rocher :");
 		}
 		int pourcentage=Integer.parseInt(rep);
 		
-		//demande nombres de personnage pour les différentes équipes
-				String nb=new String(JOptionPane.showInputDialog(null,"Entrer le nombre de personnage(s) :"));
-						while(!(nb.matches("[1-9][0-9]*")   
-								&& (int) Integer.parseInt(nb)>0 
-								&& (int)Integer.parseInt(nb)<5)){
-								JOptionPane.showMessageDialog(null, "Saisie incorrecte ou trop élevée.", "Erreur", 0);
-								nb=JOptionPane.showInputDialog(null,"Entrer le nombre de personnage(s) :");
-						}
-						
-		//demande nombres d'explorateur pour les différentes équipes
-		rep=new String(JOptionPane.showInputDialog(null,"Entrer le nombre d'explorateur(s) :"));
-				while(!(rep.matches("[1-9][0-9]*")   
-						&& (int) Integer.parseInt(rep)>=0 
-						&& (int)Integer.parseInt(rep)<=Integer.parseInt(nb))){
-						JOptionPane.showMessageDialog(null, "Saisie incorrecte ou trop élevée.", "Erreur", 0);
-						rep=JOptionPane.showInputDialog(null,"Entrer le nombre d'explorateur(s) :");
-				}
-		int nbExplo= Integer.parseInt(rep);
-		int nombre = (int)(Integer.parseInt(nb) - nbExplo);
-		int nbVoleurs= 0;
-		if(nombre !=0){
-			System.out.println(nombre);
-			//demande nombres de voleur pour les différentes équipes
-			rep=new String(JOptionPane.showInputDialog(null,"Entrer le nombre de voleur(s) :"));
-					while(!(rep.matches("[1-9][0-9]*")   
-							&& (int) Integer.parseInt(rep)==nombre)){
-							JOptionPane.showMessageDialog(null, "Saisie incorrecte ou trop élevée.", "Erreur", 0);
-							rep=JOptionPane.showInputDialog(null,"Entrer le nombre de voleur(s) :");
-					}
-			nbVoleurs=Integer.parseInt(rep);
-		}
-		JOptionPane.showMessageDialog(null, "Vous avez choisis de faire des équipes de "+nbExplo+" explorateur et de "+nbVoleurs+" voleur");
 		
+		//demande nombres de personnage pour les différentes équipes
+		String nb=new String(JOptionPane.showInputDialog(null,"Entrez le nombre de personnage(s) :"));
+		while(!(nb.matches("[1-9][0-9]*")   
+				&& (int) Integer.parseInt(nb)>0 
+				&& (int)Integer.parseInt(nb)<5)){
+			JOptionPane.showMessageDialog(null, "Saisie incorrecte ou trop élevée.", "Erreur", 0);
+			nb=JOptionPane.showInputDialog(null,"Entrez le nombre de personnage(s) :");
+		}
+
+		int nombre =0,nbExplo1=0,nbExplo2=0,nbVoleurs1=0,nbVoleurs2=0;
+		for(int i=1; i<3; i++){					
+			//demande nombres d'explorateur pour les différentes équipes
+			rep=new String(JOptionPane.showInputDialog(null,"J"+i+", entrez le nombre d'explorateur(s) :"));
+					while(!(rep.matches("[1-9][0-9]*")   
+							&& (int) Integer.parseInt(rep)>=0 
+							&& (int)Integer.parseInt(rep)<=Integer.parseInt(nb))){
+							JOptionPane.showMessageDialog(null, "Saisie incorrecte ou trop élevée.", "Erreur", 0);
+							rep=JOptionPane.showInputDialog(null,"Entrez le nombre d'explorateur(s) :");
+					}
+			if(i==1){
+			nbExplo1= Integer.parseInt(rep);
+			nombre = (int)(Integer.parseInt(nb) - nbExplo1);
+			}else{
+				nbExplo2= Integer.parseInt(rep);
+				nombre = (int)(Integer.parseInt(nb) - nbExplo2);
+			}
+			if(nombre !=0){
+				//demande nombres de voleur pour les différentes équipes
+				rep=new String(JOptionPane.showInputDialog(null,"J"+i+", eEntrez le nombre de voleur(s) :"));
+						while(!(rep.matches("[1-9][0-9]*")   
+								&& (int) Integer.parseInt(rep)==nombre)){
+								JOptionPane.showMessageDialog(null, "Saisie incorrecte ou trop élevée.", "Erreur", 0);
+								rep=JOptionPane.showInputDialog(null,"Entrez le nombre de voleur(s) :");
+						}
+				if(i==1){		
+					nbVoleurs1=Integer.parseInt(rep);
+				}else{
+					nbVoleurs2=Integer.parseInt(rep);
+				}
+			}
+			if(i==1){
+				JOptionPane.showMessageDialog(null, "J"+i+", vous avez choisis de faire des équipes de "+nbExplo1+" explorateur et de "+nbVoleurs1+" voleur");
+			}else{
+				JOptionPane.showMessageDialog(null, "J"+i+", vous avez choisis de faire des équipes de "+nbExplo2+" explorateur et de "+nbVoleurs2+" voleur");				
+			}
+		}
 		//Création de l'ile				
 		Ile monIle = new Ile(nbColonnes,nbLignes);
 		monIle.initialiser(pourcentage);
-		monIle.setPersonnages(1, nbExplo, nbVoleurs);
-		monIle.setPersonnages(2, nbExplo, nbVoleurs);
+		monIle.setPersonnages(1, nbExplo1, nbVoleurs1);
+		monIle.setPersonnages(2, nbExplo2, nbVoleurs2);
 		int[][] jeu=monIle.getIleTab();
 		
 		SuperPlateau[] plateaux=new SuperPlateau[2];
