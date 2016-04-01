@@ -18,9 +18,6 @@ public class Jouer  {
 		Object[] option = {"Jouer" , "Quitter"};
 		int menu = JOptionPane.showOptionDialog(null, "Bienvenue, que voulez-vous faire ?", "Treasure hunt", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[0]);
 		
-			
-			
-		
 		if(menu== 0){
 		JOptionPane.showMessageDialog(null, "Lancement du jeu");
 		
@@ -67,19 +64,31 @@ public class Jouer  {
 		}
 		int pourcentage=Integer.parseInt(rep);
 		
-		//demande nombres de personnage pour les différentes équipes
-		rep=new String(JOptionPane.showInputDialog(null,"Entrer le nombre de personnages :"));
+		//demande nombres d'explorateur pour les différentes équipes
+		rep=new String(JOptionPane.showInputDialog(null,"Entrer le nombre d'explorateur(s) :"));
 				while(!(rep.matches("[1-9][0-9]*")   
 						&& (int) Integer.parseInt(rep)>0 
 						&& (int)Integer.parseInt(rep)<5)){
 						JOptionPane.showMessageDialog(null, "Saisie incorrecte ou trop élevée.", "Erreur", 0);
-						rep=JOptionPane.showInputDialog(null,"Entrer le nombre de personnages :");
+						rep=JOptionPane.showInputDialog(null,"Entrer le nombre d'explorateur(s) :");
 				}
-		int nbPersonnages=Integer.parseInt(rep);
+		int nbExplo=Integer.parseInt(rep);
+		
+		//demande nombres de voleur pour les différentes équipes
+		rep=new String(JOptionPane.showInputDialog(null,"Entrer le nombre de voleur(s) :"));
+				while(!(rep.matches("[1-9][0-9]*")   
+						&& (int) Integer.parseInt(rep)>0 
+						&& (int)Integer.parseInt(rep)<5)){
+						JOptionPane.showMessageDialog(null, "Saisie incorrecte ou trop élevée.", "Erreur", 0);
+						rep=JOptionPane.showInputDialog(null,"Entrer le nombre de voleur(s) :");
+				}
+		int nbVoleurs=Integer.parseInt(rep);
 		
 		//Création de l'ile				
 		Ile monIle = new Ile(nbColonnes,nbLignes);
-		monIle.initialiser(pourcentage, nbPersonnages);
+		monIle.initialiser(pourcentage);
+		monIle.setPersonnages(1, nbExplo, nbVoleurs);
+		monIle.setPersonnages(2, nbExplo, nbVoleurs);
 		int[][] jeu=monIle.getIleTab();
 		
 		SuperPlateau[] plateaux=new SuperPlateau[2];
