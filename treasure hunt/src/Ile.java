@@ -130,7 +130,7 @@ public class Ile {
 	    	}
 
 		    action = false;
-		    event = plateaux[i].waitEvent(200) ;	// Délai pour permettre la lecture.
+		    event = plateaux[i].waitEvent(1000); //Délai pour permettre la lecture.
 	}
 	
 	
