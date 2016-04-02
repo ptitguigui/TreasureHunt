@@ -89,7 +89,7 @@ public class Jouer  {
 				}
 				if(nombre !=0){
 					//demande nombres de voleur pour les différentes équipes
-					rep=new String(JOptionPane.showInputDialog(null,"J"+i+", eEntrez le nombre de voleur(s) :"));
+					rep=new String(JOptionPane.showInputDialog(null,"J"+i+", entrez le nombre de voleur(s) :"));
 							while(!(rep.matches("[1-9][0-9]*")   
 									&& (int) Integer.parseInt(rep)==nombre)){
 									JOptionPane.showMessageDialog(null, "Saisie incorrecte ou trop élevée.", "Erreur", 0);

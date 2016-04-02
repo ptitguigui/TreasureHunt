@@ -77,7 +77,18 @@ public class Ile {
     				plateaux[1].setJeu(jeu);
     				plateaux[i].println("Déplacement effectué");
     				action = true;
-    				
+    			//Echange avec un personnage	
+    			}else if(getValeurParcelle(x,y) == 9+i && personnageAllieACote(x, y, a, b, getValeurParcelle(x,y), getValeurParcelle(a,b))){
+    				if(((Personnage)getParcelle(x,y)).porteClef()){  //si le personnage porte la clef
+    					((Personnage)getParcelle(x,y)).donneItem((Personnage)getParcelle(a,b), 0);	
+    					plateaux[i].println("Vous donnez la clé a un allié ") ;
+    				}else if (((Personnage)getParcelle(a,b)).porteTresor()){  //si le personnage porte la clef
+    					((Personnage)getParcelle(x,y)).donneItem((Personnage)getParcelle(a,b), 1);
+    					plateaux[i].println("Vous donnez le trésor a un allié ") ;
+    				}else {
+    					plateaux[i].println("Vos deux personnages discutent tranquillement... ") ;
+    				}
+    				action = true;
     			//Soulève un rocher
     			} else if (getValeurParcelle(x,y) == 9+i && rocherACote(x, y, a, b)){
     				plateaux[i].println("L'explorateur soulève un rocher");
@@ -125,7 +136,7 @@ public class Ile {
 
 		//Action si voleur
     	if(getValeurParcelle(x,y) == 11+i){ 
-    		plateaux[i].println("Vous avez choisis un voleur de J"+(i+1)+", faites une action") ;
+    		plateaux[i].println("Vous avez choisis un voleur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faite ?") ;
     		while(!action){
     			event=  plateaux[i].waitEvent();
     			a = plateaux[i].getX((MouseEvent) event) ;
@@ -133,29 +144,43 @@ public class Ile {
 			    	
     			//déplacement
     			if(plateaux[i].deplacable(jeu,a,b) && parcelleValideVoleur(x, y, a, b)){ //a changer en une methode deplacableVoleur
+    				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
     				echangeParcelles(x, y, a, b);
     				jeu=getIleTab();
     				plateaux[0].setJeu(jeu);
     				plateaux[1].setJeu(jeu);
     				plateaux[i].println("Déplacement effectué") ;
     				action = true;
-			    }
 			    	
     			//Fouille un personnage
-    			if(getValeurParcelle(x,y) == 11+i && personnageACote(x, y, a, b)){
+    			} else if(getValeurParcelle(x,y) == 11+i && personnageACote(x, y, a, b)){
     				plateaux[i].println("Vous fouillez un personnage...") ;
+    				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-10);
     				if(((Personnage)getParcelle(a,b)).porteClef()){  //si le personnage porte la clef
     					((Voleur)getParcelle(x,y)).setVoleClef(((Personnage)getParcelle(a,b)));
     					plateaux[i].println("Et vous lui volez la clé ! ") ;
     				}
-    				if(((Personnage)getParcelle(a,b)).porteTresor()){  //si le personnage porte la clef
+    				if(((Personnage)getParcelle(a,b)).porteTresor()){  //si le personnage porte le trésor
     					((Voleur)getParcelle(x,y)).setVoleTresor(((Personnage)getParcelle(a,b)));
     					plateaux[i].println("Et vous lui volez le trésor ! ") ;
     				}else{
     					plateaux[i].println("Mais vous ne trouvez rien... ") ; //sinon rien   
     				}
     				action = true;
-    			}					    	
+    				
+    			//Echange avec un personnage	
+    			}else if(getValeurParcelle(x,y) == 11+i && personnageAllieACote(x, y, a, b, getValeurParcelle(x,y), getValeurParcelle(a,b))){
+    				if(((Personnage)getParcelle(x,y)).porteClef()){  //si le personnage porte la clef
+    					((Personnage)getParcelle(x,y)).donneItem((Personnage)getParcelle(a,b), 0);	
+    					plateaux[i].println("Vous donnez la clé a un allié ") ;
+    				}else if (((Personnage)getParcelle(a,b)).porteTresor()){  //si le personnage porte la clef
+    					((Personnage)getParcelle(x,y)).donneItem((Personnage)getParcelle(a,b), 1);
+    					plateaux[i].println("Vous donnez le trésor a un allié ") ;
+    				}else {
+    					plateaux[i].println("Vos deux personnages discutent tranquillement... ") ;
+    				}
+    				action = true;
+    			}
     		}
     	}
 
@@ -196,8 +221,7 @@ public class Ile {
 		 grille[x][y] = grille[a][b];
 		 grille[a][b] = p;
 	}
-			
-		//bug : déplacement sur un autre personnage
+	
 	/**
 	 * Methode qui renvoi un boolean pour savoir si l'explorateur de coord (x,y) peut se déplacer sur une case de coord (a,b)
 	 * @param x un entier
@@ -215,7 +239,7 @@ public class Ile {
 	 * @param y un entier
 	 * @param a un entier
 	 * @param b un entier
-	 * @return un boolean
+	 * @return un booleen
 	 */
 	
 	public boolean parcelleValideVoleur(int x, int y, int a, int b){
@@ -228,7 +252,7 @@ public class Ile {
 	 * @param y un entier
 	 * @param a un entier
 	 * @param b un entier
-	 * @return un boolean
+	 * @return un booleen
 	 */
 	public boolean rocherACote(int x, int y, int a, int b){
 		return (grille[a][b].getValeur() == 3)&&((a == x+1 && b == y) || (a==x-1 && b==y) || (a==x && b==y+1) || (a==x && b==y-1));
@@ -240,11 +264,28 @@ public class Ile {
 	 * @param y un entier
 	 * @param a un entier
 	 * @param b un entier
-	 * @return un boolean
+	 * @return un booleen
 	 */
 	public boolean personnageACote(int x, int y, int a, int b){
-		return (grille[a][b].getValeur() > 8)&&((a == x+1 && b == y) || (a==x-1 && b==y) || (a==x && b==y+1) || (a==x && b==y-1));
-	}		
+		return (grille[a][b].getValeur() > 8)&&((a == x+1 && b == y) || (a==x-1 && b==y) || (a==x && b==y+1) || (a==x && b==y-1) || (a==x+1 && b==y+1) ||(a==x-1 && b==y-1) || (a==x+1 && b==y-1) || (a==x-1 && b==y+1));
+	}	
+	/**
+	 * Methode qui renvoi un booleen pour savoir si un personnage de coord (x,y) se situe a coté d'un autre personnage de coord(a,b) et si celui et un allié
+	 * @param x un entier
+	 * @param y un entier
+	 * @param a un entier
+	 * @param b un entier
+	 * @param valeurPerso 
+	 * @param valeurPersoACote
+	 * @return un booleen
+	 */
+	public boolean personnageAllieACote(int x, int y, int a, int b, int valeurPerso, int valeurPersoACote){
+		if(personnageACote(x,y,a,b)){
+			return valeurPerso%2 == valeurPersoACote%2;
+		}else{
+			return false;
+		}
+	}
 	/**
 	 * Méthode transformant l'objet en une chaine de caractères String pouvant être affichée.
 	 * @return le plateau sous forme de String.
@@ -280,8 +321,9 @@ public class Ile {
 	}
 	
 	/**
-	 * Méthode plaçant aléatoirement les personnage sur l'ile, le nombre de personnages correspond à l'entier précisé en paramètre selon la taille de l'ile.
-	 * @params nombres de personnages par équipe entre 1 et 4.
+	 *  Méthode plaçant les explorateurs sur l'ile , le nombre d'explorateurs correspond à l'entier précisé en paramètre.
+	 * @param nbExplorateurs, le nombre d'explorateurs dans l'équipe
+	 * @param numEquipe, le numero de l'équipe où l'explorateur est situé
 	 */
 	private void setExplorateurs(int nbExplorateurs, int numEquipe){
 		int x, y;
@@ -312,6 +354,11 @@ public class Ile {
 		}
 	}
 	
+	/**
+	 *  Méthode plaçant les voleurs sur l'ile , le nombre de voleurs correspond à l'entier précisé en paramètre.
+	 * @param nbVoleurs, le nombre d'explorateurs dans l'équipe
+	 * @param numEquipe, le numero de l'équipe où le voleur est situé
+	 */
 	private void setVoleurs(int nbVoleurs, int numEquipe){
 		int x, y;
 		for(int i=1; i<=nbVoleurs; i++){
@@ -432,30 +479,6 @@ public class Ile {
 		((ParcelleRocher)grille[x][y]).setClef();
 		entites.put("C", new int[] {x,y});
 	}
-	
-	
-//	/**
-//	 * Méthode retournant les coordonnées des personnages du J1.
-//	 * @return les coordonnées des personnages sous forme d'un tableau à deux dimensions int[][].
-//	 */
-//	public int[][] getPersonnagesJ1(int nbPersonnages) {
-//		int[][]coord = new int[2][nbPersonnages];
-//		for(int i=0; i<coord[0].length; i++){
-//			coord[i]=entites.get("E"+Integer.toString(i));
-//		}
-//		return coord;
-//	}
-//	/**
-//	 * Méthode retournant les coordonnées des personnages du J2.
-//	 * @return les coordonnées des personnages sous forme d'un tableau à deux dimensions int[][].
-//	 */
-//	public int[][] getPersonnagesJ2(int nbPersonnages) {
-//		int[][]coord = new int[2][nbPersonnages];
-//		for(int i=0; i<coord[0].length; i++){
-//			coord[i]=entites.get("e"+Integer.toString(i));
-//		}
-//		return coord;
-//	}
 		
 	/**
 	 * Méthode retournant les coordonnées des rochers (sans compter la clef et le trésor).
