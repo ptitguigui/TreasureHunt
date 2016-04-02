@@ -13,6 +13,10 @@ public class Personnage extends Parcelle{
 	 */
 	protected int energie;
 	/**
+	 * Attribut correspondant à l'énergie maximum du personnage.
+	 */
+	protected int maxEnergie;
+	/**
 	 * Attribut correspondant au numéro d'équipe auquel le personnage appartient.
 	 */
 	protected int numEquipe;
@@ -37,6 +41,7 @@ public class Personnage extends Parcelle{
 		this.numEquipe = 0;
 		this.valeur=0;
 		this.energie=0;
+		maxEnergie=0;
 		items[0]=false;
 		items[1]=false;
 	}	
@@ -76,11 +81,26 @@ public class Personnage extends Parcelle{
 	}
 	
 	/**
+	 * Méthode permettant de savoir si le personnage est mort ou non.
+	 * @return vrai s'il est mort, faux sinon.
+	 */
+	public boolean estMort(){
+		if (energie==0){
+			return true;
+		}
+		return false; 
+	}
+	
+	/**
 	 * Méthode permettant de modifier l'energie du personnage.
 	 * @param nrj la nouvelle valeur de l'energie.
 	 */
 	public void setEnergie(int nrj){
-		energie=nrj;
+		if(nrj<maxEnergie){
+			energie=nrj;
+		} else {
+			energie=maxEnergie;
+		}
 	}
 	
 	/**

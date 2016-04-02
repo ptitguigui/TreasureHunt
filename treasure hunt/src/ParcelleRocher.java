@@ -16,13 +16,14 @@ public class ParcelleRocher extends Parcelle{
 	/**
 	 * Attribut correspondant au message affiché si le rocher est soulevé.
 	 */
-	private String msg="Mais vous n'avez rien trouvé en dessous...";
+	private String msg;
 	
 	/**
 	 * Constructeur initialisant le rocher avec aucun personnage dessus.
 	 */
 	ParcelleRocher(){
 		super.valeur=3;
+		msg="Mais vous n'avez rien trouvé en dessous...";
 	}
 	
 	/**
@@ -41,19 +42,35 @@ public class ParcelleRocher extends Parcelle{
 		return clef;
 	}
 	/**
-	 * Méthode permettant d'ajouter une clef sur la parcelle.
+	 * Méthode permettant d'ajouter ou retirer une clef sur la parcelle.
 	 */
 	public void setClef(){
-		msg="Vous avez trouvé la clef !";
-		clef=true;
+		if(!clef){
+			msg="Vous avez trouvé la clef !";
+		} else {
+			msg="Vous distinguez une empreinte de clef dans le sable, ainsi que des traces de pas...";
+		}
+		clef=!clef;
 	}
 	
 	/**
-	 * Méthode permettant d'ajouter un trésor sur la parcelle.
+	 * Méthode permettant d'ajouter ou de retirer un trésor sur la parcelle.
 	 */
 	public void setTresor() {
-		msg="Vous avez trouvé le trésor !";
-		tresor=true;
+		if(!tresor){
+			msg="Vous avez trouvé le coffre !";
+		} else {
+			msg="Vous avez trouvé le coffre ! Malheureusement pour vous, il a déjà été vidé de son contenu...";
+		}
+		tresor=!tresor;
+	}
+	
+	/**
+	 * Méthode retournant le message lorsque l'on soulève le rocher.
+	 * @return le message lorsque l'on soulève le rocher.
+	 */
+	public String getMessage(){
+		return msg;
 	}
 	
 	/**

@@ -9,12 +9,14 @@ public class Explorateur extends Personnage {
 		if (numEquipe>0 && numEquipe <3){
 		super.nom=nom;
 		super.numEquipe=numEquipe;
-		super.energie=100;
+		super.maxEnergie=100;
+		super.energie=maxEnergie;
 		super.valeur=8+numEquipe;
 		} else {
 			super.nom="Problème d'initialisation, mauvais n° d'équipe (classe Explorateur)";
 			super.numEquipe=numEquipe;
-			super.energie=0;
+			super.maxEnergie=0;
+			super.energie=maxEnergie;
 			super.valeur=0;
 		}
 		super.items[0]=false;

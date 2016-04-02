@@ -9,12 +9,14 @@ public class Voleur extends Personnage {
 		if (numEquipe>0 && numEquipe <3){
 		super.nom=nom;
 		super.numEquipe=numEquipe;
-		super.energie=100;
+		super.maxEnergie=100;
+		super.energie=maxEnergie;
 		super.valeur=10+numEquipe;
 		} else {
 			super.nom="Problème d'initialisation, mauvais n° d'équipe (classe Voleur)";
 			super.numEquipe=numEquipe;
-			super.energie=0;
+			super.maxEnergie=0;
+			super.energie=maxEnergie;
 			super.valeur=0;
 		}
 		super.items[0]=false;
@@ -32,6 +34,6 @@ public class Voleur extends Personnage {
 	 * Méthode permettant d'ajouter le trésor aux items du voleur.
 	 */
 	public void setVoleTresor(){
-		items[1]=true;
+		items[1] = true ;
 	}
 }

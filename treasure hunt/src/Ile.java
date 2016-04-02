@@ -42,7 +42,7 @@ public class Ile {
 	}
 	
 	
-	public void action(SuperPlateau[] plateaux, int i) {
+	public void action(SuperPlateau[] plateaux, int i, int nbPersonnages) {
 		InputEvent event ;
 		int x,y,a,b =0;
 		boolean action = false;
@@ -70,46 +70,60 @@ public class Ile {
 			    
     			//déplacement
     			if(plateaux[i].deplacable(jeu,a,b) && parcelleValideExplorateur(x, y, a, b)){
+    				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
     				echangeParcelles(x, y, a, b);
     				jeu=getIleTab();
     				plateaux[0].setJeu(jeu);
     				plateaux[1].setJeu(jeu);
-    				plateaux[i].println("Déplacement effectué") ;
+    				plateaux[i].println("Déplacement effectué");
     				action = true;
     				
     			//Soulève un rocher
     			} else if (getValeurParcelle(x,y) == 9+i && rocherACote(x, y, a, b)){
-    				plateaux[i].println("L'explorateur soulève un rocher") ;
+    				plateaux[i].println("L'explorateur soulève un rocher");
+    		    	event = plateaux[i].waitEvent(500) ;    				
+					plateaux[i].println(((ParcelleRocher)getParcelle(a,b)).getMessage());
+    				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-5);
     				if(((ParcelleRocher)getParcelle(a,b)).getTresor()){ //Si trésor
     					((ParcelleRocher)getParcelle(a, b)).visible();
-    					plateaux[i].println("Vous avez trouvé le trésor !") ;
     					jeu=getIleTab();
     					plateaux[0].setJeu(jeu);
     					plateaux[1].setJeu(jeu);
     					if (((Personnage)getParcelle(x,y)).porteClef()){
     						((Explorateur)getParcelle(x,y)).setPorteTresor();
+    						((ParcelleRocher)getParcelle(a,b)).setTresor(); //change le message du trésor
+    						plateaux[i].println("Votre clef rentre parfaitement dans la serrure, vous l'ouvrez et vous emparez du trésor !");
+    					} else {
+    						plateaux[i].println("Malheureusement, vous n'avez pas la clef...");
     					}
-    				}else if(((ParcelleRocher)getParcelle(a,b)).getClef()){ //Si clef
+    					//Si trésor déjà trouvé, mais on revient avec la clef
+    				} else if (getValeurParcelle(a,b)==5 && ((Personnage)getParcelle(x,y)).porteClef()){
+    					plateaux[i].println("Votre clef rentre parfaitement dans la serrure, vous l'ouvrez et vous emparez du trésor !");
+    					((Explorateur)getParcelle(x,y)).setPorteTresor();
+						((ParcelleRocher)getParcelle(a,b)).setTresor(); //change le message du trésor
+    				} else if(((ParcelleRocher)getParcelle(a,b)).getClef()){ //Si clef
     					((ParcelleRocher)getParcelle(a, b)).visible();
     					jeu=getIleTab();
     					plateaux[0].setJeu(jeu);
     					plateaux[1].setJeu(jeu);
     					((Explorateur)getParcelle(x,y)).setPorteClef();
-    					plateaux[i].println("Vous avez trouvé la clef !") ;
-    				}else{ // Si rien
-    					plateaux[i].println("Mais vous avez rien trouvé en dessous...") ;
+    					((ParcelleRocher)getParcelle(a,b)).setClef(); //passe la clef à false et change le message
+    			    	event = plateaux[i].waitEvent(1000);
+    			    	((ParcelleRocher)getParcelle(a, b)).hide();
     				}
     				action = true;
     			}	
     			//Rentrer dans le bateau
     				//ajouter le perso dans la liste de parcelleNavire et remplacé sa case par une parcelle
+    			if(getValeurParcelle(a,b)==6+i && ((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages)){
+    				((ParcelleNavire)getParcelle(a,b)).addPersonnage(((Personnage)getParcelle(x,y)));
+    				grille[x][y]=new Parcelle();
+    			}
     		}
     	}
+    	
+    	//A MODIFIER
 
-<<<<<<< HEAD
-		    action = false;
-		    event = plateaux[i].waitEvent(1000); //Délai pour permettre la lecture.
-=======
 		//Action si voleur
     	if(getValeurParcelle(x,y) == 11+i){ 
     		plateaux[i].println("Vous avez choisis un voleur de J"+(i+1)+", faites une action") ;
@@ -140,8 +154,7 @@ public class Ile {
     	}
 
     	action = false;
-    	event = plateaux[i].waitEvent(200) ;	// Délai pour permettre la lecture.
->>>>>>> branch 'master' of https://github.com/ptitguigui/TreasureHunt.git
+    	event = plateaux[i].waitEvent(500);	// Délai pour permettre la lecture.
 	}
 	
 	
@@ -177,27 +190,55 @@ public class Ile {
 		 grille[x][y] = grille[a][b];
 		 grille[a][b] = p;
 	}
-	
-	
-	
+			
 		//bug : déplacement sur un autre personnage
+	/**
+	 * Methode qui renvoi un boolean pour savoir si l'explorateur de coord (x,y) peut se déplacer sur une case de coord (a,b)
+	 * @param x un entier
+	 * @param y un entier
+	 * @param a un entier
+	 * @param b un entier
+	 * @return un booleen
+	 */
 	public boolean parcelleValideExplorateur(int x, int y, int a, int b){
 		return((a == x+1 && b == y) || (a==x-1 && b==y) || (a==x && b==y+1) || (a==x && b==y-1));			
 	}
+	/**
+	 * Methode qui renvoi un boolean pour savoir si le voleur de coord (x,y) peut se déplacer sur une case de coord (a,b)
+	 * @param x un entier
+	 * @param y un entier
+	 * @param a un entier
+	 * @param b un entier
+	 * @return un boolean
+	 */
+	
 	public boolean parcelleValideVoleur(int x, int y, int a, int b){
 		return((a == x+1 && b == y) || (a==x-1 && b==y) || (a==x && b==y+1) || (a==x && b==y-1) || (a==x+1 && b==y+1) ||(a==x-1 && b==y-1) || (a==x+1 && b==y-1) || (a==x-1 && b==y+1)  );			
 	}
+	
+	/**
+	 * Methode qui renvoi un booleen pour savoir si un personnage de coord (x,y) se situe a coté d'un rocher de coord(a,b)
+	 * @param x un entier
+	 * @param y un entier
+	 * @param a un entier
+	 * @param b un entier
+	 * @return un boolean
+	 */
 	public boolean rocherACote(int x, int y, int a, int b){
 		return (grille[a][b].getValeur() == 3)&&((a == x+1 && b == y) || (a==x-1 && b==y) || (a==x && b==y+1) || (a==x && b==y-1));
 	}
+	
+	/**
+	 * Methode qui renvoi un booleen pour savoir si un personnage de coord (x,y) se situe a coté d'un autre personnage de coord(a,b)
+	 * @param x un entier
+	 * @param y un entier
+	 * @param a un entier
+	 * @param b un entier
+	 * @return un boolean
+	 */
 	public boolean personnageACote(int x, int y, int a, int b){
 		return (grille[a][b].getValeur() > 8)&&((a == x+1 && b == y) || (a==x-1 && b==y) || (a==x && b==y+1) || (a==x && b==y-1));
-	}
-	
-	
-	
-	
-		
+	}		
 	/**
 	 * Méthode transformant l'objet en une chaine de caractères String pouvant être affichée.
 	 * @return le plateau sous forme de String.
