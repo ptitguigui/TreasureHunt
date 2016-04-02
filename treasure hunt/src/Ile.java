@@ -58,7 +58,7 @@ public class Ile {
     		event=  plateaux[i].waitEvent();
 		   	x = plateaux[i].getX((MouseEvent) event) ;
 	    	y = plateaux[i].getY((MouseEvent) event) ;
-    	} while(!(getValeurParcelle(x, y)>=9 && getValeurParcelle(x, y)%2!=i));
+    	} while(!(getValeurParcelle(x, y)>=9 && getValeurParcelle(x, y)%2!=i ));
 		    
     	//Actions si explorateur
     	if(getValeurParcelle(x,y) == 9+i){ 
@@ -69,7 +69,7 @@ public class Ile {
     			b = plateaux[i].getY((MouseEvent) event) ;
 			    
     			//déplacement
-    			if(plateaux[i].deplacable(jeu,a,b) && parcelleValideExplorateur(x, y, a, b)){
+    			if(plateaux[i].deplacable(jeu,a,b) && parcelleValideExplorateur(x, y, a, b)){ //a changer en une methode deplacableExplorateur
     				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
     				echangeParcelles(x, y, a, b);
     				jeu=getIleTab();
@@ -120,8 +120,7 @@ public class Ile {
     				grille[x][y]=new Parcelle();
     			}
     		}
-    	}
-    	
+    	}    	
     	//A MODIFIER
 
 		//Action si voleur
@@ -145,9 +144,16 @@ public class Ile {
     			//Fouille un personnage
     			if(getValeurParcelle(x,y) == 11+i && personnageACote(x, y, a, b)){
     				plateaux[i].println("Vous fouillez un personnage...") ;
-    				//si le personnage porte la clef
-    				//si le personnage porte le trésor
-    				//sinon rien
+    				if(((Personnage)getParcelle(a,b)).porteClef()){  //si le personnage porte la clef
+    					((Voleur)getParcelle(x,y)).setVoleClef(((Personnage)getParcelle(a,b)));
+    					plateaux[i].println("Et vous lui volez la clé ! ") ;
+    				}
+    				if(((Personnage)getParcelle(a,b)).porteTresor()){  //si le personnage porte la clef
+    					((Voleur)getParcelle(x,y)).setVoleTresor(((Personnage)getParcelle(a,b)));
+    					plateaux[i].println("Et vous lui volez le trésor ! ") ;
+    				}else{
+    					plateaux[i].println("Mais vous ne trouvez rien... ") ; //sinon rien   
+    				}
     				action = true;
     			}					    	
     		}

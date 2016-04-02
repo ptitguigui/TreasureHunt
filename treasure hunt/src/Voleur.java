@@ -24,16 +24,18 @@ public class Voleur extends Personnage {
 	}
 	
 	/**
-	 * Méthode permettant d'ajouter la clef aux items du voleur.
+	 * Méthode permettant de voler la clef d'un personnage et de l'ajouter aux items du voleur.
 	 */
-	public void setVoleClef(){
+	public void setVoleClef(Personnage p){
 		items[0]=true;
+		p.items[0]=false;
 	}
 
 	/**
-	 * Méthode permettant d'ajouter le trésor aux items du voleur.
+	 * Méthode permettant d'ajouter le trésor d'un personnage et de l'ajouter aux items du voleur.
 	 */
-	public void setVoleTresor(){
+	public void setVoleTresor(Personnage p){
 		items[1] = true ;
+		p.items[0]=false;
 	}
 }
