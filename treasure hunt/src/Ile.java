@@ -151,6 +151,10 @@ public class Ile {
     			} else if(dansChampsAction(x,y,a,b,8) && getValeurParcelle(a,b)>8 && !personnageAllieACote(x, y, a, b, 8)){
     				plateaux[i].println("Vous fouillez un personnage...") ;
     				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-10);
+    				//s'il ne porte rien
+    				if (! (((Personnage)getParcelle(a,b)).porteClef() && ((Personnage)getParcelle(a,b)).porteTresor())){
+    					plateaux[i].println("Mais vous ne trouvez rien.") ; //sinon rien   
+    				}
     				//si le personnage porte la clef
     				if(((Personnage)getParcelle(a,b)).porteClef()){  
     					((Voleur)getParcelle(x,y)).setVoleClef(((Personnage)getParcelle(a,b)));
@@ -160,10 +164,6 @@ public class Ile {
     				if(((Personnage)getParcelle(a,b)).porteTresor()){ 
     					((Voleur)getParcelle(x,y)).setVoleTresor(((Personnage)getParcelle(a,b)));
     					plateaux[i].println("Et vous lui volez le trésor ! ") ;
-    				}
-    				//s'il ne porte rien
-    				if (! (((Personnage)getParcelle(a,b)).porteClef() && ((Personnage)getParcelle(a,b)).porteTresor())){
-    					plateaux[i].println("Mais vous ne trouvez rien.") ; //sinon rien   
     				}
     				action = true;
     			//Echange avec un personnage	
