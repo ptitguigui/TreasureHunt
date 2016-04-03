@@ -126,8 +126,8 @@ public class Personnage extends Parcelle{
 	 */
 	public void donneItem(Personnage p, int i){
 		if(items[i]==true){
-		p.items[i]=items[i];
-		items[i]=false;
+			p.items[i]=items[i];
+			items[i]=false;
 		}
 	}
 }

@@ -35,8 +35,8 @@ public class GestionPlateaux {
 				jeuJ2b[c][l]=false;
 			}
 		}
-		add(monIle.getNavireJ1()[0], monIle.getNavireJ1()[1]);
-		add(monIle.getNavireJ2()[0], monIle.getNavireJ2()[1]);
+		add(monIle.getNavire(1)[0], monIle.getNavire(1)[1]);
+		add(monIle.getNavire(2)[0], monIle.getNavire(2)[1]);
 	}
 	
 	public void add(int a, int b){

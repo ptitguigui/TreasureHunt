@@ -48,10 +48,10 @@ public class Ile {
 		boolean action = false;
 
 		plateaux[i].affichage();
-		plateaux[i].println("A votre tour J" + (i+1)) ;
-		plateaux[1-i].println("Au tour de votre adversaire") ;
+		plateaux[i].println(">> A votre tour J" + (i+1)) ;
+		plateaux[1-i].println(">> Au tour de votre adversaire") ;
 		
-		int[][] jeu=getIleTab();
+		int[][] jeu;
 		
 		// Vérification de la selection : doit être un personnage de son équipe
     	do {
@@ -69,15 +69,15 @@ public class Ile {
     			b = plateaux[i].getY((MouseEvent) event) ;
 			    
     			//déplacement
-    			if(plateaux[i].deplacable(jeu,a,b) && dansChampsAction(x, y, a, b, 4)){
+    			if(getParcelle(a,b).estVide() && dansChampsAction(x, y, a, b, 4)){
     				deplacer(x, y, a, b, plateaux, i);
     				action = true;
     			//Echange avec un personnage	
-    			}else if(getValeurParcelle(x,y) == 9+i && personnageAllieACote(x, y, a, b, 4)){
+    			}else if(personnageAllieACote(x, y, a, b, 4)){
     				echangeItem(x, y, a, b, plateaux, i);
     				action = true;
     			//Soulève un rocher
-    			} else if (getValeurParcelle(x,y) == 9+i && rocherACote(x, y, a, b)){
+    			} else if (rocherACote(x, y, a, b)){
     				plateaux[i].println("L'explorateur soulève un rocher");
     		    	event = plateaux[i].waitEvent(500) ;    				
 					plateaux[i].println(((ParcelleRocher)getParcelle(a,b)).getMessage());
@@ -94,11 +94,6 @@ public class Ile {
     					} else {
     						plateaux[i].println("Malheureusement, vous n'avez pas la clef...");
     					}
-    					//Si trésor déjà trouvé, mais qu'on revient avec la clef
-    				} else if (getValeurParcelle(a,b)==5 && ((Personnage)getParcelle(x,y)).porteClef()){
-    					plateaux[i].println("Votre clef rentre parfaitement dans la serrure, vous l'ouvrez et vous emparez du trésor !");
-    					((Explorateur)getParcelle(x,y)).setPorteTresor();
-						((ParcelleRocher)getParcelle(a,b)).setTresor(); //change le message du trésor
     				} else if(((ParcelleRocher)getParcelle(a,b)).getClef()){ //Si clef
     					((ParcelleRocher)getParcelle(a, b)).visible();
     					jeu=getIleTab();
@@ -106,17 +101,36 @@ public class Ile {
     					plateaux[1].setJeu(jeu);
     					((Explorateur)getParcelle(x,y)).setPorteClef();
     					((ParcelleRocher)getParcelle(a,b)).setClef(); //passe la clef à false et change le message
-    			    	event = plateaux[i].waitEvent(1000);
-    			    	((ParcelleRocher)getParcelle(a, b)).hide();
+    					event = plateaux[i].waitEvent(1000);
+    					((ParcelleRocher)getParcelle(a, b)).hide();
     					jeu=getIleTab();
     					plateaux[0].setJeu(jeu);
     					plateaux[1].setJeu(jeu);
     				}
-    				action = true;
-    			//Rentrer dans le bateau
-    			} else if(getValeurParcelle(a,b)==6+i && ((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages) && dansChampsAction(a,b,x,y,4)){
-    				rentrerDansNavire(a,b,x,y,plateaux,i);
     				action=true;
+        		//Si trésor déjà trouvé, mais qu'on revient avec la clef
+    			} else if (getValeurParcelle(a,b)==5 && dansChampsAction(x,y,a,b,4)){
+    				if (!((ParcelleRocher)getParcelle(a,b)).getTresor()){
+    					plateaux[i].println("Vous avez trouvé le coffre ! Malheureusement pour vous, il a déjà été vidé de son contenu...");
+    				} else {
+    					if(((Personnage)getParcelle(x,y)).porteClef()){
+    						plateaux[i].println("Votre clef rentre parfaitement dans la serrure, vous l'ouvrez et vous emparez du trésor !");
+    						((Explorateur)getParcelle(x,y)).setPorteTresor();
+    						((ParcelleRocher)getParcelle(a,b)).setTresor(); //change le message du trésor
+    					} else {
+    						plateaux[i].println("Vous tentez de vous emparer du trésor, malheureusement vous n'avez pas la clef...");
+    					}
+    				}
+    				action=true;
+    			//Rentrer dans le bateau
+    			} else if(getValeurParcelle(a,b)==7+i && dansChampsAction(a,b,x,y,8)){
+    				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages)){
+    					rentrerDansNavire(x,y,a,b,plateaux,i);
+    					action=true;
+    				} else {
+    					plateaux[i].println("Vous ne pouvez pas rentrer dans le navire, vous etes le dernier personnage sur l'île."
+    							+ "\n Choississez une autre action.");
+    				}
     			}
     		}
     	}
@@ -130,32 +144,42 @@ public class Ile {
     			b = plateaux[i].getY((MouseEvent) event) ;
 			    	
     			//déplacement
-    			if(plateaux[i].deplacable(jeu,a,b) && dansChampsAction(x, y, a, b, 8)){
+    			if(getParcelle(a,b).estVide() && dansChampsAction(x, y, a, b, 8)){
     				deplacer(x, y, a, b, plateaux, i);
     				action = true;
     			//Fouille un personnage
-    			} else if(getValeurParcelle(x,y) == 11+i && personnageACote(x, y, a, b, 8)){
+    			} else if(dansChampsAction(x,y,a,b,8) && getValeurParcelle(a,b)>8 && !personnageAllieACote(x, y, a, b, 8)){
     				plateaux[i].println("Vous fouillez un personnage...") ;
     				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-10);
-    				if(((Personnage)getParcelle(a,b)).porteClef()){  //si le personnage porte la clef
+    				//si le personnage porte la clef
+    				if(((Personnage)getParcelle(a,b)).porteClef()){  
     					((Voleur)getParcelle(x,y)).setVoleClef(((Personnage)getParcelle(a,b)));
     					plateaux[i].println("Et vous lui volez la clé ! ") ;
-    				} else if(((Personnage)getParcelle(a,b)).porteTresor()){  //si le personnage porte le trésor
+    				}
+    				//si le personnage porte le trésor
+    				if(((Personnage)getParcelle(a,b)).porteTresor()){ 
     					((Voleur)getParcelle(x,y)).setVoleTresor(((Personnage)getParcelle(a,b)));
     					plateaux[i].println("Et vous lui volez le trésor ! ") ;
-    				}else{
-    					plateaux[i].println("Mais vous ne trouvez rien... ") ; //sinon rien   
+    				}
+    				//s'il ne porte rien
+    				if (! (((Personnage)getParcelle(a,b)).porteClef() && ((Personnage)getParcelle(a,b)).porteTresor())){
+    					plateaux[i].println("Mais vous ne trouvez rien.") ; //sinon rien   
     				}
     				action = true;
-    				
     			//Echange avec un personnage	
-    			}else if(getValeurParcelle(x,y) == 11+i && personnageAllieACote(x, y, a, b, 8)){
+    			}else if(personnageAllieACote(x, y, a, b, 8)){
     				echangeItem(x, y, a, b, plateaux, i);
     				action = true;
     			//Rentrer dans navire
-    			} else if(getValeurParcelle(a,b)==6+i && ((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages) && dansChampsAction(a,b,x,y,8)){
-    				rentrerDansNavire(a,b,x,y,plateaux,i);
-    				action=true;
+    			} else if(getValeurParcelle(a,b)==7+i && dansChampsAction(a,b,x,y,8)){
+    				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages)){
+    					rentrerDansNavire(x,y,a,b,plateaux,i);
+    					plateaux[i].println("Vous êtes rentré dans votre navire");
+    					action=true;
+    				} else {
+    					plateaux[i].println("Vous ne pouvez pas rentrer dans le navire, vous etes le dernier personnage sur l'île."
+    							+ "\n Choississez une autre action.");
+    				}
     			}
     		}    		
     	}
@@ -164,37 +188,69 @@ public class Ile {
     	for(int p=0; p<((ParcelleNavire)getParcelle(coordNavire[0],coordNavire[1])).getNbPersonnage(); p++){
     		((ParcelleNavire)getParcelle(coordNavire[0],coordNavire[1])).getPersonnage(p).setEnergie(((ParcelleNavire)getParcelle(coordNavire[0],coordNavire[1])).getPersonnage(p).getEnergie()+10);
     	}
-    	
 		event = plateaux[i].waitEvent(500);	// Délai pour permettre la lecture.
 	}
 	
+	/**
+	 * Méthode permettant de déplacer le personnage de coordonnées (x,y) à la case de coordonnées (a,b).
+	 * @param x un entier
+	 * @param y un entier
+	 * @param a un entier
+	 * @param b un entier
+	 * @param plateaux les plateaux des deux joueurs
+	 * @param i le numéro du plateau courrant
+	 */
 	public void deplacer(int x, int y, int a, int b, SuperPlateau[] plateaux, int i){
 		((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
 		echangeParcelles(x, y, a, b);
 		plateaux[0].setJeu(getIleTab());
 		plateaux[1].setJeu(getIleTab());
-		plateaux[i].println("Déplacement effectué");
+		plateaux[i].println("Déplacement effectué.");
 	}
 	
+	/**
+	 * Méthode permettant d'échanger un item (donner ou prendre) selon un ordre d'importance (trésor puis clef) entre le personnage (x,y) et le personnage (a,b).
+	 * @param x un entier
+	 * @param y un entier
+	 * @param a un entier
+	 * @param b un entier
+	 * @param plateaux les plateaux des deux joueurs
+	 * @param i le numéro du plateau courrant
+	 */
 	public void echangeItem(int x, int y, int a, int b, SuperPlateau[] plateaux, int i){
-		if(((Personnage)getParcelle(x,y)).porteTresor()){  //si le personnage porte la tresor
+		if(((Personnage)getParcelle(x,y)).porteTresor()){  //si le personnage (x,y) porte le tresor
 			((Personnage)getParcelle(x,y)).donneItem((Personnage)getParcelle(a,b), 1);	
-			plateaux[i].println("Vous donnez le trésor à un allié") ;
-		}else if (((Personnage)getParcelle(a,b)).porteClef()){  //si le personnage porte la clef
+			plateaux[i].println("Vous donnez le trésor à un allié.") ;
+		}else if (((Personnage)getParcelle(a,b)).porteTresor()) { //si le personnage (a,b) porte le tresor
+			((Personnage)getParcelle(a,b)).donneItem((Personnage)getParcelle(x,y), 1);	
+			plateaux[i].println("Vous prennez le trésor à un allié.") ;
+		}else if (((Personnage)getParcelle(x,y)).porteClef()){  //si le personnage (x,y) porte la clef
 			((Personnage)getParcelle(x,y)).donneItem((Personnage)getParcelle(a,b), 0);
-			plateaux[i].println("Vous donnez la clef a un allié") ;
+			plateaux[i].println("Vous donnez la clef a un allié.") ;
+		}else if (((Personnage)getParcelle(a,b)).porteClef()){  //si le personnage (a,b) porte la clef
+			((Personnage)getParcelle(a,b)).donneItem((Personnage)getParcelle(x,y), 0);
+			plateaux[i].println("Vous prennez la clef a un allié.") ;
 		}else {
 			plateaux[i].println("Vos deux personnages discutent tranquillement...") ;
 		}
 	}
 	
+	/**
+	 * Méthode permettant de rentrer le personnage (x,y) dans le navire en (a,b).
+	 * @param x un entier
+	 * @param y un entier
+	 * @param a un entier
+	 * @param b un entier
+	 * @param plateaux les plateaux des deux joueurs
+	 * @param i le numéro du plateau courrant
+	 */
 	public void  rentrerDansNavire(int x, int y, int a, int b, SuperPlateau[] plateaux, int i){
-		((ParcelleNavire)getParcelle(a,b)).addPersonnage(((Personnage)getParcelle(x,y)));
 		((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
+		((ParcelleNavire)getParcelle(a,b)).addPersonnage((Personnage)getParcelle(x,y));
 		grille[x][y]=new Parcelle();
 		plateaux[0].setJeu(getIleTab());
 		plateaux[1].setJeu(getIleTab());
-		plateaux[i].println("Vous etez rentré dans votre navire");
+		plateaux[i].println("Vous êtez rentré dans votre navire");
 	}
 	
 	/**
@@ -259,7 +315,7 @@ public class Ile {
 	 * @return un booleen
 	 */
 	public boolean rocherACote(int x, int y, int a, int b){
-		return (grille[a][b].getValeur() == 3)&&((a == x+1 && b == y) || (a==x-1 && b==y) || (a==x && b==y+1) || (a==x && b==y-1));
+		return (grille[a][b].getValeur() == 3)&& dansChampsAction(x,y,a,b,4); //4 car seul les explorateurs peuvent soulever.
 	}
 	
 	/**
