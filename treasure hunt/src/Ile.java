@@ -62,32 +62,19 @@ public class Ile {
 		    
     	//Actions si explorateur
     	if(getValeurParcelle(x,y) == 9+i){ 
-    		plateaux[i].println("Vous avez choisis un explorateur de J"+(i+1)+", il a " + ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faite ?") ;
+    		plateaux[i].println("Vous avez choisis un explorateur de J"+(i+1)+", il a " + ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
     		while(!action){
     			event=  plateaux[i].waitEvent();
     			a = plateaux[i].getX((MouseEvent) event) ;
     			b = plateaux[i].getY((MouseEvent) event) ;
 			    
     			//déplacement
-    			if(plateaux[i].deplacable(jeu,a,b) && parcelleValideExplorateur(x, y, a, b)){ //a changer en une methode deplacableExplorateur
-    				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
-    				echangeParcelles(x, y, a, b);
-    				jeu=getIleTab();
-    				plateaux[0].setJeu(jeu);
-    				plateaux[1].setJeu(jeu);
-    				plateaux[i].println("Déplacement effectué");
+    			if(plateaux[i].deplacable(jeu,a,b) && dansChampsAction(x, y, a, b, 4)){
+    				deplacer(x, y, a, b, plateaux, i);
     				action = true;
     			//Echange avec un personnage	
-    			}else if(getValeurParcelle(x,y) == 9+i && personnageAllieACote(x, y, a, b, getValeurParcelle(x,y), getValeurParcelle(a,b))){
-    				if(((Personnage)getParcelle(x,y)).porteClef()){  //si le personnage porte la clef
-    					((Personnage)getParcelle(x,y)).donneItem((Personnage)getParcelle(a,b), 0);	
-    					plateaux[i].println("Vous donnez la clé a un allié ") ;
-    				}else if (((Personnage)getParcelle(a,b)).porteTresor()){  //si le personnage porte la clef
-    					((Personnage)getParcelle(x,y)).donneItem((Personnage)getParcelle(a,b), 1);
-    					plateaux[i].println("Vous donnez le trésor a un allié ") ;
-    				}else {
-    					plateaux[i].println("Vos deux personnages discutent tranquillement... ") ;
-    				}
+    			}else if(getValeurParcelle(x,y) == 9+i && personnageAllieACote(x, y, a, b, 4)){
+    				echangeItem(x, y, a, b, plateaux, i);
     				action = true;
     			//Soulève un rocher
     			} else if (getValeurParcelle(x,y) == 9+i && rocherACote(x, y, a, b)){
@@ -107,7 +94,7 @@ public class Ile {
     					} else {
     						plateaux[i].println("Malheureusement, vous n'avez pas la clef...");
     					}
-    					//Si trésor déjà trouvé, mais on revient avec la clef
+    					//Si trésor déjà trouvé, mais qu'on revient avec la clef
     				} else if (getValeurParcelle(a,b)==5 && ((Personnage)getParcelle(x,y)).porteClef()){
     					plateaux[i].println("Votre clef rentre parfaitement dans la serrure, vous l'ouvrez et vous emparez du trésor !");
     					((Explorateur)getParcelle(x,y)).setPorteTresor();
@@ -121,46 +108,39 @@ public class Ile {
     					((ParcelleRocher)getParcelle(a,b)).setClef(); //passe la clef à false et change le message
     			    	event = plateaux[i].waitEvent(1000);
     			    	((ParcelleRocher)getParcelle(a, b)).hide();
+    					jeu=getIleTab();
+    					plateaux[0].setJeu(jeu);
+    					plateaux[1].setJeu(jeu);
     				}
     				action = true;
-    			}	
     			//Rentrer dans le bateau
-    				//ajouter le perso dans la liste de parcelleNavire et remplacé sa case par une parcelle
-    			if(getValeurParcelle(a,b)==6+i && ((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages)){
-    				((ParcelleNavire)getParcelle(a,b)).addPersonnage(((Personnage)getParcelle(x,y)));
-    				grille[x][y]=new Parcelle();
+    			} else if(getValeurParcelle(a,b)==6+i && ((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages) && dansChampsAction(a,b,x,y,4)){
+    				rentrerDansNavire(a,b,x,y,plateaux,i);
+    				action=true;
     			}
     		}
-    	}    	
-    	//A MODIFIER
+    	}
 
 		//Action si voleur
     	if(getValeurParcelle(x,y) == 11+i){ 
-    		plateaux[i].println("Vous avez choisis un voleur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faite ?") ;
+    		plateaux[i].println("Vous avez choisis un voleur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
     		while(!action){
     			event=  plateaux[i].waitEvent();
     			a = plateaux[i].getX((MouseEvent) event) ;
     			b = plateaux[i].getY((MouseEvent) event) ;
 			    	
     			//déplacement
-    			if(plateaux[i].deplacable(jeu,a,b) && parcelleValideVoleur(x, y, a, b)){ //a changer en une methode deplacableVoleur
-    				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
-    				echangeParcelles(x, y, a, b);
-    				jeu=getIleTab();
-    				plateaux[0].setJeu(jeu);
-    				plateaux[1].setJeu(jeu);
-    				plateaux[i].println("Déplacement effectué") ;
+    			if(plateaux[i].deplacable(jeu,a,b) && dansChampsAction(x, y, a, b, 8)){
+    				deplacer(x, y, a, b, plateaux, i);
     				action = true;
-			    	
     			//Fouille un personnage
-    			} else if(getValeurParcelle(x,y) == 11+i && personnageACote(x, y, a, b)){
+    			} else if(getValeurParcelle(x,y) == 11+i && personnageACote(x, y, a, b, 8)){
     				plateaux[i].println("Vous fouillez un personnage...") ;
     				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-10);
     				if(((Personnage)getParcelle(a,b)).porteClef()){  //si le personnage porte la clef
     					((Voleur)getParcelle(x,y)).setVoleClef(((Personnage)getParcelle(a,b)));
     					plateaux[i].println("Et vous lui volez la clé ! ") ;
-    				}
-    				if(((Personnage)getParcelle(a,b)).porteTresor()){  //si le personnage porte le trésor
+    				} else if(((Personnage)getParcelle(a,b)).porteTresor()){  //si le personnage porte le trésor
     					((Voleur)getParcelle(x,y)).setVoleTresor(((Personnage)getParcelle(a,b)));
     					plateaux[i].println("Et vous lui volez le trésor ! ") ;
     				}else{
@@ -169,25 +149,48 @@ public class Ile {
     				action = true;
     				
     			//Echange avec un personnage	
-    			}else if(getValeurParcelle(x,y) == 11+i && personnageAllieACote(x, y, a, b, getValeurParcelle(x,y), getValeurParcelle(a,b))){
-    				if(((Personnage)getParcelle(x,y)).porteClef()){  //si le personnage porte la clef
-    					((Personnage)getParcelle(x,y)).donneItem((Personnage)getParcelle(a,b), 0);	
-    					plateaux[i].println("Vous donnez la clé a un allié ") ;
-    				}else if (((Personnage)getParcelle(a,b)).porteTresor()){  //si le personnage porte la clef
-    					((Personnage)getParcelle(x,y)).donneItem((Personnage)getParcelle(a,b), 1);
-    					plateaux[i].println("Vous donnez le trésor a un allié ") ;
-    				}else {
-    					plateaux[i].println("Vos deux personnages discutent tranquillement... ") ;
-    				}
+    			}else if(getValeurParcelle(x,y) == 11+i && personnageAllieACote(x, y, a, b, 8)){
+    				echangeItem(x, y, a, b, plateaux, i);
     				action = true;
+    			//Rentrer dans navire
+    			} else if(getValeurParcelle(a,b)==6+i && ((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages) && dansChampsAction(a,b,x,y,8)){
+    				rentrerDansNavire(a,b,x,y,plateaux,i);
+    				action=true;
     			}
     		}
+    		action = false;
+    		event = plateaux[i].waitEvent(500);	// Délai pour permettre la lecture.
     	}
-
-    	action = false;
-    	event = plateaux[i].waitEvent(500);	// Délai pour permettre la lecture.
 	}
 	
+	public void deplacer(int x, int y, int a, int b, SuperPlateau[] plateaux, int i){
+		((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
+		echangeParcelles(x, y, a, b);
+		plateaux[0].setJeu(getIleTab());
+		plateaux[1].setJeu(getIleTab());
+		plateaux[i].println("Déplacement effectué");
+	}
+	
+	public void echangeItem(int x, int y, int a, int b, SuperPlateau[] plateaux, int i){
+		if(((Personnage)getParcelle(x,y)).porteTresor()){  //si le personnage porte la tresor
+			((Personnage)getParcelle(x,y)).donneItem((Personnage)getParcelle(a,b), 1);	
+			plateaux[i].println("Vous donnez le trésor à un allié") ;
+		}else if (((Personnage)getParcelle(a,b)).porteClef()){  //si le personnage porte la clef
+			((Personnage)getParcelle(x,y)).donneItem((Personnage)getParcelle(a,b), 0);
+			plateaux[i].println("Vous donnez la clef a un allié") ;
+		}else {
+			plateaux[i].println("Vos deux personnages discutent tranquillement...") ;
+		}
+	}
+	
+	public void  rentrerDansNavire(int x, int y, int a, int b, SuperPlateau[] plateaux, int i){
+		((ParcelleNavire)getParcelle(a,b)).addPersonnage(((Personnage)getParcelle(x,y)));
+		((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
+		grille[x][y]=new Parcelle();
+		plateaux[0].setJeu(getIleTab());
+		plateaux[1].setJeu(getIleTab());
+		plateaux[i].println("Vous etez rentré dans votre navire");
+	}
 	
 	/**
 	 * Méthode retournant la parcelle de coordonnée x,y.
@@ -223,27 +226,23 @@ public class Ile {
 	}
 	
 	/**
-	 * Methode qui renvoi un boolean pour savoir si l'explorateur de coord (x,y) peut se déplacer sur une case de coord (a,b)
+	 * Methode qui renvoie un boolean pour savoir si le personnage de coord (x,y) peut se déplacer sur une case de coord (a,b).
 	 * @param x un entier
 	 * @param y un entier
 	 * @param a un entier
 	 * @param b un entier
-	 * @return un booleen
+	 * @param nbDirections un entier correspondant au nombre de direction possible pour ses actions
+	 * @return vrai s'il peut agir sur cette case, faux sinon.
 	 */
-	public boolean parcelleValideExplorateur(int x, int y, int a, int b){
-		return((a == x+1 && b == y) || (a==x-1 && b==y) || (a==x && b==y+1) || (a==x && b==y-1));			
-	}
-	/**
-	 * Methode qui renvoi un boolean pour savoir si le voleur de coord (x,y) peut se déplacer sur une case de coord (a,b)
-	 * @param x un entier
-	 * @param y un entier
-	 * @param a un entier
-	 * @param b un entier
-	 * @return un booleen
-	 */
-	
-	public boolean parcelleValideVoleur(int x, int y, int a, int b){
-		return((a == x+1 && b == y) || (a==x-1 && b==y) || (a==x && b==y+1) || (a==x && b==y-1) || (a==x+1 && b==y+1) ||(a==x-1 && b==y-1) || (a==x+1 && b==y-1) || (a==x-1 && b==y+1)  );			
+	public boolean dansChampsAction(int x, int y, int a, int b, int nbDirections){
+		if (nbDirections==4) {
+			return((a == x+1 && b == y) || (a==x-1 && b==y) || (a==x && b==y+1) || (a==x && b==y-1));
+		}
+		if (nbDirections==8) {
+			return((a == x-1 && b == y-1) || (a==x-1 && b==y) || (a==x-1 && b==y+1) || (a==x && b==y-1)
+					|| (a == x && b == y+1) || (a==x+1 && b==y-1) || (a==x+1 && b==y) || (a==x+1 && b==y+1));
+		}
+		return false;
 	}
 	
 	/**
@@ -264,27 +263,26 @@ public class Ile {
 	 * @param y un entier
 	 * @param a un entier
 	 * @param b un entier
+	 * @param nbDirections un entier correspondant au nombre de direction possible pour ses actions
 	 * @return un booleen
 	 */
-	public boolean personnageACote(int x, int y, int a, int b){
-		return (grille[a][b].getValeur() > 8)&&((a == x+1 && b == y) || (a==x-1 && b==y) || (a==x && b==y+1) || (a==x && b==y-1) || (a==x+1 && b==y+1) ||(a==x-1 && b==y-1) || (a==x+1 && b==y-1) || (a==x-1 && b==y+1));
+	public boolean personnageACote(int x, int y, int a, int b, int nbDirections){
+		return (grille[a][b].getValeur() > 8)&& dansChampsAction(x, y, a, b, nbDirections);
 	}	
 	/**
-	 * Methode qui renvoi un booleen pour savoir si un personnage de coord (x,y) se situe a coté d'un autre personnage de coord(a,b) et si celui et un allié
+	 * Methode qui renvoi un booleen pour savoir si un personnage de coord (x,y) se situe a coté d'un autre personnage de coord(a,b) et si celui est un allié.
 	 * @param x un entier
 	 * @param y un entier
 	 * @param a un entier
 	 * @param b un entier
-	 * @param valeurPerso 
-	 * @param valeurPersoACote
+	 * @param nbDirections un entier correspondant au nombre de direction possible pour ses actions
 	 * @return un booleen
 	 */
-	public boolean personnageAllieACote(int x, int y, int a, int b, int valeurPerso, int valeurPersoACote){
-		if(personnageACote(x,y,a,b)){
-			return valeurPerso%2 == valeurPersoACote%2;
-		}else{
-			return false;
+	public boolean personnageAllieACote(int x, int y, int a, int b, int nbDirections){
+		if(personnageACote(x,y,a,b,nbDirections)){
+			return getValeurParcelle(x,y)%2 == getValeurParcelle(a,b)%2;
 		}
+		return false;
 	}
 	/**
 	 * Méthode transformant l'objet en une chaine de caractères String pouvant être affichée.
