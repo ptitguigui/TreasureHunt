@@ -29,8 +29,8 @@ public class Ile {
 	
 	/**
 	 * Constructeur créant une ile de taille x par y.
-	 * @param x un entier
-	 * @param y un entier
+	 * @param nbColonnes un entier
+	 * @param nbLignes un entier
 	 */
 	Ile(int nbColonnes, int nbLignes) {
 		grille=new Parcelle[nbColonnes][nbLignes];
@@ -467,7 +467,7 @@ public class Ile {
 	
 	/**
 	 * Méthode plaçant aléatoirement des rochers sur l'ile, le nombre de rochers correspond au pourcentage précisé en paramètre selon la taille de l'ile.
-	 * @params pourcentage entier entre 0 et 100 correspondant au pourcentage de cases étants des rochers.
+	 * @param pourcentage entier entre 0 et 100 correspondant au pourcentage de cases étants des rochers.
 	 */
 	private void setRochers(int pourcentage) {
 		int x, y;
@@ -597,7 +597,7 @@ public class Ile {
 	
 	/**
 	 * Méthode permettant d'initialiser l'ile en plaçant tous les éléments fixes.
-	 * @params pourcentage entier entre 0 et 100 correspondant au pourcentage de case étant des rochers.
+	 * @param pourcentage entier entre 0 et 100 correspondant au pourcentage de case étant des rochers.
 	 */
 	public void initialiser(int pourcentage){
 		setMers();	
