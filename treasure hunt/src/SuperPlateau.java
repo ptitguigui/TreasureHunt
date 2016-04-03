@@ -136,7 +136,7 @@ public class SuperPlateau {
 	 * Si le plateau a été construit sans zone texte, cette méthode est sans effet.
 	 * Cela provoque aussi le déplacement du scroll vers l'extrémité basse de façon 
 	 * à rendre le texte ajouté visible.
-	 * @param message
+	 * @param message String
 	 */
 	public void println(String message){
 		p.println(message);

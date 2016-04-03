@@ -26,8 +26,8 @@ public class Personnage extends Parcelle{
 	protected int valeur;
 	/**
 	 * Attribut créant un tableau de boolean correspondant aux items du personnage.
-	 * items[0] => clef
-	 * item[1] => trésor
+	 * items[0] = clef
+	 * item[1] = trésor
 	 */
 	protected boolean[] items=new boolean[2];
 	

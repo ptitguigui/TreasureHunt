@@ -66,6 +66,7 @@ public class ParcelleNavire extends Parcelle {
 	/**
 	 * Méthode permettant de savoir si un personnage peut monter dans le navire (s'il est le dernier de son équipe sur l'ile ou non).
 	 * @param nbPersonnages le nombre de personnages du joueur.
+	 * @return le nombre de personnage sur le navire.
 	 */
 	public boolean peutMonterABord(int nbPersonnages){
 		if (equipage.size()>=nbPersonnages+1){
