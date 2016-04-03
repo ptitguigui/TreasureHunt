@@ -21,10 +21,6 @@ public class Personnage extends Parcelle{
 	 */
 	protected int numEquipe;
 	/**
-	 * Attribut indicant la valeur du personnage, afin qu'il soit représenté par la bonne image sur le plateau de jeu.
-	 */
-	protected int valeur;
-	/**
 	 * Attribut créant un tableau de boolean correspondant aux items du personnage.
 	 * items[0] = clef
 	 * item[1] = trésor
@@ -39,7 +35,7 @@ public class Personnage extends Parcelle{
 	Personnage(){
 		this.nom="Personnage non initialisé (classe Personnage)";
 		this.numEquipe = 0;
-		this.valeur=0;
+		super.valeur=0;
 		this.energie=0;
 		maxEnergie=0;
 		items[0]=false;
