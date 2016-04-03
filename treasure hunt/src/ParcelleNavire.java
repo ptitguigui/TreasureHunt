@@ -47,14 +47,20 @@ public class ParcelleNavire extends Parcelle {
 	}
 	
 	/**
-	 * Méthode permettant de savoir si le navire est vide ou non.
-	 * @return true si personne n'est dedans, false sinon.
+	 * Méthode retournant un personnage dans le navire.
+	 * @param idx l'indice du personnage dans la liste
+	 * @return le personnage d'indice idx.
 	 */
-	public boolean PersonneABord(){
-		if (equipage.size()==0) {
-			return true;
-		}
-		return false;
+	public Personnage getPersonnage(int idx){
+		return equipage.get(idx);
+	}
+	
+	/**
+	 * Méthode retournant le nombre de personne à bord du navire.
+	 * @return le nombre de personne à bord du navire.
+	 */
+	public int getNbPersonnage(){
+		return equipage.size();
 	}
 	
 	/**

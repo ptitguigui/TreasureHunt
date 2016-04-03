@@ -157,10 +157,15 @@ public class Ile {
     				rentrerDansNavire(a,b,x,y,plateaux,i);
     				action=true;
     			}
-    		}
-    		action = false;
-    		event = plateaux[i].waitEvent(500);	// Délai pour permettre la lecture.
+    		}    		
     	}
+    	//Recupération d'énergie pour les personnages dans le navire
+    	int[] coordNavire= getNavire(i+1);
+    	for(int p=0; p<((ParcelleNavire)getParcelle(coordNavire[0],coordNavire[1])).getNbPersonnage(); p++){
+    		((ParcelleNavire)getParcelle(coordNavire[0],coordNavire[1])).getPersonnage(p).setEnergie(((ParcelleNavire)getParcelle(coordNavire[0],coordNavire[1])).getPersonnage(p).getEnergie()+10);
+    	}
+    	
+		event = plateaux[i].waitEvent(500);	// Délai pour permettre la lecture.
 	}
 	
 	public void deplacer(int x, int y, int a, int b, SuperPlateau[] plateaux, int i){
@@ -491,18 +496,16 @@ public class Ile {
 	}
 	
 	/**
-	 * Méthode retournant les coordonnées du navire de J2.
-	 * @return les coordonnées du navire J1 sous forme d'un tableau int[]
+	 * Méthode retournant les coordonnées du navire d'un joueur.
+	 * @param numEquipe numéro du joueur.
+	 * @return les coordonnées du navire sous forme d'un tableau int[]
 	 */
-	public int[] getNavireJ1(){
-		return entites.get("n");
-	}
-	/**
-	 * Méthode retournant les coordonnées du navire de J2.
-	 * @return les coordonnées du navire J2 sous forme d'un tableau int[].
-	 */
-	public int[] getNavireJ2(){
-		return entites.get("N");
+	public int[] getNavire(int numEquipe){
+		if(numEquipe==1){
+			return entites.get("n");
+		} else {
+			return entites.get("N");
+		}
 	}
 	
 	/**
