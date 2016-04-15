@@ -17,7 +17,7 @@ public class Jouer  {
 		if(menu== 0){
 			JOptionPane.showMessageDialog(null, "Lancement du jeu");
 			
-			final String[] IMGS={"treasure hunt/images/sable.jpg",
+			/*final String[] IMGS={"treasure hunt/images/sable.jpg",
 					"treasure hunt/images/mer.png",
 					"treasure hunt/images/rocher.png.jpg",
 					"treasure hunt/images/cle.png",
@@ -28,7 +28,24 @@ public class Jouer  {
 					"treasure hunt/images/1.explorateur.png",
 					"treasure hunt/images/2.explorateur.png",
 					"treasure hunt/images/1.piegeur.png",
-					"treasure hunt/images/2.piegeur.png"};
+					"treasure hunt/images/2.piegeur.png"};*/
+			
+			final String[] IMGS={"treasure hunt/imgs/sable.png",
+					"treasure hunt/imgs/mer.png",
+					"treasure hunt/imgs/rocher1.png",
+					"treasure hunt/imgs/clef.png",
+					"treasure hunt/imgs/tresor.png",
+					"treasure hunt/imgs/arbre.png",
+					"treasure hunt/imgs/1_bateau.png",
+					"treasure hunt/imgs/2_bateau.png",
+					"treasure hunt/imgs/1_explorateur.png",
+					"treasure hunt/imgs/2_explorateur.png",
+					"treasure hunt/imgs/1_piegeur.png",
+					"treasure hunt/imgs/2_piegeur.png",
+					"treasure hunt/imgs/1_voleur.png",
+					"treasure hunt/imgs/2_voleur.png",
+					"treasure hunt/imgs/1_guerrier.png",
+					"treasure hunt/imgs/2_guerrier.png"};
 			
 			//demande de la taille
 			//nombre de colonnes

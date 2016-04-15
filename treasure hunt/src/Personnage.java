@@ -61,14 +61,6 @@ public class Personnage extends Parcelle{
 	}
 	
 	/**
-	 * Méthode retournant la valeur du personnage.
-	 * @return la valeur du personnage.
-	 */
-	public int getValeur(){
-		return valeur;
-	}
-	
-	/**
 	 * Méthode retournant l'energie du personnage.
 	 * @return l'energie du personnage.
 	 */
