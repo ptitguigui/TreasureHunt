@@ -34,35 +34,6 @@ public class SuperPlateau {
 		p = new Plateau(gifs, taille, withTextArea);
 	}
 	
-	/**
-	 * Vérifie si une case est vide.
-	 * @param tab tableau d'entiers à deux dimensions
-	 * @param a un entier
-	 * @param b un entier
-	 * @return vrai si la case est vide, faux sinon
-	 */
-	public boolean deplacable(int[][] tab, int a, int b){
-		if(tab[a][b] == 1 ){
-			return true;
-		}	
-		return false;
-	}
-	
-	/**
-	 * Permet de déplacer la valeur de la case (x,y) dans la case (a,b).
-	 * @param x un entier
-	 * @param y un entier
-	 * @param a un entier
-	 * @param b un entier
-	 */
-	public void deplacer(int x, int y, int a, int b) {
-		int[][] tab = p.getJeu();
-			tab[a][b]= tab[x][y];
-			tab[x][y]= 1;
-			setJeu(tab);
-		
-	}
-	
 	
 	
 	//REDEFINITION DES METHODES DE PLATEAU

@@ -151,9 +151,7 @@ public class Jouer  {
 				//DEBUT BROUILLARD DE GUERRE
 				/*
 				GestionPlateaux gestion=new GestionPlateaux(monIle);
-				gestion.initialiser();
-				gestion.affichageJ1();
-				gestion.affichageJ2();*/
+				gestion.affichage();*/
 				
 		}
 	}

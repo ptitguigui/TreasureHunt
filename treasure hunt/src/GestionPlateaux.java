@@ -1,14 +1,30 @@
 
 public class GestionPlateaux {
 	private SuperPlateau[] plateaux=new SuperPlateau[2];
-	private final String[] IMGS={"treasure hunt/images/mer.png",
+	/*private final String[] IMGS={"treasure hunt/images/mer.png",
 			"treasure hunt/images/rocher.png.jpg",
 			"treasure hunt/images/1.navire.png",
 			"treasure hunt/images/2.navire.png",
 			"treasure hunt/images/cle.png",
 			"treasure hunt/images/coffre.png.jpg",
 			"treasure hunt/images/1.explorateur.png",
-			"treasure hunt/images/2.explorateur.png"};
+			"treasure hunt/images/2.explorateur.png"};*/
+	private final String[] IMGS={"treasure hunt/imgs/sable.png",
+			"treasure hunt/imgs/mer.png",
+			"treasure hunt/imgs/rocher1.png",
+			"treasure hunt/imgs/clef.png",
+			"treasure hunt/imgs/tresor.png",
+			"treasure hunt/imgs/arbre.png",
+			"treasure hunt/imgs/1_bateau.png",
+			"treasure hunt/imgs/2_bateau.png",
+			"treasure hunt/imgs/1_explorateur.png",
+			"treasure hunt/imgs/2_explorateur.png",
+			"treasure hunt/imgs/1_piegeur.png",
+			"treasure hunt/imgs/2_piegeur.png",
+			"treasure hunt/imgs/1_voleur.png",
+			"treasure hunt/imgs/2_voleur.png",
+			"treasure hunt/imgs/1_guerrier.png",
+			"treasure hunt/imgs/2_guerrier.png"};
 		//tableau omniscient
 	private int[][] jeu;
 	private Ile monIle;
@@ -16,7 +32,11 @@ public class GestionPlateaux {
 	private boolean[][] jeuJ2b;
 	private int[][] jeuJ1;
 	private int[][] jeuJ2;
+	private boolean tresorJ1=false;
+	private boolean tresorJ2=false;
+	private int[] coordTresor=monIle.getTresor();
 	
+	//pas de brouillard par défaut
 	GestionPlateaux(Ile monIle){
 		this.monIle=monIle;
 		plateaux[0]=new SuperPlateau(IMGS,10);
@@ -26,13 +46,27 @@ public class GestionPlateaux {
 		jeuJ2b=new boolean[jeu.length][jeu[0].length];
 		jeuJ1=new int[jeu.length][jeu[0].length];
 		jeuJ2=new int[jeu.length][jeu[0].length];
-	}
-	
-	public void initialiser(){
 		for(int c=0; c<jeu.length; c++) {
 			for(int l=0; l<jeu[0].length; l++){
-				jeuJ1b[c][l]=false;
-				jeuJ2b[c][l]=false;
+				jeuJ1b[c][l]=true;
+				jeuJ2b[c][l]=true;
+			}
+		}
+	}
+	
+	GestionPlateaux(Ile monIle, boolean brouillard){
+		this.monIle=monIle;
+		plateaux[0]=new SuperPlateau(IMGS,10);
+		plateaux[1]=new SuperPlateau(IMGS,10);
+		jeu=monIle.getIleTab();
+		jeuJ1b=new boolean[jeu.length][jeu[0].length];
+		jeuJ2b=new boolean[jeu.length][jeu[0].length];
+		jeuJ1=new int[jeu.length][jeu[0].length];
+		jeuJ2=new int[jeu.length][jeu[0].length];
+		for(int c=0; c<jeu.length; c++) {
+			for(int l=0; l<jeu[0].length; l++){
+				jeuJ1b[c][l]=!brouillard;
+				jeuJ2b[c][l]=!brouillard;
 			}
 		}
 		add(monIle.getNavire(1)[0], monIle.getNavire(1)[1]);
@@ -65,12 +99,23 @@ public class GestionPlateaux {
 		}
 		plateaux[0].setJeu(jeuJ1);
 		plateaux[1].setJeu(jeuJ2);
+		//trésor visible ou non
+		if (jeuJ1b[coordTresor[0]][coordTresor[1]] && tresorJ1){
+			jeuJ1[coordTresor[0]][coordTresor[1]]=5;
+		} else if (jeuJ1b[coordTresor[0]][coordTresor[1]] && !tresorJ1){
+			jeuJ1[coordTresor[0]][coordTresor[1]]=3;
+		}
+		if (jeuJ2b[coordTresor[0]][coordTresor[1]] && tresorJ2){
+			jeuJ2[coordTresor[0]][coordTresor[1]]=5;
+		} else if (jeuJ2b[coordTresor[0]][coordTresor[1]] && !tresorJ2){
+			jeuJ2[coordTresor[0]][coordTresor[1]]=3;
+		}
 	}
 	
-	public void affichageJ1(){
+	public void affichage(){
 		plateaux[0].affichage();
-	}
-	public void affichageJ2(){
 		plateaux[1].affichage();
 	}
+	
+	//remettre les fonctions de déplacement de Ile
 }
