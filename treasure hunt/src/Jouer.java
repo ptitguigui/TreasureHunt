@@ -87,48 +87,92 @@ public class Jouer  {
 				nb=JOptionPane.showInputDialog(null,"Entrez le nombre de personnage(s) :");
 			}
 	
-			int nombre =0,nbExplo1=0,nbExplo2=0,nbVoleurs1=0,nbVoleurs2=0;
-			for(int i=1; i<3; i++){					
-				//demande nombres d'explorateur pour les différentes équipes
-				rep=new String(JOptionPane.showInputDialog(null,"J"+i+", entrez le nombre d'explorateur(s) :"));
-						while(!(rep.matches("[1-9][0-9]*")   
-								&& (int) Integer.parseInt(rep)>=0 
-								&& (int)Integer.parseInt(rep)<=Integer.parseInt(nb))){
-								JOptionPane.showMessageDialog(null, "Saisie incorrecte ou trop élevée.", "Erreur", 0);
-								rep=JOptionPane.showInputDialog(null,"Entrez le nombre d'explorateur(s) :");
-						}
-				if(i==1){
-				nbExplo1= Integer.parseInt(rep);
-				nombre = (int)(Integer.parseInt(nb) - nbExplo1);
-				}else{
-					nbExplo2= Integer.parseInt(rep);
-					nombre = (int)(Integer.parseInt(nb) - nbExplo2);
-				}
-				if(nombre !=0){
-					//demande nombres de voleur pour les différentes équipes
-					rep=new String(JOptionPane.showInputDialog(null,"J"+i+", entrez le nombre de voleur(s) :"));
+			int nombre =0,nbExplo1=0,nbExplo2=0,nbVoleurs1=0,nbVoleurs2=0, nbPiegeurs1=0, nbPiegeurs2=0, nbGuerriers1=0, nbGuerriers2=0;
+			//boolean valide = false;!!!!!!!!!!!!!!!!!!!!!
+			//Choix des différents personnages par équipe
+			for(int i=1; i<3; i++){		
+				//do{!!!!!!!!!!!!!!!!!!
+					//demande nombres d'explorateur pour les différentes équipes
+					rep=new String(JOptionPane.showInputDialog(null,"J"+i+", entrez le nombre d'explorateur(s) :"));
 							while(!(rep.matches("[1-9][0-9]*")   
-									&& (int) Integer.parseInt(rep)==nombre)){
+									&& (int) Integer.parseInt(rep)>=0 
+									&& (int)Integer.parseInt(rep)<=Integer.parseInt(nb))){
 									JOptionPane.showMessageDialog(null, "Saisie incorrecte ou trop élevée.", "Erreur", 0);
-									rep=JOptionPane.showInputDialog(null,"Entrez le nombre de voleur(s) :");
+									rep=JOptionPane.showInputDialog(null,"Entrez le nombre d'explorateur(s) :");
 							}
-					if(i==1){		
-						nbVoleurs1=Integer.parseInt(rep);
+					if(i==1){
+					nbExplo1= Integer.parseInt(rep);
+					nombre = (int)(Integer.parseInt(nb) - nbExplo1);
 					}else{
-						nbVoleurs2=Integer.parseInt(rep);
+						nbExplo2= Integer.parseInt(rep);
+						nombre = (int)(Integer.parseInt(nb) - nbExplo2);
 					}
+	
+					//demande nombres de voleur pour les différentes équipes
+					if(nombre !=0){
+						rep=new String(JOptionPane.showInputDialog(null,"J"+i+", entrez le nombre de voleur(s) :"));
+							while(!(rep.matches("[0-9][0-9]*")   
+									&& (int) Integer.parseInt(rep)>=0 && (int) Integer.parseInt(rep)<=nombre)){
+								JOptionPane.showMessageDialog(null, "Saisie incorrecte ou trop élevée.", "Erreur", 0);
+								rep=JOptionPane.showInputDialog(null,"Entrez le nombre de voleur(s) :");
+							}
+						if(i==1){
+							nbVoleurs1= Integer.parseInt(rep);
+							nombre -= nbVoleurs1;
+						}else{
+							nbVoleurs2= Integer.parseInt(rep);
+							nombre -= nbVoleurs2;
+						}
+					}
+	
+					//demande nombres de piegeurs pour les différentes équipes
+					if(nombre !=0){
+						rep=new String(JOptionPane.showInputDialog(null,"J"+i+", entrez le nombre de piegeur(s) :"));
+								while(!(rep.matches("[0-9][0-9]*")   
+										&& (int) Integer.parseInt(rep)>=0 && (int) Integer.parseInt(rep)<=nombre)){
+										JOptionPane.showMessageDialog(null, "Saisie incorrecte ou trop élevée.", "Erreur", 0);
+										rep=JOptionPane.showInputDialog(null,"Entrez le nombre de piegeur(s) :");
+								}
+					if(i==1){
+						nbPiegeurs1= Integer.parseInt(rep);
+						nombre -= nbPiegeurs1;
+						}else{
+							nbPiegeurs2= Integer.parseInt(rep);
+							nombre -= nbPiegeurs2;
+						}
+					}
+					
+					//demande nombres de guerriers pour les différentes équipes
+					if(nombre !=0){
+						rep=new String(JOptionPane.showInputDialog(null,"J"+i+", entrez le nombre de guerrier(s) :"));
+								while(!(rep.matches("[0-9][0-9]*")   
+										&& (int) Integer.parseInt(rep)>=0 && (int) Integer.parseInt(rep)<=nombre)){
+										JOptionPane.showMessageDialog(null, "Saisie incorrecte ou trop élevée.", "Erreur", 0);
+										rep=JOptionPane.showInputDialog(null,"Entrez le nombre de guerrier(s) :");
+								}
+						if(i==1){		
+							nbGuerriers1=Integer.parseInt(rep);
+							nombre -= nbGuerriers1;
+						}else{
+							nbGuerriers2=Integer.parseInt(rep);
+							nombre -= nbGuerriers1;
+						}
+					}
+				/*if(Integer.parseInt(nb)!=nombre){
+					valide = true;
 				}
-				if(i==1){
-					JOptionPane.showMessageDialog(null, "J"+i+", vous avez choisis de faire des équipes de "+nbExplo1+" explorateur et de "+nbVoleurs1+" voleur");
+				}while(valide);*!!!!!!!!!!!!!!!!!!!!!!!*/
+					if(i==1){
+					JOptionPane.showMessageDialog(null, "J"+i+", vous avez choisis de faire des équipes de "+nbExplo1+" explorateur, de "+nbVoleurs1+" voleur, de "+nbPiegeurs1+" piegeur et de "+nbGuerriers1+" guerrier");
 				}else{
-					JOptionPane.showMessageDialog(null, "J"+i+", vous avez choisis de faire des équipes de "+nbExplo2+" explorateur et de "+nbVoleurs2+" voleur");				
+					JOptionPane.showMessageDialog(null, "J"+i+", vous avez choisis de faire des équipes de "+nbExplo2+" explorateur, de "+nbVoleurs2+" voleur, de "+nbPiegeurs2+" piegeur et de "+nbGuerriers2+" guerrier");				
 				}
 			}
 			//Création de l'ile				
 			Ile monIle = new Ile(nbColonnes,nbLignes);
 			monIle.initialiser(pourcentage);
-			monIle.setPersonnages(1, nbExplo1, nbVoleurs1);
-			monIle.setPersonnages(2, nbExplo2, nbVoleurs2);
+			monIle.setPersonnages(1, nbExplo1, nbVoleurs1, nbPiegeurs1, nbGuerriers1);
+			monIle.setPersonnages(2, nbExplo2, nbVoleurs2, nbPiegeurs2, nbGuerriers2);
 			int[][] jeu=monIle.getIleTab();
 			
 			SuperPlateau[] plateaux=new SuperPlateau[2];

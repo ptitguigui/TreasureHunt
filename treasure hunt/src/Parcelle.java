@@ -19,8 +19,12 @@ public class Parcelle {
 	 * 8 = navire2
 	 * 9 = explorateur1
 	 * 10 = explorateur2
-	 * 11 = voleur1
-	 * 12 = voleur2
+	 * 11 = piegeur1
+	 * 12 = piegeur2
+	 * 13 = voleur1
+	 * 14 = voleur2
+	 * 15 = guerrier1
+	 * 16 = guerrier2
 	 */
 	protected int valeur;
 	

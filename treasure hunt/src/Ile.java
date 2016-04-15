@@ -134,9 +134,42 @@ public class Ile {
     			}
     		}
     	}
-
-		//Action si voleur
+    	
+    	//Action si piegeur !!!!!!
     	if(getValeurParcelle(x,y) == 11+i){ 
+    		plateaux[i].println("Vous avez choisis un piegeur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
+    		while(!action){
+    			event=  plateaux[i].waitEvent();
+    			a = plateaux[i].getX((MouseEvent) event) ;
+    			b = plateaux[i].getY((MouseEvent) event) ;
+			    	
+    			//déplacement
+    			if(getParcelle(a,b).estVide() && dansChampsAction(x, y, a, b, 8)){
+    				deplacer(x, y, a, b, plateaux, i);
+    				action = true;
+    			//pose un piege
+    				
+    				
+    				
+    			//Echange avec un personnage	
+    			}else if(personnageAllieACote(x, y, a, b, 8)){
+    				echangeItem(x, y, a, b, plateaux, i);
+    				action = true;
+    			//Rentrer dans navire
+    			} else if(getValeurParcelle(a,b)==7+i && dansChampsAction(a,b,x,y,8)){
+    				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages)){
+    					rentrerDansNavire(x,y,a,b,plateaux,i);
+    					plateaux[i].println("Vous êtes rentré dans votre navire");
+    					action=true;
+    				} else {
+    					plateaux[i].println("Vous ne pouvez pas rentrer dans le navire, vous etes le dernier personnage sur l'île."
+    							+ "\n Choississez une autre action.");
+    				}
+    			}
+    		}    		
+    	}
+		//Action si voleur
+    	if(getValeurParcelle(x,y) == 13+i){ 
     		plateaux[i].println("Vous avez choisis un voleur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
     		while(!action){
     			event=  plateaux[i].waitEvent();
@@ -166,6 +199,39 @@ public class Ile {
     					plateaux[i].println("Et vous lui volez le trésor ! ") ;
     				}
     				action = true;
+    			//Echange avec un personnage	
+    			}else if(personnageAllieACote(x, y, a, b, 8)){
+    				echangeItem(x, y, a, b, plateaux, i);
+    				action = true;
+    			//Rentrer dans navire
+    			} else if(getValeurParcelle(a,b)==7+i && dansChampsAction(a,b,x,y,8)){
+    				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages)){
+    					rentrerDansNavire(x,y,a,b,plateaux,i);
+    					plateaux[i].println("Vous êtes rentré dans votre navire");
+    					action=true;
+    				} else {
+    					plateaux[i].println("Vous ne pouvez pas rentrer dans le navire, vous etes le dernier personnage sur l'île."
+    							+ "\n Choississez une autre action.");
+    				}
+    			}
+    		}    		
+    	}
+    	
+    	//Action si Guerrier !!!!!!
+    	if(getValeurParcelle(x,y) == 15+i){ 
+    		plateaux[i].println("Vous avez choisis un voleur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
+    		while(!action){
+    			event=  plateaux[i].waitEvent();
+    			a = plateaux[i].getX((MouseEvent) event) ;
+    			b = plateaux[i].getY((MouseEvent) event) ;
+			    	
+    			//déplacement
+    			if(getParcelle(a,b).estVide() && dansChampsAction(x, y, a, b, 8)){
+    				deplacer(x, y, a, b, plateaux, i);
+    				action = true;
+    			//attaque un ennemi
+    				
+    				
     			//Echange avec un personnage	
     			}else if(personnageAllieACote(x, y, a, b, 8)){
     				echangeItem(x, y, a, b, plateaux, i);
@@ -447,6 +513,64 @@ public class Ile {
 		}
 	}
 	
+	private void setPiegeurs(int nbPiegeurs, int numEquipe){
+		int x, y;
+		for(int i=1; i<=nbPiegeurs; i++){
+				
+			String saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée x du piegeur n°" + i + " de l'équipe " + numEquipe));
+			//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
+			while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>=1 && Integer.parseInt(saisie)<grille.length-1)){
+				JOptionPane.showMessageDialog(null, "Saisie incorrecte.", "Erreur", 0);
+				saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée x du piegeur n°" + i + " de l'équipe " + numEquipe);
+			}
+			x=Integer.parseInt(saisie);
+					
+			saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée y du piegeur n°" + i + " de l'équipe " + numEquipe));
+			//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
+			while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>=1 && Integer.parseInt(saisie)<grille[0].length-1 && grille[x][Integer.parseInt(saisie)].estVide())){
+				JOptionPane.showMessageDialog(null, "Saisie incorrecte ou case déjà occupée.", "Erreur", 0);
+				saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée y du piegeur n°" + i + " de l'équipe " + numEquipe);
+			}
+			y=Integer.parseInt(saisie);
+						
+			grille[x][y]=new Piegeur("Piegeur", numEquipe);
+			if (numEquipe==1){
+				entites.put("P"+Integer.toString(i), new int[] {x,y});
+			} else {
+				entites.put("p"+Integer.toString(i), new int[] {x,y});
+			}
+		}
+	}
+	
+	private void setGuerriers(int nbGuerriers, int numEquipe){
+		int x, y;
+		for(int i=1; i<=nbGuerriers; i++){
+				
+			String saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée x du guerrier n°" + i + " de l'équipe " + numEquipe));
+			//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
+			while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>=1 && Integer.parseInt(saisie)<grille.length-1)){
+				JOptionPane.showMessageDialog(null, "Saisie incorrecte.", "Erreur", 0);
+				saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée x du guerrier n°" + i + " de l'équipe " + numEquipe);
+			}
+			x=Integer.parseInt(saisie);
+					
+			saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée y du guerrier n°" + i + " de l'équipe " + numEquipe));
+			//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
+			while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>=1 && Integer.parseInt(saisie)<grille[0].length-1 && grille[x][Integer.parseInt(saisie)].estVide())){
+				JOptionPane.showMessageDialog(null, "Saisie incorrecte ou case déjà occupée.", "Erreur", 0);
+				saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée y du guerrier n°" + i + " de l'équipe " + numEquipe);
+			}
+			y=Integer.parseInt(saisie);
+						
+			grille[x][y]=new Voleur("guerrier", numEquipe);
+			if (numEquipe==1){
+				entites.put("G"+Integer.toString(i), new int[] {x,y});
+			} else {
+				entites.put("g"+Integer.toString(i), new int[] {x,y});
+			}
+		}
+	}
+	
 	/**
 	 * Méthode plaçant la mer.
 	 */
@@ -613,10 +737,12 @@ public class Ile {
 	 * @param nbExplorateurs nombre d'explorateur voulu.
 	 * @param nbVoleurs nombre de voleurs voulu.
 	 */
-	public void setPersonnages(int numEquipe, int nbExplorateurs, int nbVoleurs){
+	public void setPersonnages(int numEquipe, int nbExplorateurs, int nbVoleurs, int nbPiegeurs, int nbGuerriers){
 		if(numEquipe>0 && numEquipe<3) {
 			setExplorateurs(nbExplorateurs, numEquipe);
 			setVoleurs(nbVoleurs, numEquipe);
+			setPiegeurs(nbPiegeurs, numEquipe);
+			setGuerriers(nbGuerriers, numEquipe);
 		}
 	}
 	
