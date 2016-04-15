@@ -11,7 +11,7 @@ public class Voleur extends Personnage {
 		super.numEquipe=numEquipe;
 		super.maxEnergie=100;
 		super.energie=maxEnergie;
-		super.valeur=10+numEquipe;
+		super.valeur=12+numEquipe;
 		} else {
 			super.nom="Problème d'initialisation, mauvais n° d'équipe (classe Voleur)";
 			super.numEquipe=numEquipe;

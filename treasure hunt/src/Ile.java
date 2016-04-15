@@ -562,7 +562,7 @@ public class Ile {
 			}
 			y=Integer.parseInt(saisie);
 						
-			grille[x][y]=new Voleur("guerrier", numEquipe);
+			grille[x][y]=new Guerrier("guerrier", numEquipe);
 			if (numEquipe==1){
 				entites.put("G"+Integer.toString(i), new int[] {x,y});
 			} else {
