@@ -88,10 +88,10 @@ public class Jouer  {
 			}
 	
 			int nombre =0,nbExplo1=0,nbExplo2=0,nbVoleurs1=0,nbVoleurs2=0, nbPiegeurs1=0, nbPiegeurs2=0, nbGuerriers1=0, nbGuerriers2=0;
-			//boolean valide = false;!!!!!!!!!!!!!!!!!!!!!
+			boolean valide = false;
 			//Choix des différents personnages par équipe
 			for(int i=1; i<3; i++){		
-				//do{!!!!!!!!!!!!!!!!!!
+				do{
 					//demande nombres d'explorateur pour les différentes équipes
 					rep=new String(JOptionPane.showInputDialog(null,"J"+i+", entrez le nombre d'explorateur(s) :"));
 							while(!(rep.matches("[1-9][0-9]*")   
@@ -158,10 +158,12 @@ public class Jouer  {
 							nombre -= nbGuerriers1;
 						}
 					}
-				/*if(Integer.parseInt(nb)!=nombre){
+				if(Integer.parseInt(nb)==nombre){
 					valide = true;
+				}else{
+					JOptionPane.showMessageDialog(null, "Vous devez créer une équipe valide", "Erreur", 0);
 				}
-				}while(valide);*!!!!!!!!!!!!!!!!!!!!!!!*/
+				}while(!valide);
 					if(i==1){
 					JOptionPane.showMessageDialog(null, "J"+i+", vous avez choisis de faire des équipes de "+nbExplo1+" explorateur, de "+nbVoleurs1+" voleur, de "+nbPiegeurs1+" piegeur et de "+nbGuerriers1+" guerrier");
 				}else{
