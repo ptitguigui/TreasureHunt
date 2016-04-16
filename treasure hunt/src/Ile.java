@@ -1,6 +1,7 @@
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
+import java.util.Random;
 
 import javax.swing.JOptionPane;
 
@@ -46,6 +47,8 @@ public class Ile {
 		InputEvent event ;
 		int x,y,a,b =0;
 		boolean action = false;
+		Random r = new Random();
+		int chance = 0;
 
 		plateaux[i].affichage();
 		plateaux[i].println(">> A votre tour J" + (i+1)) ;
@@ -219,7 +222,7 @@ public class Ile {
     	
     	//Action si Guerrier !!!!!!
     	if(getValeurParcelle(x,y) == 15+i){ 
-    		plateaux[i].println("Vous avez choisis un voleur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
+    		plateaux[i].println("Vous avez choisis un guerrier de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
     		while(!action){
     			event=  plateaux[i].waitEvent();
     			a = plateaux[i].getX((MouseEvent) event) ;
@@ -230,8 +233,17 @@ public class Ile {
     				deplacer(x, y, a, b, plateaux, i);
     				action = true;
     			//attaque un ennemi
-    				
-    				
+    			} else if(dansChampsAction(x,y,a,b,8) && getValeurParcelle(a,b)>8 && !personnageAllieACote(x, y, a, b, 8)){
+    				chance = r.nextInt(99)+1;
+    				plateaux[i].println("Vous attaquez un personnage...") ;
+    				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-10);
+    				if(chance >50){
+    				plateaux[i].println("Et vous lui infliger 30 points de dégâts !!") ;
+    				((Guerrier)getParcelle(x,y)).attaqueEnnemi(((Personnage)getParcelle(a,b))); 
+    				}else{
+    					plateaux[i].println("Mais vous manquez votre cible...") ;
+    				}
+    				action = true;    				
     			//Echange avec un personnage	
     			}else if(personnageAllieACote(x, y, a, b, 8)){
     				echangeItem(x, y, a, b, plateaux, i);

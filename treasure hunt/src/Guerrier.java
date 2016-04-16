@@ -1,6 +1,5 @@
-
 public class Guerrier extends Personnage {
-	
+
 	/**
 	 * Constructeur créant un guerrier.
 	 * @param nom String.
@@ -22,5 +21,9 @@ public class Guerrier extends Personnage {
 		}
 		super.items[0]=false;
 		super.items[1]=false;
+	}
+	
+	public void attaqueEnnemi(Personnage p){
+		p.energie-=30;
 	}
 }

@@ -92,6 +92,7 @@ public class Jouer  {
 			//Choix des différents personnages par équipe
 			for(int i=1; i<3; i++){		
 				do{
+					nombre = (int)Integer.parseInt(nb);
 					//demande nombres d'explorateur pour les différentes équipes
 					rep=new String(JOptionPane.showInputDialog(null,"J"+i+", entrez le nombre d'explorateur(s) :"));
 							while(!(rep.matches("[1-9][0-9]*")   
@@ -158,7 +159,7 @@ public class Jouer  {
 							nombre -= nbGuerriers1;
 						}
 					}
-				if(Integer.parseInt(nb)==nombre){
+				if(nombre == 0){
 					valide = true;
 				}else{
 					JOptionPane.showMessageDialog(null, "Vous devez créer une équipe valide", "Erreur", 0);
