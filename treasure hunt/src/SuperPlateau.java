@@ -138,4 +138,42 @@ public class SuperPlateau {
 	public InputEvent waitEvent(int timeout){
 		return p.waitEvent(timeout);
 	}
+	
+	/**
+	 * Efface la surbrillance pour toutes les cellules du plateau. 
+	 */
+	public void clearHighlight() {
+		p.clearHighlight();
+	}
+	/**
+	 * Place une cellule en surbrillance. Les cellules peuvent revenir à leur état normal:
+	 * <ul>
+	 * <li>globalement par un appel à {@link #clearHighlight()}</li>
+	 * <li>individuellement par un appel à {@link #resetHighlight(int, int)}</li>
+	 * </ul>
+	 * @param x La ligne de la cellule.
+	 * @param y La colonne de la cellule.
+	 */
+	public void setHighlight(int x, int y) {
+		p.setHighlight(x, y);
+	}
+	/**
+	 * Efface la surbrillance pour une cellule du plateau. La cellule est déterminée par
+	 * son numéro de ligne et de colonne. Si la cellule n'était pas en surbrillance, 
+	 * cette méthode est sans effet.
+	 * @param x Numéro de ligne de la cellule à affecter.
+	 * @param y Numéro de colonne de la cellule à affecter.
+	 */
+	public void resetHighlight(int x, int y) {
+		p.resetHighlight(x, y);
+	}
+	/**
+	 * Permet de savoir si une cellule est actuellement en surbrillance.
+	 * @param x Le numéro de ligne de la cellule.
+	 * @param y Le numéro de colonne de la cellule.
+	 * @return true si la cellule est actuellement en surbrillance.
+	 */
+	public boolean isHighlight(int x, int y) {
+		return p.isHighlight(x, y);
+	}
 }

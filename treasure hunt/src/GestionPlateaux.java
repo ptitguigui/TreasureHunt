@@ -19,10 +19,10 @@ public class GestionPlateaux {
 			"treasure hunt/imgs/2_bateau.png",
 			"treasure hunt/imgs/1_explorateur.png",
 			"treasure hunt/imgs/2_explorateur.png",
-			"treasure hunt/imgs/1_piegeur.png",
-			"treasure hunt/imgs/2_piegeur.png",
 			"treasure hunt/imgs/1_voleur.png",
 			"treasure hunt/imgs/2_voleur.png",
+			"treasure hunt/imgs/1_piegeur.png",
+			"treasure hunt/imgs/2_piegeur.png",
 			"treasure hunt/imgs/1_guerrier.png",
 			"treasure hunt/imgs/2_guerrier.png"};
 		//tableau omniscient
@@ -116,6 +116,8 @@ public class GestionPlateaux {
 		plateaux[0].affichage();
 		plateaux[1].affichage();
 	}
-	
-	//remettre les fonctions de déplacement de Ile
+
+	public void action(int i, int nbPersonnages){
+		monIle.action(plateaux, i, nbPersonnages);
+	}
 }

@@ -42,7 +42,6 @@ public class Ile {
 		}
 	}
 	
-	
 	public void action(SuperPlateau[] plateaux, int i, int nbPersonnages) {
 		InputEvent event ;
 		int x,y,a,b =0;
@@ -66,6 +65,7 @@ public class Ile {
     	//Actions si explorateur
     	if(getValeurParcelle(x,y) == 9+i){ 
     		plateaux[i].println("Vous avez choisis un explorateur de J"+(i+1)+", il a " + ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
+    		highlight(plateaux, i, getValeurParcelle(x,y), x, y);
     		while(!action){
     			event=  plateaux[i].waitEvent();
     			a = plateaux[i].getX((MouseEvent) event) ;
@@ -137,42 +137,8 @@ public class Ile {
     			}
     		}
     	}
-    	
-    	//Action si piegeur !!!!!!
-    	if(getValeurParcelle(x,y) == 11+i){ 
-    		plateaux[i].println("Vous avez choisis un piegeur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
-    		while(!action){
-    			event=  plateaux[i].waitEvent();
-    			a = plateaux[i].getX((MouseEvent) event) ;
-    			b = plateaux[i].getY((MouseEvent) event) ;
-			    	
-    			//déplacement
-    			if(getParcelle(a,b).estVide() && dansChampsAction(x, y, a, b, 8)){
-    				deplacer(x, y, a, b, plateaux, i);
-    				action = true;
-    			//pose un piege
-    				
-    				
-    				
-    			//Echange avec un personnage	
-    			}else if(personnageAllieACote(x, y, a, b, 8)){
-    				echangeItem(x, y, a, b, plateaux, i);
-    				action = true;
-    			//Rentrer dans navire
-    			} else if(getValeurParcelle(a,b)==7+i && dansChampsAction(a,b,x,y,8)){
-    				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages)){
-    					rentrerDansNavire(x,y,a,b,plateaux,i);
-    					plateaux[i].println("Vous êtes rentré dans votre navire");
-    					action=true;
-    				} else {
-    					plateaux[i].println("Vous ne pouvez pas rentrer dans le navire, vous etes le dernier personnage sur l'île."
-    							+ "\n Choississez une autre action.");
-    				}
-    			}
-    		}    		
-    	}
 		//Action si voleur
-    	if(getValeurParcelle(x,y) == 13+i){ 
+    	if(getValeurParcelle(x,y) == 11+i){ 
     		plateaux[i].println("Vous avez choisis un voleur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
     		while(!action){
     			event=  plateaux[i].waitEvent();
@@ -202,6 +168,40 @@ public class Ile {
     					plateaux[i].println("Et vous lui volez le trésor ! ") ;
     				}
     				action = true;
+    			//Echange avec un personnage	
+    			}else if(personnageAllieACote(x, y, a, b, 8)){
+    				echangeItem(x, y, a, b, plateaux, i);
+    				action = true;
+    			//Rentrer dans navire
+    			} else if(getValeurParcelle(a,b)==7+i && dansChampsAction(a,b,x,y,8)){
+    				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages)){
+    					rentrerDansNavire(x,y,a,b,plateaux,i);
+    					plateaux[i].println("Vous êtes rentré dans votre navire");
+    					action=true;
+    				} else {
+    					plateaux[i].println("Vous ne pouvez pas rentrer dans le navire, vous etes le dernier personnage sur l'île."
+    							+ "\n Choississez une autre action.");
+    				}
+    			}
+    		}    		
+    	}
+    	
+    	//Action si piegeur !!!!!!
+    	if(getValeurParcelle(x,y) == 13+i){ 
+    		plateaux[i].println("Vous avez choisis un piegeur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
+    		while(!action){
+    			event=  plateaux[i].waitEvent();
+    			a = plateaux[i].getX((MouseEvent) event) ;
+    			b = plateaux[i].getY((MouseEvent) event) ;
+			    	
+    			//déplacement
+    			if(getParcelle(a,b).estVide() && dansChampsAction(x, y, a, b, 8)){
+    				deplacer(x, y, a, b, plateaux, i);
+    				action = true;
+    			// TODO pose un piege
+    				
+    				
+    				
     			//Echange avec un personnage	
     			}else if(personnageAllieACote(x, y, a, b, 8)){
     				echangeItem(x, y, a, b, plateaux, i);
@@ -382,6 +382,24 @@ public class Ile {
 					|| (a == x && b == y+1) || (a==x+1 && b==y-1) || (a==x+1 && b==y) || (a==x+1 && b==y+1));
 		}
 		return false;
+	}
+	
+	public void highlight(SuperPlateau[] plateaux, int i, int valeurPerso, int x, int y){
+		if(valeurPerso==9+i){
+			int[] valeursDeplacable=new int[]{1,3,5,7+i,9+i,11+i,13+i,15+i};
+			for(int j=0; j<valeursDeplacable.length; j++){
+				if (grille[x+1][y].getValeur()==valeursDeplacable[j]){
+					plateaux[i].setHighlight(x+1,y);
+				} else if (grille[x-1][y].getValeur()==valeursDeplacable[j]){
+					plateaux[i].setHighlight(x-1,y);
+				} else if (grille[x][y+1].getValeur()==valeursDeplacable[j]){
+					plateaux[i].setHighlight(x,y+1);
+				} else if (grille[x][y-1].getValeur()==valeursDeplacable[j]){
+					plateaux[i].setHighlight(x,y-1);
+				}
+			}
+		}
+		
 	}
 	
 	/**

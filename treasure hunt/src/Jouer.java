@@ -40,10 +40,10 @@ public class Jouer  {
 					"treasure hunt/imgs/2_bateau.png",
 					"treasure hunt/imgs/1_explorateur.png",
 					"treasure hunt/imgs/2_explorateur.png",
-					"treasure hunt/imgs/1_piegeur.png",
-					"treasure hunt/imgs/2_piegeur.png",
 					"treasure hunt/imgs/1_voleur.png",
 					"treasure hunt/imgs/2_voleur.png",
+					"treasure hunt/imgs/1_piegeur.png",
+					"treasure hunt/imgs/2_piegeur.png",
 					"treasure hunt/imgs/1_guerrier.png",
 					"treasure hunt/imgs/2_guerrier.png"};
 			
@@ -87,17 +87,17 @@ public class Jouer  {
 				nb=JOptionPane.showInputDialog(null,"Entrez le nombre de personnage(s) :");
 			}
 	
-			int nombre =0,nbExplo1=0,nbExplo2=0,nbVoleurs1=0,nbVoleurs2=0, nbPiegeurs1=0, nbPiegeurs2=0, nbGuerriers1=0, nbGuerriers2=0;
+			int nombre = Integer.parseInt(nb);
+			int nbExplo1=0,nbExplo2=0,nbVoleurs1=0,nbVoleurs2=0, nbPiegeurs1=0, nbPiegeurs2=0, nbGuerriers1=0, nbGuerriers2=0;
 			boolean valide = false;
 			//Choix des différents personnages par équipe
 			for(int i=1; i<3; i++){		
-				do{
-					nombre = (int)Integer.parseInt(nb);
+				do{					
 					//demande nombres d'explorateur pour les différentes équipes
 					rep=new String(JOptionPane.showInputDialog(null,"J"+i+", entrez le nombre d'explorateur(s) :"));
 							while(!(rep.matches("[1-9][0-9]*")   
-									&& (int) Integer.parseInt(rep)>=0 
-									&& (int)Integer.parseInt(rep)<=Integer.parseInt(nb))){
+									&& Integer.parseInt(rep)>=0 
+									&& Integer.parseInt(rep)<=Integer.parseInt(nb))){
 									JOptionPane.showMessageDialog(null, "Saisie incorrecte ou trop élevée.", "Erreur", 0);
 									rep=JOptionPane.showInputDialog(null,"Entrez le nombre d'explorateur(s) :");
 							}
@@ -166,9 +166,9 @@ public class Jouer  {
 				}
 				}while(!valide);
 					if(i==1){
-					JOptionPane.showMessageDialog(null, "J"+i+", vous avez choisis de faire des équipes de "+nbExplo1+" explorateur, de "+nbVoleurs1+" voleur, de "+nbPiegeurs1+" piegeur et de "+nbGuerriers1+" guerrier");
-				}else{
-					JOptionPane.showMessageDialog(null, "J"+i+", vous avez choisis de faire des équipes de "+nbExplo2+" explorateur, de "+nbVoleurs2+" voleur, de "+nbPiegeurs2+" piegeur et de "+nbGuerriers2+" guerrier");				
+						JOptionPane.showMessageDialog(null, "J"+i+", vous avez choisis de faire des équipes de "+nbExplo1+" explorateur, de "+nbVoleurs1+" voleur, de "+nbPiegeurs1+" piegeur et de "+nbGuerriers1+" guerrier");
+					}else{
+						JOptionPane.showMessageDialog(null, "J"+i+", vous avez choisis de faire des équipes de "+nbExplo2+" explorateur, de "+nbVoleurs2+" voleur, de "+nbPiegeurs2+" piegeur et de "+nbGuerriers2+" guerrier");				
 				}
 			}
 			//Création de l'ile				
@@ -192,7 +192,7 @@ public class Jouer  {
 			//déplacement
 			while(true){		        		        
 				for(int i=0; i<2; i++){
-					monIle.action(plateaux, i, nombre);
+					monIle.action(plateaux, i, nbExplo1+nbVoleurs1+nbPiegeurs1+nbGuerriers1);
 				}	 		
 			}
 				//DEBUT BROUILLARD DE GUERRE
