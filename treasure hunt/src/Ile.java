@@ -65,7 +65,7 @@ public class Ile {
     	//Actions si explorateur
     	if(getValeurParcelle(x,y) == 9+i){ 
     		plateaux[i].println("Vous avez choisis un explorateur de J"+(i+1)+", il a " + ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
-    		highlight(plateaux, i, getValeurParcelle(x,y), x, y);
+    		//highlight(plateaux, i, getValeurParcelle(x,y), x, y);
     		while(!action){
     			event=  plateaux[i].waitEvent();
     			a = plateaux[i].getX((MouseEvent) event) ;
@@ -383,7 +383,7 @@ public class Ile {
 		}
 		return false;
 	}
-	
+	/*
 	public void highlight(SuperPlateau[] plateaux, int i, int valeurPerso, int x, int y){
 		if(valeurPerso==9+i){
 			int[] valeursDeplacable=new int[]{1,3,5,7+i,9+i,11+i,13+i,15+i};
@@ -400,7 +400,7 @@ public class Ile {
 			}
 		}
 		
-	}
+	}*/
 	
 	/**
 	 * Methode qui renvoi un booleen pour savoir si un personnage de coord (x,y) se situe a coté d'un rocher de coord(a,b)

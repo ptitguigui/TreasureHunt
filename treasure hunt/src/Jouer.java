@@ -89,9 +89,10 @@ public class Jouer  {
 	
 			int nombre = Integer.parseInt(nb);
 			int nbExplo1=0,nbExplo2=0,nbVoleurs1=0,nbVoleurs2=0, nbPiegeurs1=0, nbPiegeurs2=0, nbGuerriers1=0, nbGuerriers2=0;
-			boolean valide = false;
+			boolean valide;
 			//Choix des différents personnages par équipe
 			for(int i=1; i<3; i++){		
+				valide = false;
 				do{					
 					//demande nombres d'explorateur pour les différentes équipes
 					rep=new String(JOptionPane.showInputDialog(null,"J"+i+", entrez le nombre d'explorateur(s) :"));
@@ -156,7 +157,7 @@ public class Jouer  {
 							nombre -= nbGuerriers1;
 						}else{
 							nbGuerriers2=Integer.parseInt(rep);
-							nombre -= nbGuerriers1;
+							nombre -= nbGuerriers2;
 						}
 					}
 				if(nombre == 0){
