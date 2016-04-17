@@ -58,6 +58,9 @@ public class Ile {
 		// Vérification de la selection : doit être un personnage de son équipe
     	do {
     		event=  plateaux[i].waitEvent();
+    		while(!(event instanceof MouseEvent)){
+    			event=  plateaux[i].waitEvent();
+    		}
 		   	x = plateaux[i].getX((MouseEvent) event) ;
 	    	y = plateaux[i].getY((MouseEvent) event) ;
     	} while(!(getValeurParcelle(x, y)>=9 && getValeurParcelle(x, y)%2!=i ));
