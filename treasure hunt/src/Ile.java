@@ -185,7 +185,6 @@ public class Ile {
     			} else if(getValeurParcelle(a,b)==10+i && dansChampsAction(a,b,x,y,8)){
     				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages)){
     					rentrerDansNavire(x,y,a,b,plateaux,i);
-    					plateaux[i].println("Vous êtes rentré dans votre navire");
     					action=true;
     				} else {
     					plateaux[i].println("Vous ne pouvez pas rentrer dans le navire, vous etes le dernier personnage sur l'île."
@@ -222,7 +221,6 @@ public class Ile {
     			} else if(getValeurParcelle(a,b)==10+i && dansChampsAction(a,b,x,y,8)){
     				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages)){
     					rentrerDansNavire(x,y,a,b,plateaux,i);
-    					plateaux[i].println("Vous êtes rentré dans votre navire");
     					action=true;
     				} else {
     					plateaux[i].println("Vous ne pouvez pas rentrer dans le navire, vous etes le dernier personnage sur l'île."
@@ -267,7 +265,6 @@ public class Ile {
     			} else if(getValeurParcelle(a,b)==10+i && dansChampsAction(a,b,x,y,8)){
     				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages)){
     					rentrerDansNavire(x,y,a,b,plateaux,i);
-    					plateaux[i].println("Vous êtes rentré dans votre navire");
     					action=true;
     				} else {
     					plateaux[i].println("Vous ne pouvez pas rentrer dans le navire, vous etes le dernier personnage sur l'île."
@@ -343,7 +340,7 @@ public class Ile {
 		grille[x][y]=new Parcelle();
 		plateaux[0].setJeu(getIleTab());
 		plateaux[1].setJeu(getIleTab());
-		plateaux[i].println("Vous êtez rentré dans votre navire");
+		plateaux[i].println("Vous êtes rentré dans votre navire");
 	}
 	
 	/**
