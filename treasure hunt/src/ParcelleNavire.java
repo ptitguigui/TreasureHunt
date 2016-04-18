@@ -17,7 +17,7 @@ public class ParcelleNavire extends Parcelle {
 	 * @param numJoueur un entier.
 	 */
 	ParcelleNavire(int numJoueur){
-		super.valeur=6+numJoueur;
+		super.valeur=9+numJoueur;
 	}
 	
 	/**
@@ -26,7 +26,7 @@ public class ParcelleNavire extends Parcelle {
 	 * @param equipage une liste de personnages.
 	 */
 	ParcelleNavire(int numJoueur, ArrayList<Personnage> equipage){
-		super.valeur=6+numJoueur;
+		super.valeur=9+numJoueur;
 		this.equipage=equipage;
 	}
 	

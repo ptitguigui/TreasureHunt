@@ -11,7 +11,7 @@ public class Guerrier extends Personnage {
 		super.numEquipe=numEquipe;
 		super.maxEnergie=100;
 		super.energie=maxEnergie;
-		super.valeur=14+numEquipe;
+		super.valeur=17+numEquipe;
 		} else {
 			super.nom="Problème d'initialisation, mauvais n° d'équipe (classe Guerrier)";
 			super.numEquipe=numEquipe;
