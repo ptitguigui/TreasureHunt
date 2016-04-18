@@ -17,12 +17,21 @@ public class ParcelleRocher extends Parcelle{
 	 * Attribut correspondant au message affiché si le rocher est soulevé.
 	 */
 	private String msg;
+	/**
+	 * Attribut permettant de tirer un nombre aléatoire.
+	 */
+	private Aleatoire alea=new Aleatoire();
+	/**
+	 * Attribut permettant de garder la valeur aléatoire tirée comme étant la valeur du rocher.
+	 */
+	private int valeurRocherIni;
 	
 	/**
 	 * Constructeur initialisant le rocher avec aucun personnage dessus.
 	 */
 	ParcelleRocher(){
-		super.valeur=3;
+		super.valeur=alea.tirage(3)+3;
+		valeurRocherIni=valeur;
 		msg="Mais vous n'avez rien trouvé en dessous...";
 	}
 	
@@ -40,6 +49,14 @@ public class ParcelleRocher extends Parcelle{
 	 */
 	public boolean getClef(){
 		return clef;
+	}
+	
+	/**
+	 * Méthode retournant la valeur initiale du rocher, défini par un random à sa création.
+	 * @return
+	 */
+	public int getValeurIni(){
+		return valeurRocherIni;
 	}
 	/**
 	 * Méthode permettant d'ajouter ou retirer une clef sur la parcelle.
@@ -78,9 +95,9 @@ public class ParcelleRocher extends Parcelle{
 	 */
 	public void visible(){
 		if(clef){
-			super.valeur=4;
+			super.valeur=7;
 		} else if(tresor) {
-			super.valeur=5;
+			super.valeur=8;
 		}
 	}
 	
@@ -88,6 +105,6 @@ public class ParcelleRocher extends Parcelle{
 	 * Méthode permettant de cacher la clef ou le trésor en replaçant un rocher par dessus.
 	 */
 	public void hide() {
-		super.valeur=3;
+		super.valeur=valeurRocherIni;
 	}
 }

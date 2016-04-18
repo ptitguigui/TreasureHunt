@@ -9,12 +9,15 @@ public class GestionPlateaux {
 			"treasure hunt/images/coffre.png.jpg",
 			"treasure hunt/images/1.explorateur.png",
 			"treasure hunt/images/2.explorateur.png"};*/
-	private final String[] IMGS={"treasure hunt/imgs/sable.png",
+	final String[] IMGS={"treasure hunt/imgs/sable.png",
 			"treasure hunt/imgs/mer.png",
 			"treasure hunt/imgs/rocher1.png",
+			"treasure hunt/imgs/rocher2.png",
+			"treasure hunt/imgs/rocher3.png",
+			"treasure hunt/imgs/arbre.png",
 			"treasure hunt/imgs/clef.png",
 			"treasure hunt/imgs/tresor.png",
-			"treasure hunt/imgs/arbre.png",
+			"treasure hunt/imgs/piege.png",
 			"treasure hunt/imgs/1_bateau.png",
 			"treasure hunt/imgs/2_bateau.png",
 			"treasure hunt/imgs/1_explorateur.png",
@@ -99,16 +102,17 @@ public class GestionPlateaux {
 		}
 		plateaux[0].setJeu(jeuJ1);
 		plateaux[1].setJeu(jeuJ2);
+		
 		//trésor visible ou non
 		if (jeuJ1b[coordTresor[0]][coordTresor[1]] && tresorJ1){
-			jeuJ1[coordTresor[0]][coordTresor[1]]=5;
+			jeuJ1[coordTresor[0]][coordTresor[1]]=8;
 		} else if (jeuJ1b[coordTresor[0]][coordTresor[1]] && !tresorJ1){
-			jeuJ1[coordTresor[0]][coordTresor[1]]=3;
+			jeuJ1[coordTresor[0]][coordTresor[1]]=((ParcelleRocher)monIle.getParcelle(coordTresor[0], coordTresor[1])).getValeurIni();
 		}
 		if (jeuJ2b[coordTresor[0]][coordTresor[1]] && tresorJ2){
-			jeuJ2[coordTresor[0]][coordTresor[1]]=5;
+			jeuJ2[coordTresor[0]][coordTresor[1]]=8;
 		} else if (jeuJ2b[coordTresor[0]][coordTresor[1]] && !tresorJ2){
-			jeuJ2[coordTresor[0]][coordTresor[1]]=3;
+			jeuJ2[coordTresor[0]][coordTresor[1]]=((ParcelleRocher)monIle.getParcelle(coordTresor[0], coordTresor[1])).getValeurIni();
 		}
 	}
 	

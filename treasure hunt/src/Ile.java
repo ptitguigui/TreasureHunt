@@ -63,14 +63,17 @@ public class Ile {
     		}
 		   	x = plateaux[i].getX((MouseEvent) event) ;
 	    	y = plateaux[i].getY((MouseEvent) event) ;
-    	} while(!(getValeurParcelle(x, y)>=9 && getValeurParcelle(x, y)%2!=i ));
+    	} while(!(getValeurParcelle(x, y)>=12 && getValeurParcelle(x, y)%2==i ));
 		    
     	//Actions si explorateur
-    	if(getValeurParcelle(x,y) == 9+i){ 
+    	if(getValeurParcelle(x,y) == 12+i){ 
     		plateaux[i].println("Vous avez choisis un explorateur de J"+(i+1)+", il a " + ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
     		//highlight(plateaux, i, getValeurParcelle(x,y), x, y);
     		while(!action){
     			event=  plateaux[i].waitEvent();
+    			while(!(event instanceof MouseEvent)){
+        			event=  plateaux[i].waitEvent();
+        		}
     			a = plateaux[i].getX((MouseEvent) event) ;
     			b = plateaux[i].getY((MouseEvent) event) ;
 			    
@@ -115,7 +118,7 @@ public class Ile {
     				}
     				action=true;
         		//Si trésor déjà trouvé, mais qu'on revient avec la clef
-    			} else if (getValeurParcelle(a,b)==5 && dansChampsAction(x,y,a,b,4)){
+    			} else if (getValeurParcelle(a,b)==8 && dansChampsAction(x,y,a,b,4)){
     				if (!((ParcelleRocher)getParcelle(a,b)).getTresor()){
     					plateaux[i].println("Vous avez trouvé le coffre ! Malheureusement pour vous, il a déjà été vidé de son contenu...");
     				} else {
@@ -129,7 +132,7 @@ public class Ile {
     				}
     				action=true;
     			//Rentrer dans le bateau
-    			} else if(getValeurParcelle(a,b)==7+i && dansChampsAction(a,b,x,y,8)){
+    			} else if(getValeurParcelle(a,b)==10+i && dansChampsAction(a,b,x,y,8)){
     				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages)){
     					rentrerDansNavire(x,y,a,b,plateaux,i);
     					action=true;
@@ -141,10 +144,13 @@ public class Ile {
     		}
     	}
 		//Action si voleur
-    	if(getValeurParcelle(x,y) == 11+i){ 
+    	if(getValeurParcelle(x,y) == 14+i){ 
     		plateaux[i].println("Vous avez choisis un voleur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
     		while(!action){
     			event=  plateaux[i].waitEvent();
+    			while(!(event instanceof MouseEvent)){
+        			event=  plateaux[i].waitEvent();
+        		}
     			a = plateaux[i].getX((MouseEvent) event) ;
     			b = plateaux[i].getY((MouseEvent) event) ;
 			    	
@@ -153,7 +159,7 @@ public class Ile {
     				deplacer(x, y, a, b, plateaux, i);
     				action = true;
     			//Fouille un personnage
-    			} else if(dansChampsAction(x,y,a,b,8) && getValeurParcelle(a,b)>8 && !personnageAllieACote(x, y, a, b, 8)){
+    			} else if(dansChampsAction(x,y,a,b,8) && getValeurParcelle(a,b)>=12 && !personnageAllieACote(x, y, a, b, 8)){
     				plateaux[i].println("Vous fouillez un personnage...") ;
     				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-10);
     				//s'il ne porte rien
@@ -176,7 +182,7 @@ public class Ile {
     				echangeItem(x, y, a, b, plateaux, i);
     				action = true;
     			//Rentrer dans navire
-    			} else if(getValeurParcelle(a,b)==7+i && dansChampsAction(a,b,x,y,8)){
+    			} else if(getValeurParcelle(a,b)==10+i && dansChampsAction(a,b,x,y,8)){
     				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages)){
     					rentrerDansNavire(x,y,a,b,plateaux,i);
     					plateaux[i].println("Vous êtes rentré dans votre navire");
@@ -190,14 +196,17 @@ public class Ile {
     	}
     	
     	//Action si piegeur !!!!!!
-    	if(getValeurParcelle(x,y) == 13+i){ 
+    	if(getValeurParcelle(x,y) == 16+i){ 
     		plateaux[i].println("Vous avez choisis un piegeur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
     		while(!action){
     			event=  plateaux[i].waitEvent();
+    			while(!(event instanceof MouseEvent)){
+        			event=  plateaux[i].waitEvent();
+        		}
     			a = plateaux[i].getX((MouseEvent) event) ;
     			b = plateaux[i].getY((MouseEvent) event) ;
 			    	
-    			//déplacement
+    			//déplacement ou piège
     			if(getParcelle(a,b).estVide() && dansChampsAction(x, y, a, b, 8)){
     				deplacer(x, y, a, b, plateaux, i);
     				action = true;
@@ -210,7 +219,7 @@ public class Ile {
     				echangeItem(x, y, a, b, plateaux, i);
     				action = true;
     			//Rentrer dans navire
-    			} else if(getValeurParcelle(a,b)==7+i && dansChampsAction(a,b,x,y,8)){
+    			} else if(getValeurParcelle(a,b)==10+i && dansChampsAction(a,b,x,y,8)){
     				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages)){
     					rentrerDansNavire(x,y,a,b,plateaux,i);
     					plateaux[i].println("Vous êtes rentré dans votre navire");
@@ -224,10 +233,13 @@ public class Ile {
     	}
     	
     	//Action si Guerrier !!!!!!
-    	if(getValeurParcelle(x,y) == 15+i){ 
+    	if(getValeurParcelle(x,y) == 18+i){ 
     		plateaux[i].println("Vous avez choisis un guerrier de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
     		while(!action){
     			event=  plateaux[i].waitEvent();
+    			while(!(event instanceof MouseEvent)){
+        			event=  plateaux[i].waitEvent();
+        		}
     			a = plateaux[i].getX((MouseEvent) event) ;
     			b = plateaux[i].getY((MouseEvent) event) ;
 			    	
@@ -236,11 +248,11 @@ public class Ile {
     				deplacer(x, y, a, b, plateaux, i);
     				action = true;
     			//attaque un ennemi
-    			} else if(dansChampsAction(x,y,a,b,8) && getValeurParcelle(a,b)>8 && !personnageAllieACote(x, y, a, b, 8)){
-    				chance = r.nextInt(99)+1;
+    			} else if(dansChampsAction(x,y,a,b,8) && getValeurParcelle(a,b)>=12 && !personnageAllieACote(x, y, a, b, 8)){
+    				chance = r.nextInt(2);
     				plateaux[i].println("Vous attaquez un personnage...") ;
     				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-10);
-    				if(chance >50){
+    				if(chance==0){
     				plateaux[i].println("Et vous lui infliger 30 points de dégâts !!") ;
     				((Guerrier)getParcelle(x,y)).attaqueEnnemi(((Personnage)getParcelle(a,b))); 
     				}else{
@@ -252,7 +264,7 @@ public class Ile {
     				echangeItem(x, y, a, b, plateaux, i);
     				action = true;
     			//Rentrer dans navire
-    			} else if(getValeurParcelle(a,b)==7+i && dansChampsAction(a,b,x,y,8)){
+    			} else if(getValeurParcelle(a,b)==10+i && dansChampsAction(a,b,x,y,8)){
     				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages)){
     					rentrerDansNavire(x,y,a,b,plateaux,i);
     					plateaux[i].println("Vous êtes rentré dans votre navire");
@@ -414,7 +426,7 @@ public class Ile {
 	 * @return un booleen
 	 */
 	public boolean rocherACote(int x, int y, int a, int b){
-		return (grille[a][b].getValeur() == 3)&& dansChampsAction(x,y,a,b,4); //4 car seul les explorateurs peuvent soulever.
+		return grille[a][b].getValeur()>=3 && grille[a][b].getValeur()<=5 && dansChampsAction(x,y,a,b,4); //4 car seul les explorateurs peuvent soulever.
 	}
 	
 	/**
@@ -427,7 +439,7 @@ public class Ile {
 	 * @return un booleen
 	 */
 	public boolean personnageACote(int x, int y, int a, int b, int nbDirections){
-		return (grille[a][b].getValeur() > 8)&& dansChampsAction(x, y, a, b, nbDirections);
+		return (grille[a][b].getValeur() >= 121)&& dansChampsAction(x, y, a, b, nbDirections);
 	}	
 	/**
 	 * Methode qui renvoi un booleen pour savoir si un personnage de coord (x,y) se situe a coté d'un autre personnage de coord(a,b) et si celui est un allié.
