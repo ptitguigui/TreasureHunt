@@ -194,7 +194,7 @@ public class Ile {
     		}    		
     	}
     	
-    	//Action si piegeur !!!!!!
+    	//Action si piegeur 
     	if(getValeurParcelle(x,y) == 16+i){ 
     		plateaux[i].println("Vous avez choisis un piegeur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
     		while(!action){
@@ -205,14 +205,22 @@ public class Ile {
     			a = plateaux[i].getX((MouseEvent) event) ;
     			b = plateaux[i].getY((MouseEvent) event) ;
 			    	
-    			//déplacement ou piège
+    			//2 choix possible: déplacement ou piège
     			if(getParcelle(a,b).estVide() && dansChampsAction(x, y, a, b, 8)){
-    				deplacer(x, y, a, b, plateaux, i);
-    				action = true;
-    			// TODO pose un piege
-    				
-    				
-    				
+	    			Object[] option = {"Déplacement" , "Poser un piege"};
+	    			int choix = JOptionPane.showOptionDialog(null, "Choississez votre option",  null, JOptionPane.OK_OPTION, JOptionPane.NO_OPTION, null, option, option[0]);
+	    			//déplacement
+	    			if(choix ==0){   			
+	    				deplacer(x, y, a, b, plateaux, i);
+	    				action = true;  
+	    			//pose un piege	
+	    			}else if(choix ==1){
+	    				setPiege(i,a,b);
+	    				jeu=getIleTab();
+    					plateaux[0].setJeu(jeu);
+    					plateaux[1].setJeu(jeu);
+	    			}
+    			    				
     			//Echange avec un personnage	
     			}else if(personnageAllieACote(x, y, a, b, 8)){
     				echangeItem(x, y, a, b, plateaux, i);
@@ -230,7 +238,7 @@ public class Ile {
     		}    		
     	}
     	
-    	//Action si Guerrier !!!!!!
+    	//Action si Guerrier
     	if(getValeurParcelle(x,y) == 18+i){ 
     		plateaux[i].println("Vous avez choisis un guerrier de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
     		while(!action){
@@ -646,6 +654,15 @@ public class Ile {
 			grille[x][y]=new ParcelleRocher();
 			entites.put("R"+Integer.toString(i), new int[] {x,y});
 		}
+	}
+	/**
+	 * Methode qui place un piege selon les coordonnée donnée et selon l'équipe du joueur
+	 * @param numEquipe un entier 1 ou 2
+	 * @param a un entier (coordonnée x)
+	 * @param b un entier (coordonnée y)
+	 */
+	private void setPiege(int numEquipe, int a, int b){
+		grille[a][b]= new ParcellePiege(numEquipe);
 	}
 	
 	
