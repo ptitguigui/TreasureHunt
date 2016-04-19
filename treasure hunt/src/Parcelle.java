@@ -66,6 +66,6 @@ public class Parcelle {
 	 * @return vrai si la parcelle est vide, faux sinon.
 	 */
 	public boolean estVide() {
-		return (getValeur() == 1);
+		return (getValeur() == 1 || getValeur() == 9);
 	}
 }

@@ -212,7 +212,6 @@ public class Ile {
 	    			//déplacement
 	    			if(choix ==0){   			
 	    				deplacer(x, y, a, b, plateaux, i);
-	    				action = true;  
 	    			//pose un piege	
 	    			}else if(choix ==1){
 	    				setPiege(i,a,b);
@@ -220,7 +219,7 @@ public class Ile {
     					plateaux[0].setJeu(jeu);
     					plateaux[1].setJeu(jeu);
 	    			}
-    			    				
+	    			action = true;  				
     			//Echange avec un personnage	
     			}else if(personnageAllieACote(x, y, a, b, 8)){
     				echangeItem(x, y, a, b, plateaux, i);
@@ -299,12 +298,19 @@ public class Ile {
 	 * @param i le numéro du plateau courrant
 	 */
 	public void deplacer(int x, int y, int a, int b, SuperPlateau[] plateaux, int i){
-		((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
-		echangeParcelles(x, y, a, b);
-		plateaux[0].setJeu(getIleTab());
-		plateaux[1].setJeu(getIleTab());
-		plateaux[i].println("Déplacement effectué.");
+		plateaux[i].println("Déplacement effectué...");
+		if(getValeurParcelle(a,b)==9){
+			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-30);
+			plateaux[i].println("Vous être pris dans un piege ! Vous perdez 30 points d'énergie");
+		}else{
+			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
+		}
+
+			echangeParcelles(x, y, a, b);
+			plateaux[0].setJeu(getIleTab());
+			plateaux[1].setJeu(getIleTab());
 	}
+	
 	
 	/**
 	 * Méthode permettant d'échanger un item (donner ou prendre) selon un ordre d'importance (trésor puis clef) entre le personnage (x,y) et le personnage (a,b).
@@ -380,8 +386,13 @@ public class Ile {
 	 */
 	public void echangeParcelles(int x, int y, int a, int b){
 		 Parcelle p = grille[x][y];
-		 grille[x][y] = grille[a][b];
-		 grille[a][b] = p;
+		 //if(grille[x][y].getValeur()==9){
+	 		grille[a][b] = p;
+			grille[x][y].setValeur(1) ;
+		/* }else{
+			 grille[x][y] = grille[a][b];
+			 grille[a][b] = p;
+		 }*/
 	}
 	
 	/**
