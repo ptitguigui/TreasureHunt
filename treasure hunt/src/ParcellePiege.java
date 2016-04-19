@@ -10,4 +10,8 @@ public class ParcellePiege extends Parcelle {
 		super.valeur=9;
 		this.numEquipe=numEquipe;
 	}
+	
+	public int getNumEquipe(){
+		return numEquipe;
+	}
 }

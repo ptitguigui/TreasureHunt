@@ -56,6 +56,20 @@ public class ParcelleNavire extends Parcelle {
 	}
 	
 	/**
+	 * Méthode retournant un personnage dans le navire.
+	 * @param nom le nom d'un personnage
+	 * @return le personnage ayant pour nom celui passé en paramètre, s'il y en a plusieurs alors il renvoit la première occurence.
+	 */
+	public Personnage getPersonnage(String nom){
+		for(int i=0; i<equipage.size(); i++){
+			if(equipage.get(i).getNom()==nom){
+				return equipage.get(i);
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Méthode retournant le nombre de personne à bord du navire.
 	 * @return le nombre de personne à bord du navire.
 	 */

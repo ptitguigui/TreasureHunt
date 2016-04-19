@@ -55,7 +55,7 @@ public class Ile {
 		
 		int[][] jeu;
 		
-		// Vérification de la selection : doit être un personnage de son équipe
+		// Vérification de la selection : doit être un personnage ou navire de son équipe
     	do {
     		event=  plateaux[i].waitEvent();
     		while(!(event instanceof MouseEvent)){
@@ -63,7 +63,45 @@ public class Ile {
     		}
 		   	x = plateaux[i].getX((MouseEvent) event) ;
 	    	y = plateaux[i].getY((MouseEvent) event) ;
-    	} while(!(getValeurParcelle(x, y)>=12 && getValeurParcelle(x, y)%2==i ));
+    	} while(!(getValeurParcelle(x, y)>=10 && getValeurParcelle(x, y)%2==i ));
+    	
+    	//Actions si navire !!!!
+    	if(getValeurParcelle(x,y) == 10+i && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0){ 
+    		plateaux[i].println("Vous avez choisis votre navire");
+    		Personnage p;
+    		if (((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()==1){
+    			p=((ParcelleNavire)getParcelle(x,y)).getPersonnage(0);
+    			plateaux[i].println("Seul le personnage "+p.getNom()+" est dans le navire, il a "+p.getEnergie()+" energie.");
+    		} else {
+    			String[] choix = new String[((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()];
+    			for(int j=0; j<choix.length; j++) {
+    				choix[j]=((ParcelleNavire)getParcelle(x,y)).getPersonnage(j).getNom();
+    			}
+    		    String nom = (String)JOptionPane.showInputDialog(null, "Quel personnage voulez-vous sortir ?", "Equipage du navire",
+    		    		JOptionPane.QUESTION_MESSAGE, null, choix, choix[0]);
+    		    p=((ParcelleNavire)getParcelle(x,y)).getPersonnage(nom);
+    		    plateaux[i].println("Vous avez choisi le personnage "+p.getNom()+", il a "+p.getEnergie()+" energie.");
+    		}
+    		plateaux[i].println("Où souhaitez-vous le déplacer ?");
+    		while(!action){
+    			event=  plateaux[i].waitEvent();
+    			while(!(event instanceof MouseEvent)){
+        			event=  plateaux[i].waitEvent();
+        		}
+    			a = plateaux[i].getX((MouseEvent) event) ;
+    			b = plateaux[i].getY((MouseEvent) event) ;
+			    
+    			//sortie du personnage
+    			if(getParcelle(a,b).estVide() && dansChampsAction(x, y, a, b, 4)){
+    				grille[a][b]=p;
+    				((ParcelleNavire)getParcelle(x,y)).removePersonnage(p);
+    				jeu=getIleTab();
+					plateaux[0].setJeu(jeu);
+					plateaux[1].setJeu(jeu);
+    				action = true;
+    			}
+    		}
+    	}
 		    
     	//Actions si explorateur
     	if(getValeurParcelle(x,y) == 12+i){ 
@@ -621,7 +659,7 @@ public class Ile {
 			}
 			y=Integer.parseInt(saisie);
 						
-			grille[x][y]=new Guerrier("guerrier", numEquipe);
+			grille[x][y]=new Guerrier("Guerrier", numEquipe);
 			if (numEquipe==1){
 				entites.put("G"+Integer.toString(i), new int[] {x,y});
 			} else {
