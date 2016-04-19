@@ -11,44 +11,31 @@ public class Jouer  {
 
 	public static void main(String[] args) {
 		
-		Object[] option = {"Jouer" , "Quitter"};
+		Object[] option = {"Jouer" , "Tester", "Quitter"};
 		int menu = JOptionPane.showOptionDialog(null, "Bienvenue, que voulez-vous faire ?", "Treasure hunt", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[0]);
 		
-		if(menu== 0){
-			JOptionPane.showMessageDialog(null, "Lancement du jeu");
+		final String[] IMGS={"treasure hunt/imgs/sable.png",
+				"treasure hunt/imgs/mer.png",
+				"treasure hunt/imgs/rocher1.png",
+				"treasure hunt/imgs/rocher2.png",
+				"treasure hunt/imgs/rocher3.png",
+				"treasure hunt/imgs/arbre.png",
+				"treasure hunt/imgs/clef.png",
+				"treasure hunt/imgs/tresor.png",
+				"treasure hunt/imgs/piege.png",
+				"treasure hunt/imgs/1_bateau.png",
+				"treasure hunt/imgs/2_bateau.png",
+				"treasure hunt/imgs/1_explorateur.png",
+				"treasure hunt/imgs/2_explorateur.png",
+				"treasure hunt/imgs/1_voleur.png",
+				"treasure hunt/imgs/2_voleur.png",
+				"treasure hunt/imgs/1_piegeur.png",
+				"treasure hunt/imgs/2_piegeur.png",
+				"treasure hunt/imgs/1_guerrier.png",
+				"treasure hunt/imgs/2_guerrier.png"};
 			
-			/*final String[] IMGS={"treasure hunt/images/sable.jpg",
-					"treasure hunt/images/mer.png",
-					"treasure hunt/images/rocher.png.jpg",
-					"treasure hunt/images/cle.png",
-					"treasure hunt/images/coffre.png.jpg",
-					"treasure hunt/images/arbre.png",
-					"treasure hunt/images/1.navire.png",
-					"treasure hunt/images/2.navire.png",
-					"treasure hunt/images/1.explorateur.png",
-					"treasure hunt/images/2.explorateur.png",
-					"treasure hunt/images/1.piegeur.png",
-					"treasure hunt/images/2.piegeur.png"};*/
-			
-			final String[] IMGS={"treasure hunt/imgs/sable.png",
-					"treasure hunt/imgs/mer.png",
-					"treasure hunt/imgs/rocher1.png",
-					"treasure hunt/imgs/rocher2.png",
-					"treasure hunt/imgs/rocher3.png",
-					"treasure hunt/imgs/arbre.png",
-					"treasure hunt/imgs/clef.png",
-					"treasure hunt/imgs/tresor.png",
-					"treasure hunt/imgs/piege.png",
-					"treasure hunt/imgs/1_bateau.png",
-					"treasure hunt/imgs/2_bateau.png",
-					"treasure hunt/imgs/1_explorateur.png",
-					"treasure hunt/imgs/2_explorateur.png",
-					"treasure hunt/imgs/1_voleur.png",
-					"treasure hunt/imgs/2_voleur.png",
-					"treasure hunt/imgs/1_piegeur.png",
-					"treasure hunt/imgs/2_piegeur.png",
-					"treasure hunt/imgs/1_guerrier.png",
-					"treasure hunt/imgs/2_guerrier.png"};
+		if(menu==0 || menu==1){
+			JOptionPane.showMessageDialog(null, "Lancement du jeu");			
 			
 			//demande de la taille
 			//nombre de colonnes
@@ -89,7 +76,6 @@ public class Jouer  {
 				JOptionPane.showMessageDialog(null, "Saisie incorrecte ou trop élevée.", "Erreur", 0);
 				nb=JOptionPane.showInputDialog(null,"Entrez le nombre de personnage(s) :");
 			}
-	
 			int nombre = Integer.parseInt(nb);
 			int nbExplo1=0,nbExplo2=0,nbVoleurs1=0,nbVoleurs2=0, nbPiegeurs1=0, nbPiegeurs2=0, nbGuerriers1=0, nbGuerriers2=0;
 			boolean valide;
@@ -178,8 +164,16 @@ public class Jouer  {
 			//Création de l'ile				
 			Ile monIle = new Ile(nbColonnes,nbLignes);
 			monIle.initialiser(pourcentage);
-			monIle.setPersonnages(1, nbExplo1, nbVoleurs1, nbPiegeurs1, nbGuerriers1);
-			monIle.setPersonnages(2, nbExplo2, nbVoleurs2, nbPiegeurs2, nbGuerriers2);
+			
+			if(menu==1){
+				monIle.setPersonnages(1, true, nbExplo1, nbVoleurs1, nbPiegeurs1, nbGuerriers1);
+				monIle.setPersonnages(2, true, nbExplo2, nbVoleurs2, nbPiegeurs2, nbGuerriers2);
+			} else {
+				//TODO mettre personnages dans les navires
+				monIle.setPersonnages(1, false, nbExplo1, nbVoleurs1, nbPiegeurs1, nbGuerriers1);
+				monIle.setPersonnages(2, false, nbExplo2, nbVoleurs2, nbPiegeurs2, nbGuerriers2);
+			}
+			
 			int[][] jeu=monIle.getIleTab();
 			
 			SuperPlateau[] plateaux=new SuperPlateau[2];

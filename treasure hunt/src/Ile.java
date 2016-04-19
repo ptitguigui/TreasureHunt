@@ -80,7 +80,7 @@ public class Ile {
     		    String nom = (String)JOptionPane.showInputDialog(null, "Quel personnage voulez-vous sortir ?", "Equipage du navire",
     		    		JOptionPane.QUESTION_MESSAGE, null, choix, choix[0]);
     		    p=((ParcelleNavire)getParcelle(x,y)).getPersonnage(nom);
-    		    plateaux[i].println("Vous avez choisi le personnage "+p.getNom()+", il a "+p.getEnergie()+" energie.");
+    		    plateaux[i].println("Vous avez selectionné le personnage "+p.getNom()+", il a "+p.getEnergie()+" energie.");
     		}
     		plateaux[i].println("Où souhaitez-vous le déplacer ?");
     		while(!action){
@@ -547,31 +547,35 @@ public class Ile {
 	 * @param nbExplorateurs, le nombre d'explorateurs dans l'équipe
 	 * @param numEquipe, le numero de l'équipe où l'explorateur est situé
 	 */
-	private void setExplorateurs(int nbExplorateurs, int numEquipe){
+	private void setExplorateurs(boolean test, int nbExplorateurs, int numEquipe){
 		int x, y;
 		for(int i=1; i<=nbExplorateurs; i++){
-				
-			String saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée x de l'explorateur n°" + i + " de l'équipe " + numEquipe));
-			//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
-			while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>=1 && Integer.parseInt(saisie)<grille.length-1)){
-				JOptionPane.showMessageDialog(null, "Saisie incorrecte.", "Erreur", 0);
-				saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée x de l'explorateur n°" + i + " de l'équipe " + numEquipe);
-			}
-			x=Integer.parseInt(saisie);
-					
-			saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée y de l'explorateur n°" + i + " de l'équipe " + numEquipe));
-			//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
-			while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>=1 && Integer.parseInt(saisie)<grille[0].length-1 && grille[x][Integer.parseInt(saisie)].estVide())){
-				JOptionPane.showMessageDialog(null, "Saisie incorrecte ou case déjà occupée.", "Erreur", 0);
-				saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée y de l'explorateur n°" + i + " de l'équipe " + numEquipe);
-			}
-			y=Integer.parseInt(saisie);
+			if(test){
+				String saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée x de l'explorateur n°" + i + " de l'équipe " + numEquipe));
+				//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
+				while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>=1 && Integer.parseInt(saisie)<grille.length-1)){
+					JOptionPane.showMessageDialog(null, "Saisie incorrecte.", "Erreur", 0);
+					saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée x de l'explorateur n°" + i + " de l'équipe " + numEquipe);
+				}
+				x=Integer.parseInt(saisie);
 						
-			grille[x][y]=new Explorateur("Explorateur", numEquipe);
-			if (numEquipe==1){
-				entites.put("E"+Integer.toString(i), new int[] {x,y});
+				saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée y de l'explorateur n°" + i + " de l'équipe " + numEquipe));
+				//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
+				while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>=1 && Integer.parseInt(saisie)<grille[0].length-1 && grille[x][Integer.parseInt(saisie)].estVide())){
+					JOptionPane.showMessageDialog(null, "Saisie incorrecte ou case déjà occupée.", "Erreur", 0);
+					saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée y de l'explorateur n°" + i + " de l'équipe " + numEquipe);
+				}
+				y=Integer.parseInt(saisie);
+							
+				grille[x][y]=new Explorateur("Explorateur", numEquipe);
+				if (numEquipe==1){
+					entites.put("E"+Integer.toString(i), new int[] {x,y});
+				} else {
+					entites.put("e"+Integer.toString(i), new int[] {x,y});
+				}
 			} else {
-				entites.put("e"+Integer.toString(i), new int[] {x,y});
+				int[] coordN=getNavire(numEquipe);
+				((ParcelleNavire)grille[coordN[0]][coordN[1]]).addPersonnage(new Explorateur("Explorateur", numEquipe));
 			}
 		}
 	}
@@ -581,89 +585,101 @@ public class Ile {
 	 * @param nbVoleurs, le nombre d'explorateurs dans l'équipe
 	 * @param numEquipe, le numero de l'équipe où le voleur est situé
 	 */
-	private void setVoleurs(int nbVoleurs, int numEquipe){
+	private void setVoleurs(boolean test, int nbVoleurs, int numEquipe){
 		int x, y;
 		for(int i=1; i<=nbVoleurs; i++){
-				
-			String saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée x du voleur n°" + i + " de l'équipe " + numEquipe));
-			//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
-			while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>=1 && Integer.parseInt(saisie)<grille.length-1)){
-				JOptionPane.showMessageDialog(null, "Saisie incorrecte.", "Erreur", 0);
-				saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée x du voleur n°" + i + " de l'équipe " + numEquipe);
-			}
-			x=Integer.parseInt(saisie);
-					
-			saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée y du voleur n°" + i + " de l'équipe " + numEquipe));
-			//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
-			while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>=1 && Integer.parseInt(saisie)<grille[0].length-1 && grille[x][Integer.parseInt(saisie)].estVide())){
-				JOptionPane.showMessageDialog(null, "Saisie incorrecte ou case déjà occupée.", "Erreur", 0);
-				saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée y du voleur n°" + i + " de l'équipe " + numEquipe);
-			}
-			y=Integer.parseInt(saisie);
+			if(test) {	
+				String saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée x du voleur n°" + i + " de l'équipe " + numEquipe));
+				//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
+				while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>=1 && Integer.parseInt(saisie)<grille.length-1)){
+					JOptionPane.showMessageDialog(null, "Saisie incorrecte.", "Erreur", 0);
+					saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée x du voleur n°" + i + " de l'équipe " + numEquipe);
+				}
+				x=Integer.parseInt(saisie);
 						
-			grille[x][y]=new Voleur("Voleur", numEquipe);
-			if (numEquipe==1){
-				entites.put("V"+Integer.toString(i), new int[] {x,y});
+				saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée y du voleur n°" + i + " de l'équipe " + numEquipe));
+				//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
+				while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>=1 && Integer.parseInt(saisie)<grille[0].length-1 && grille[x][Integer.parseInt(saisie)].estVide())){
+					JOptionPane.showMessageDialog(null, "Saisie incorrecte ou case déjà occupée.", "Erreur", 0);
+					saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée y du voleur n°" + i + " de l'équipe " + numEquipe);
+				}
+				y=Integer.parseInt(saisie);
+							
+				grille[x][y]=new Voleur("Voleur", numEquipe);
+				if (numEquipe==1){
+					entites.put("V"+Integer.toString(i), new int[] {x,y});
+				} else {
+					entites.put("v"+Integer.toString(i), new int[] {x,y});
+				}
 			} else {
-				entites.put("v"+Integer.toString(i), new int[] {x,y});
+				int[] coordN=getNavire(numEquipe);
+				((ParcelleNavire)grille[coordN[0]][coordN[1]]).addPersonnage(new Voleur("Voleur", numEquipe));
 			}
 		}
 	}
 	
-	private void setPiegeurs(int nbPiegeurs, int numEquipe){
+	private void setPiegeurs(boolean test, int nbPiegeurs, int numEquipe){
 		int x, y;
 		for(int i=1; i<=nbPiegeurs; i++){
-				
-			String saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée x du piegeur n°" + i + " de l'équipe " + numEquipe));
-			//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
-			while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>=1 && Integer.parseInt(saisie)<grille.length-1)){
-				JOptionPane.showMessageDialog(null, "Saisie incorrecte.", "Erreur", 0);
-				saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée x du piegeur n°" + i + " de l'équipe " + numEquipe);
-			}
-			x=Integer.parseInt(saisie);
-					
-			saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée y du piegeur n°" + i + " de l'équipe " + numEquipe));
-			//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
-			while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>=1 && Integer.parseInt(saisie)<grille[0].length-1 && grille[x][Integer.parseInt(saisie)].estVide())){
-				JOptionPane.showMessageDialog(null, "Saisie incorrecte ou case déjà occupée.", "Erreur", 0);
-				saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée y du piegeur n°" + i + " de l'équipe " + numEquipe);
-			}
-			y=Integer.parseInt(saisie);
+			if (test){
+				String saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée x du piegeur n°" + i + " de l'équipe " + numEquipe));
+				//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
+				while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>=1 && Integer.parseInt(saisie)<grille.length-1)){
+					JOptionPane.showMessageDialog(null, "Saisie incorrecte.", "Erreur", 0);
+					saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée x du piegeur n°" + i + " de l'équipe " + numEquipe);
+				}
+				x=Integer.parseInt(saisie);
 						
-			grille[x][y]=new Piegeur("Piegeur", numEquipe);
-			if (numEquipe==1){
-				entites.put("P"+Integer.toString(i), new int[] {x,y});
+				saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée y du piegeur n°" + i + " de l'équipe " + numEquipe));
+				//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
+				while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>=1 && Integer.parseInt(saisie)<grille[0].length-1 && grille[x][Integer.parseInt(saisie)].estVide())){
+					JOptionPane.showMessageDialog(null, "Saisie incorrecte ou case déjà occupée.", "Erreur", 0);
+					saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée y du piegeur n°" + i + " de l'équipe " + numEquipe);
+				}
+				y=Integer.parseInt(saisie);
+							
+				grille[x][y]=new Piegeur("Piegeur", numEquipe);
+				if (numEquipe==1){
+					entites.put("P"+Integer.toString(i), new int[] {x,y});
+				} else {
+					entites.put("p"+Integer.toString(i), new int[] {x,y});
+				}
 			} else {
-				entites.put("p"+Integer.toString(i), new int[] {x,y});
+				int[] coordN=getNavire(numEquipe);
+				((ParcelleNavire)grille[coordN[0]][coordN[1]]).addPersonnage(new Piegeur("Piegeur", numEquipe));
 			}
 		}
 	}
 	
-	private void setGuerriers(int nbGuerriers, int numEquipe){
+	private void setGuerriers(boolean test, int nbGuerriers, int numEquipe){
 		int x, y;
 		for(int i=1; i<=nbGuerriers; i++){
-				
-			String saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée x du guerrier n°" + i + " de l'équipe " + numEquipe));
-			//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
-			while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>=1 && Integer.parseInt(saisie)<grille.length-1)){
-				JOptionPane.showMessageDialog(null, "Saisie incorrecte.", "Erreur", 0);
-				saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée x du guerrier n°" + i + " de l'équipe " + numEquipe);
-			}
-			x=Integer.parseInt(saisie);
-					
-			saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée y du guerrier n°" + i + " de l'équipe " + numEquipe));
-			//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
-			while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>=1 && Integer.parseInt(saisie)<grille[0].length-1 && grille[x][Integer.parseInt(saisie)].estVide())){
-				JOptionPane.showMessageDialog(null, "Saisie incorrecte ou case déjà occupée.", "Erreur", 0);
-				saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée y du guerrier n°" + i + " de l'équipe " + numEquipe);
-			}
-			y=Integer.parseInt(saisie);
+			if (test) {	
+				String saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée x du guerrier n°" + i + " de l'équipe " + numEquipe));
+				//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
+				while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>=1 && Integer.parseInt(saisie)<grille.length-1)){
+					JOptionPane.showMessageDialog(null, "Saisie incorrecte.", "Erreur", 0);
+					saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée x du guerrier n°" + i + " de l'équipe " + numEquipe);
+				}
+				x=Integer.parseInt(saisie);
 						
-			grille[x][y]=new Guerrier("Guerrier", numEquipe);
-			if (numEquipe==1){
-				entites.put("G"+Integer.toString(i), new int[] {x,y});
+				saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée y du guerrier n°" + i + " de l'équipe " + numEquipe));
+				//Tant que la saisie soit un chiffre et qu'il soit entre 2 et la taille de la grille-2
+				while(!(saisie.matches("[1-9][0-9]*")&& Integer.parseInt(saisie)>=1 && Integer.parseInt(saisie)<grille[0].length-1 && grille[x][Integer.parseInt(saisie)].estVide())){
+					JOptionPane.showMessageDialog(null, "Saisie incorrecte ou case déjà occupée.", "Erreur", 0);
+					saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée y du guerrier n°" + i + " de l'équipe " + numEquipe);
+				}
+				y=Integer.parseInt(saisie);
+							
+				grille[x][y]=new Guerrier("Guerrier", numEquipe);
+				if (numEquipe==1){
+					entites.put("G"+Integer.toString(i), new int[] {x,y});
+				} else {
+					entites.put("g"+Integer.toString(i), new int[] {x,y});
+				}
 			} else {
-				entites.put("g"+Integer.toString(i), new int[] {x,y});
+				int[] coordN=getNavire(numEquipe);
+				((ParcelleNavire)grille[coordN[0]][coordN[1]]).addPersonnage(new Guerrier("Guerrier", numEquipe));
 			}
 		}
 	}
@@ -843,12 +859,12 @@ public class Ile {
 	 * @param nbExplorateurs nombre d'explorateur voulu.
 	 * @param nbVoleurs nombre de voleurs voulu.
 	 */
-	public void setPersonnages(int numEquipe, int nbExplorateurs, int nbVoleurs, int nbPiegeurs, int nbGuerriers){
+	public void setPersonnages(int numEquipe, boolean test, int nbExplorateurs, int nbVoleurs, int nbPiegeurs, int nbGuerriers){
 		if(numEquipe>0 && numEquipe<3) {
-			setExplorateurs(nbExplorateurs, numEquipe);
-			setVoleurs(nbVoleurs, numEquipe);
-			setPiegeurs(nbPiegeurs, numEquipe);
-			setGuerriers(nbGuerriers, numEquipe);
+			setExplorateurs(test, nbExplorateurs, numEquipe);
+			setVoleurs(test, nbVoleurs, numEquipe);
+			setPiegeurs(test, nbPiegeurs, numEquipe);
+			setGuerriers(test, nbGuerriers, numEquipe);
 		}
 	}
 	
