@@ -302,11 +302,13 @@ public class Ile {
 		if(getValeurParcelle(a,b)==9){
 			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-30);
 			plateaux[i].println("Vous être pris dans un piege ! Vous perdez 30 points d'énergie");
+			grille[a][b]= grille[x][y];
+			grille[x][y] = new Parcelle();
 		}else{
 			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
+			echangeParcelles(x, y, a, b);			
 		}
 
-			echangeParcelles(x, y, a, b);
 			plateaux[0].setJeu(getIleTab());
 			plateaux[1].setJeu(getIleTab());
 	}
@@ -386,13 +388,9 @@ public class Ile {
 	 */
 	public void echangeParcelles(int x, int y, int a, int b){
 		 Parcelle p = grille[x][y];
-		 //if(grille[x][y].getValeur()==9){
-	 		grille[a][b] = p;
-			grille[x][y].setValeur(1) ;
-		/* }else{
-			 grille[x][y] = grille[a][b];
-			 grille[a][b] = p;
-		 }*/
+		 grille[x][y] = grille[a][b];
+		 grille[a][b] = p;
+		
 	}
 	
 	/**
