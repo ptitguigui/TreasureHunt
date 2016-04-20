@@ -154,14 +154,12 @@ public class Ile {
     					((ParcelleRocher)getParcelle(a,b)).setClef(); //passe la clef à false et change le message
     					event = plateaux[i].waitEvent(1000);
     					((ParcelleRocher)getParcelle(a, b)).hide();
-    					jeu=getIleTab();
-    					plateaux[0].setJeu(jeu);
-    					plateaux[1].setJeu(jeu);
     				}
        		    	persoMort(x,y,plateaux,i);
     				action=true;
         		//Si trésor déjà trouvé, mais qu'on revient avec la clef
     			} else if (getValeurParcelle(a,b)==8 && dansChampsAction(x,y,a,b,4)){
+    				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-5);
     				if (!((ParcelleRocher)getParcelle(a,b)).getTresor()){
     					plateaux[i].println("Vous avez trouvé le coffre ! Malheureusement pour vous, il a déjà été vidé de son contenu...");
     				} else {
@@ -173,6 +171,7 @@ public class Ile {
     						plateaux[i].println("Vous tentez de vous emparer du trésor, malheureusement vous n'avez pas la clef...");
     					}
     				}
+    				persoMort(x,y,plateaux,i);
     				action=true;
     			//Rentrer dans le bateau
     			} else if(getValeurParcelle(a,b)==10+i && dansChampsAction(a,b,x,y,8)){
@@ -205,20 +204,24 @@ public class Ile {
     			} else if(dansChampsAction(x,y,a,b,8) && getValeurParcelle(a,b)>=12 && !personnageAllieACote(x, y, a, b, 8)){
     				plateaux[i].println("Vous fouillez un personnage...") ;
     				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-10);
+    				
     				//s'il ne porte rien
-    				if (! (((Personnage)getParcelle(a,b)).porteClef() && ((Personnage)getParcelle(a,b)).porteTresor())){
+    				if (!((Personnage)getParcelle(a,b)).porteClef() && !((Personnage)getParcelle(a,b)).porteTresor()){
     					plateaux[i].println("Mais vous ne trouvez rien.") ; //sinon rien   
     				}
     				//si le personnage porte la clef
     				if(((Personnage)getParcelle(a,b)).porteClef()){  
     					((Voleur)getParcelle(x,y)).setVoleClef(((Personnage)getParcelle(a,b)));
     					plateaux[i].println("Et vous lui volez la clé ! ") ;
+    					plateaux[1-i].println("On vous a volez la clé ! ") ;
     				}
     				//si le personnage porte le trésor
     				if(((Personnage)getParcelle(a,b)).porteTresor()){ 
     					((Voleur)getParcelle(x,y)).setVoleTresor(((Personnage)getParcelle(a,b)));
     					plateaux[i].println("Et vous lui volez le trésor ! ") ;
+    					plateaux[1-i].println("On vous a volez le trésor ! ") ;
     				}
+    				persoMort(x,y,plateaux,i);
     				action = true;
     			//Echange avec un personnage	
     			}else if(personnageAllieACote(x, y, a, b, 8)){
@@ -254,15 +257,13 @@ public class Ile {
 	    			Object[] option = {"Déplacement" , "Poser un piege"};
 	    			int choix = JOptionPane.showOptionDialog(null, "Choississez votre option",  null, JOptionPane.OK_OPTION, JOptionPane.NO_OPTION, null, option, option[0]);
 	    			//déplacement
-	    			if(choix ==0){   			
+	    			if(choix ==0){   	
 	    				deplacer(x, y, a, b, plateaux, i);
 	    			//pose un piege	
 	    			}else if(choix ==1){
 	    				setPiege(i,a,b);
 	    				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-5);
-	    				jeu=getIleTab();
-    					plateaux[0].setJeu(jeu);
-    					plateaux[1].setJeu(jeu);
+	    				persoMort(x,y,plateaux,i);
 	    			}
 	    			action = true;  				
     			//Echange avec un personnage	
@@ -305,9 +306,11 @@ public class Ile {
     				if(chance==0){
     				plateaux[i].println("Et vous lui infliger 30 points de dégâts !!") ;
     				((Guerrier)getParcelle(x,y)).attaqueEnnemi(((Personnage)getParcelle(a,b))); 
+    				persoMort(a,b,plateaux,i);
     				}else{
     					plateaux[i].println("Mais vous manquez votre cible...") ;
     				}
+    				persoMort(x,y,plateaux,i);
     				action = true;    				
     			//Echange avec un personnage	
     			}else if(personnageAllieACote(x, y, a, b, 8)){
@@ -350,7 +353,7 @@ public class Ile {
 			grille[a][b]= grille[x][y];
 			grille[x][y] = new Parcelle();
 		}else{
-			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-40);
+			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
 			echangeParcelles(x, y, a, b);			
 		}
 		persoMort(a,b,plateaux, i);
@@ -366,9 +369,44 @@ public class Ile {
 	public void persoMort(int x, int y, SuperPlateau[] plateaux, int i){
 		if(((Personnage)getParcelle(x,y)).estMort()){
 			equipes[((Personnage)getParcelle(x,y)).getNumEquipe()-1].removePersonnage(((Personnage)getParcelle(x,y)));
-			grille[x][y]= new Parcelle();
+			if(((Personnage)getParcelle(x,y)).porteTresor() || ((Personnage)getParcelle(x,y)).porteClef()){
+				if (((Personnage)getParcelle(x,y)).porteTresor() && ((Personnage)getParcelle(x,y)).porteClef()){
+					grille[x][y]= new ParcelleRocher();
+					((ParcelleRocher)getParcelle(x,y)).setTresor();
+					((ParcelleRocher)getParcelle(x,y)).visible();
+					if(getParcelle(x+1,y).estVide()){
+						grille[x+1][y]= new ParcelleRocher();
+						((ParcelleRocher)getParcelle(x+1,y)).setClef();
+						((ParcelleRocher)getParcelle(x+1,y)).visible();
+					} else if (getParcelle(x-1,y).estVide()){
+						grille[x-1][y]= new ParcelleRocher();
+						((ParcelleRocher)getParcelle(x-1,y)).setClef();
+						((ParcelleRocher)getParcelle(x-1,y)).visible();
+					} else if (getParcelle(x,y+1).estVide()){
+						grille[x][y+1]= new ParcelleRocher();
+						((ParcelleRocher)getParcelle(x,y+1)).setClef();
+						((ParcelleRocher)getParcelle(x,y+1)).visible();
+					} else if (getParcelle(x,y-1).estVide()){
+						grille[x][y-1]= new ParcelleRocher();
+						((ParcelleRocher)getParcelle(x,y-1)).setClef();
+						((ParcelleRocher)getParcelle(x,y-1)).visible();
+					} //si pas de case libre autour pour poser la clef, tant pis, le tresor est déjà sorti du coffre donc ce n'est pas très important.
+				} else if(((Personnage)getParcelle(x,y)).porteTresor()){
+					grille[x][y]= new ParcelleRocher();
+					((ParcelleRocher)getParcelle(x,y)).setTresor();
+					((ParcelleRocher)getParcelle(x,y)).visible();
+				} else {
+					grille[x][y]= new ParcelleRocher();
+					((ParcelleRocher)getParcelle(x,y)).setClef();
+					((ParcelleRocher)getParcelle(x,y)).visible();
+				}
+			} else {
+				grille[x][y]= new Parcelle();
+			}
 			plateaux[i].println("Votre personnage meurt par manque d'énergie...");
 		}
+		plateaux[0].setJeu(getIleTab());
+		plateaux[1].setJeu(getIleTab());
 	}
 	
 	
@@ -511,7 +549,7 @@ public class Ile {
 	 * @return un booleen
 	 */
 	public boolean personnageACote(int x, int y, int a, int b, int nbDirections){
-		return (grille[a][b].getValeur() >= 121)&& dansChampsAction(x, y, a, b, nbDirections);
+		return (grille[a][b].getValeur() >= 12)&& dansChampsAction(x, y, a, b, nbDirections);
 	}	
 	/**
 	 * Methode qui renvoi un booleen pour savoir si un personnage de coord (x,y) se situe a coté d'un autre personnage de coord(a,b) et si celui est un allié.
