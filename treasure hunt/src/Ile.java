@@ -25,6 +25,8 @@ public class Ile {
 	 */
 	private HashMap<String, int[]> entites =new HashMap<>();
 	
+	private Equipe[] equipes=new Equipe[2];
+	
 	
 		
 	
@@ -40,6 +42,8 @@ public class Ile {
 				grille[c][l]=new Parcelle();
 			}
 		}
+		equipes[0]=new Equipe(1);
+		equipes[1]=new Equipe(2);
 	}
 	
 	public void action(SuperPlateau[] plateaux, int i, int nbPersonnages) {
@@ -172,7 +176,7 @@ public class Ile {
     				action=true;
     			//Rentrer dans le bateau
     			} else if(getValeurParcelle(a,b)==10+i && dansChampsAction(a,b,x,y,8)){
-    				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages)){
+    				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(equipes[i].nbPersonnages())){
     					rentrerDansNavire(x,y,a,b,plateaux,i);
     					action=true;
     				} else {
@@ -222,7 +226,7 @@ public class Ile {
     				action = true;
     			//Rentrer dans navire
     			} else if(getValeurParcelle(a,b)==10+i && dansChampsAction(a,b,x,y,8)){
-    				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages)){
+    				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(equipes[i].nbPersonnages())){
     					rentrerDansNavire(x,y,a,b,plateaux,i);
     					action=true;
     				} else {
@@ -267,7 +271,7 @@ public class Ile {
     				action = true;
     			//Rentrer dans navire
     			} else if(getValeurParcelle(a,b)==10+i && dansChampsAction(a,b,x,y,8)){
-    				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages)){
+    				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(equipes[i].nbPersonnages())){
     					rentrerDansNavire(x,y,a,b,plateaux,i);
     					action=true;
     				} else {
@@ -311,7 +315,7 @@ public class Ile {
     				action = true;
     			//Rentrer dans navire
     			} else if(getValeurParcelle(a,b)==10+i && dansChampsAction(a,b,x,y,8)){
-    				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(nbPersonnages)){
+    				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(equipes[i].nbPersonnages())){
     					rentrerDansNavire(x,y,a,b,plateaux,i);
     					action=true;
     				} else {
@@ -346,10 +350,12 @@ public class Ile {
 			grille[a][b]= grille[x][y];
 			grille[x][y] = new Parcelle();
 		}else{
-			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
+			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-40);
 			echangeParcelles(x, y, a, b);			
 		}
 		persoMort(a,b,plateaux, i);
+		plateaux[0].setJeu(getIleTab());
+		plateaux[1].setJeu(getIleTab());
 	}
 	/**
 	 * Methode permettant de supprimer un personnage de coord (x,y) si celui-ci est mort
@@ -359,10 +365,9 @@ public class Ile {
 	 */
 	public void persoMort(int x, int y, SuperPlateau[] plateaux, int i){
 		if(((Personnage)getParcelle(x,y)).estMort()){
+			equipes[((Personnage)getParcelle(x,y)).getNumEquipe()-1].removePersonnage(((Personnage)getParcelle(x,y)));
 			grille[x][y]= new Parcelle();
 			plateaux[i].println("Votre personnage meurt par manque d'énergie...");
-			plateaux[0].setJeu(getIleTab());
-			plateaux[1].setJeu(getIleTab());
 		}
 	}
 	
@@ -403,7 +408,7 @@ public class Ile {
 	 * @param plateaux les plateaux des deux joueurs
 	 * @param i le numéro du plateau courrant
 	 */
-	public void  rentrerDansNavire(int x, int y, int a, int b, SuperPlateau[] plateaux, int i){
+	public void rentrerDansNavire(int x, int y, int a, int b, SuperPlateau[] plateaux, int i){
 		((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
 		((ParcelleNavire)getParcelle(a,b)).addPersonnage((Personnage)getParcelle(x,y));
 		grille[x][y]=new Parcelle();
@@ -600,7 +605,13 @@ public class Ile {
 				}
 			} else {
 				int[] coordN=getNavire(numEquipe);
-				((ParcelleNavire)grille[coordN[0]][coordN[1]]).addPersonnage(new Explorateur("Explorateur", numEquipe));
+				Personnage p=new Explorateur("Explorateur", numEquipe);
+				((ParcelleNavire)grille[coordN[0]][coordN[1]]).addPersonnage(p);
+				if(numEquipe==1){
+					equipes[0].addPersonnage(p);
+				} else {
+					equipes[1].addPersonnage(p);
+				}
 			}
 		}
 	}
@@ -638,7 +649,13 @@ public class Ile {
 				}
 			} else {
 				int[] coordN=getNavire(numEquipe);
-				((ParcelleNavire)grille[coordN[0]][coordN[1]]).addPersonnage(new Voleur("Voleur", numEquipe));
+				Personnage p=new Voleur("Voleur", numEquipe);
+				((ParcelleNavire)grille[coordN[0]][coordN[1]]).addPersonnage(p);
+				if(numEquipe==1){
+					equipes[0].addPersonnage(p);
+				} else {
+					equipes[1].addPersonnage(p);
+				}
 			}
 		}
 	}
@@ -671,7 +688,13 @@ public class Ile {
 				}
 			} else {
 				int[] coordN=getNavire(numEquipe);
-				((ParcelleNavire)grille[coordN[0]][coordN[1]]).addPersonnage(new Piegeur("Piegeur", numEquipe));
+				Personnage p=new Piegeur("Piegeur", numEquipe);
+				((ParcelleNavire)grille[coordN[0]][coordN[1]]).addPersonnage(p);
+				if(numEquipe==1){
+					equipes[0].addPersonnage(p);
+				} else {
+					equipes[1].addPersonnage(p);
+				}
 			}
 		}
 	}
@@ -704,7 +727,13 @@ public class Ile {
 				}
 			} else {
 				int[] coordN=getNavire(numEquipe);
-				((ParcelleNavire)grille[coordN[0]][coordN[1]]).addPersonnage(new Guerrier("Guerrier", numEquipe));
+				Personnage p=new Guerrier("Guerrier", numEquipe);
+				((ParcelleNavire)grille[coordN[0]][coordN[1]]).addPersonnage(p);
+				if(numEquipe==1){
+					equipes[0].addPersonnage(p);
+				} else {
+					equipes[1].addPersonnage(p);
+				}
 			}
 		}
 	}

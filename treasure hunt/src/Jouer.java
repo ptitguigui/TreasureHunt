@@ -176,7 +176,7 @@ public class Jouer  {
 			
 			int[][] jeu=monIle.getIleTab();
 			
-			/*
+			
 			SuperPlateau[] plateaux=new SuperPlateau[2];
 			plateaux[0]=new SuperPlateau(IMGS,10,true);
 			plateaux[1]=new SuperPlateau(IMGS,10,true);
@@ -184,12 +184,12 @@ public class Jouer  {
 			plateaux[1].setJeu(jeu);
 			plateaux[0].affichage();
 			plateaux[1].affichage();
-			*/
+			
 			
 			//BROUILLARD DE GUERRE
-			GestionPlateaux gestion=new GestionPlateaux(monIle, true);
+			/*GestionPlateaux gestion=new GestionPlateaux(monIle, true);
 			SuperPlateau[] plateaux=gestion.getPlateaux();
-			gestion.affichage();
+			gestion.affichage();*/
 			
 			//affichage texte
 				System.out.println(monIle);
@@ -198,7 +198,6 @@ public class Jouer  {
 			while(true){		        		        
 				for(int i=0; i<2; i++){
 					monIle.action(plateaux, i, nbExplo1+nbVoleurs1+nbPiegeurs1+nbGuerriers1);
-					gestion.update();
 				}	 		
 			}
 			

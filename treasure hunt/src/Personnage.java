@@ -73,7 +73,7 @@ public class Personnage extends Parcelle{
 	 * @return vrai s'il est mort, faux sinon.
 	 */
 	public boolean estMort(){
-		if (energie==0){
+		if (energie<=0){
 			return true;
 		}
 		return false; 
