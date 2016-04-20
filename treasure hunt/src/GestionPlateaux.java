@@ -1,14 +1,6 @@
 
 public class GestionPlateaux {
 	private SuperPlateau[] plateaux=new SuperPlateau[2];
-	/*private final String[] IMGS={"treasure hunt/images/mer.png",
-			"treasure hunt/images/rocher.png.jpg",
-			"treasure hunt/images/1.navire.png",
-			"treasure hunt/images/2.navire.png",
-			"treasure hunt/images/cle.png",
-			"treasure hunt/images/coffre.png.jpg",
-			"treasure hunt/images/1.explorateur.png",
-			"treasure hunt/images/2.explorateur.png"};*/
 	final String[] IMGS={"treasure hunt/imgs/sable.png",
 			"treasure hunt/imgs/mer.png",
 			"treasure hunt/imgs/rocher1.png",
@@ -72,16 +64,28 @@ public class GestionPlateaux {
 				jeuJ2b[c][l]=!brouillard;
 			}
 		}
-		add(monIle.getNavire(1)[0], monIle.getNavire(1)[1]);
-		add(monIle.getNavire(2)[0], monIle.getNavire(2)[1]);
+		add(monIle.getNavire(1)[0], monIle.getNavire(1)[1], 1);
+		add(monIle.getNavire(2)[0], monIle.getNavire(2)[1], 2);
 	}
 	
-	public void add(int a, int b){
-		jeuJ2b[a][b]=true;
-		jeuJ2b[a+1][b]=true;
-		jeuJ2b[a-1][b]=true;
-		jeuJ2b[a][b+1]=true;
-		jeuJ2b[a][b-1]=true;
+	public SuperPlateau[] getPlateaux(){
+		return plateaux;
+	}
+	
+	public void add(int a, int b, int numEquipe){
+		if(numEquipe==1){
+			jeuJ1b[a][b]=true;
+			jeuJ1b[a+1][b]=true;
+			jeuJ1b[a-1][b]=true;
+			jeuJ1b[a][b+1]=true;
+			jeuJ1b[a][b-1]=true;
+		} else {
+			jeuJ2b[a][b]=true;
+			jeuJ2b[a+1][b]=true;
+			jeuJ2b[a-1][b]=true;
+			jeuJ2b[a][b+1]=true;
+			jeuJ2b[a][b-1]=true;
+		}
 		update();
 	}
 	
@@ -89,19 +93,29 @@ public class GestionPlateaux {
 		for(int c=0; c<jeu.length; c++) {
 			for(int l=0; l<jeu[0].length; l++){
 				if(jeuJ1b[c][l]==true) {
-					jeuJ1[c][l]=jeu[c][l];
+					jeuJ1[c][l]=jeu[c][l];					
+					//piège visible ou non
+					if(monIle.getParcelle(c,l) instanceof ParcellePiege) {
+						if(((ParcellePiege)monIle.getParcelle(c, l)).getNumEquipe()!=1){
+							jeuJ1[c][l]=1; //sable
+						}
+					}
 				} else {
 					jeuJ1[c][l]=0;
 				}
 				if(jeuJ2b[c][l]==true) {
 					jeuJ2[c][l]=jeu[c][l];
+					//piège visible ou non
+					if(monIle.getParcelle(c,l) instanceof ParcellePiege) {
+						if(((ParcellePiege)monIle.getParcelle(c, l)).getNumEquipe()!=2){
+							jeuJ1[c][l]=1; //sable
+						}
+					}
 				} else {
 					jeuJ2[c][l]=0;
 				}
 			}
 		}
-		plateaux[0].setJeu(jeuJ1);
-		plateaux[1].setJeu(jeuJ2);
 		
 		//trésor visible ou non
 		if (jeuJ1b[coordTresor[0]][coordTresor[1]] && tresorJ1){
@@ -114,6 +128,9 @@ public class GestionPlateaux {
 		} else if (jeuJ2b[coordTresor[0]][coordTresor[1]] && !tresorJ2){
 			jeuJ2[coordTresor[0]][coordTresor[1]]=((ParcelleRocher)monIle.getParcelle(coordTresor[0], coordTresor[1])).getValeurIni();
 		}
+		
+		plateaux[0].setJeu(jeuJ1);
+		plateaux[1].setJeu(jeuJ2);
 	}
 	
 	public void affichage(){

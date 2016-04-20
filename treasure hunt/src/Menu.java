@@ -1,45 +1,36 @@
-
-
-
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-@SuppressWarnings("serial")
-public class Menu extends JPanel {
-	private JButton bouton;
 
-	public Menu(String titre,int x, int y, int largeur, int hauteur){
+public class Menu {
+	public Menu(){ 
+		JFrame fenetre = new JFrame("Treasure Hunt");
 		
-		JFrame frame = new JFrame("Menu");
-        frame.setTitle("Treasure Hunt");
-        frame.setSize(largeur, hauteur);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().setLayout(new FlowLayout());
-        frame.setVisible(true);
-        frame.setLocation(x, y);
-        bouton  = new JButton("Jouer");
-        bouton.setVerticalTextPosition(AbstractButton.CENTER);
-        bouton.setHorizontalTextPosition(AbstractButton.CENTER);
-       
-        bouton.setActionCommand("disable");
-        
-        frame.getContentPane().add(bouton) ;
-        JOptionPane jop = new JOptionPane();    	
-       
-       
-	}
-	
-	      	
-	        
-	       
+		JPanel panel = new JPanel();
+		JButton jouer = new JButton("Jouer");
+		JButton options =new JButton("Options");
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		panel.add(jouer);
+		panel.add(options);
+		fenetre.getContentPane().add(panel, BorderLayout.CENTER);
+		fenetre.setPreferredSize(new Dimension(300, 200));
+		fenetre.setResizable(true);
+		fenetre.pack();
+		fenetre.setLocationRelativeTo(null);
+		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		fenetre.setVisible(true);
+		
+		}
+		public static void main(String[]args){
+			javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		        public void run() {
+		          new Menu();
+		        }
+		    });
+		}
 }
-		
-
-	
-

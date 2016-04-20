@@ -63,9 +63,9 @@ public class Ile {
     		}
 		   	x = plateaux[i].getX((MouseEvent) event) ;
 	    	y = plateaux[i].getY((MouseEvent) event) ;
-    	} while(!(getValeurParcelle(x, y)>=10 && getValeurParcelle(x, y)%2==i ));
+    	} while(!((getValeurParcelle(x, y)>=12 || (getParcelle(x,y) instanceof ParcelleNavire && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0)) && getValeurParcelle(x, y)%2==i ));
     	
-    	//Actions si navire !!!!
+    	//Actions si navire
     	if(getValeurParcelle(x,y) == 10+i && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0){ 
     		plateaux[i].println("Vous avez choisis votre navire");
     		Personnage p;
@@ -154,6 +154,7 @@ public class Ile {
     					plateaux[0].setJeu(jeu);
     					plateaux[1].setJeu(jeu);
     				}
+       		    	persoMort(x,y,plateaux,i);
     				action=true;
         		//Si trésor déjà trouvé, mais qu'on revient avec la clef
     			} else if (getValeurParcelle(a,b)==8 && dansChampsAction(x,y,a,b,4)){
@@ -229,8 +230,9 @@ public class Ile {
     							+ "\n Choississez une autre action.");
     				}
     			}
-    		}    		
+    		}  		
     	}
+    	
     	
     	//Action si piegeur 
     	if(getValeurParcelle(x,y) == 16+i){ 
@@ -253,6 +255,7 @@ public class Ile {
 	    			//pose un piege	
 	    			}else if(choix ==1){
 	    				setPiege(i,a,b);
+	    				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-5);
 	    				jeu=getIleTab();
     					plateaux[0].setJeu(jeu);
     					plateaux[1].setJeu(jeu);
@@ -272,7 +275,7 @@ public class Ile {
     							+ "\n Choississez une autre action.");
     				}
     			}
-    		}    		
+    		}    
     	}
     	
     	//Action si Guerrier
@@ -316,7 +319,7 @@ public class Ile {
     							+ "\n Choississez une autre action.");
     				}
     			}
-    		}    		
+    		}  
     	}
     	//Recupération d'énergie pour les personnages dans le navire
     	int[] coordNavire= getNavire(i+1);
@@ -339,16 +342,28 @@ public class Ile {
 		plateaux[i].println("Déplacement effectué...");
 		if(getValeurParcelle(a,b)==9){
 			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-30);
-			plateaux[i].println("Vous être pris dans un piege ! Vous perdez 30 points d'énergie");
+			plateaux[i].println("Vous être pris dans un piege ! Vous perdez 30 points d'énergie.");
 			grille[a][b]= grille[x][y];
 			grille[x][y] = new Parcelle();
 		}else{
 			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
 			echangeParcelles(x, y, a, b);			
 		}
-
+		persoMort(a,b,plateaux, i);
+	}
+	/**
+	 * Methode permettant de supprimer un personnage de coord (x,y) si celui-ci est mort
+	 * @param x un entier
+	 * @param y un entiter
+	 * @param plateaux les plateaux des deux joueurs
+	 */
+	public void persoMort(int x, int y, SuperPlateau[] plateaux, int i){
+		if(((Personnage)getParcelle(x,y)).estMort()){
+			grille[x][y]= new Parcelle();
+			plateaux[i].println("Votre personnage meurt par manque d'énergie...");
 			plateaux[0].setJeu(getIleTab());
 			plateaux[1].setJeu(getIleTab());
+		}
 	}
 	
 	
@@ -541,6 +556,16 @@ public class Ile {
 		if(grille[x-1][y-1].estVide()){	nb += 1; }
 		return nb;
 	}
+
+	/**
+	 * Methode qui place un piege selon les coordonnée donnée et selon l'équipe du joueur
+	 * @param numEquipe un entier 1 ou 2
+	 * @param a un entier (coordonnée x)
+	 * @param b un entier (coordonnée y)
+	 */
+	private void setPiege(int numEquipe, int a, int b){
+		grille[a][b]= new ParcellePiege(numEquipe);
+	}
 	
 	/**
 	 *  Méthode plaçant les explorateurs sur l'ile , le nombre d'explorateurs correspond à l'entier précisé en paramètre.
@@ -717,15 +742,6 @@ public class Ile {
 			grille[x][y]=new ParcelleRocher();
 			entites.put("R"+Integer.toString(i), new int[] {x,y});
 		}
-	}
-	/**
-	 * Methode qui place un piege selon les coordonnée donnée et selon l'équipe du joueur
-	 * @param numEquipe un entier 1 ou 2
-	 * @param a un entier (coordonnée x)
-	 * @param b un entier (coordonnée y)
-	 */
-	private void setPiege(int numEquipe, int a, int b){
-		grille[a][b]= new ParcellePiege(numEquipe);
 	}
 	
 	
