@@ -261,7 +261,7 @@ public class Ile {
 	    				deplacer(x, y, a, b, plateaux, i);
 	    			//pose un piege	
 	    			}else if(choix ==1){
-	    				setPiege(i,a,b);
+	    				setPiege(i+1,a,b);
 	    				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-5);
 	    				persoMort(x,y,plateaux,i);
 	    			}
@@ -302,13 +302,16 @@ public class Ile {
     			} else if(dansChampsAction(x,y,a,b,8) && getValeurParcelle(a,b)>=12 && !personnageAllieACote(x, y, a, b, 8)){
     				chance = r.nextInt(2);
     				plateaux[i].println("Vous attaquez un personnage...") ;
+    				plateaux[1-i].println("On vous attaque !") ;
     				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-10);
     				if(chance==0){
     				plateaux[i].println("Et vous lui infliger 30 points de dégâts !!") ;
+    				plateaux[1-i].println("Vous avez perdu 30 points d'énergie...") ;
     				((Guerrier)getParcelle(x,y)).attaqueEnnemi(((Personnage)getParcelle(a,b))); 
     				persoMort(a,b,plateaux,i);
     				}else{
     					plateaux[i].println("Mais vous manquez votre cible...") ;
+    					plateaux[1-i].println("Vous avez esquivé.") ;
     				}
     				persoMort(x,y,plateaux,i);
     				action = true;    				
@@ -350,6 +353,7 @@ public class Ile {
 		if(getValeurParcelle(a,b)==9){
 			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-30);
 			plateaux[i].println("Vous être pris dans un piege ! Vous perdez 30 points d'énergie.");
+			plateaux[((ParcellePiege)getParcelle(a,b)).getNumEquipe()-1].println("Quelqu'un a marché dans votre piège !") ;
 			grille[a][b]= grille[x][y];
 			grille[x][y] = new Parcelle();
 		}else{
