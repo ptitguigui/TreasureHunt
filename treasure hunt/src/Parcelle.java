@@ -63,11 +63,19 @@ public class Parcelle {
 	public String toString(){
 		return ""+valeur;
 	}
+	
 	/**
-	 * Méthode vérifiant si la parcelle est vide ou non (c'est à dire s'il s'agit d'un terrain clair ou non).
+	 * Méthode vérifiant si la parcelle est un terrain clair ou non.
+	 * @return vrai si la parcelle est un terrain clair, faux sinon.
+	 */
+	public boolean terrainClair(){
+		return valeur == 1 || valeur == 9 || valeur == 11 || valeur == 7 || valeur == 10;
+	}
+	/**
+	 * Méthode vérifiant si la parcelle est vide ou non (c'est à dire qu'il n'y a aucun élément dessus).
 	 * @return vrai si la parcelle est vide, faux sinon.
 	 */
 	public boolean estVide() {
-		return (getValeur() == 1 || getValeur() == 9 || getValeur() == 11 || getValeur() == 7 || getValeur() == 10);
+		return valeur==1;
 	}
 }

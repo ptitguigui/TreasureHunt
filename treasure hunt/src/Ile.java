@@ -135,7 +135,7 @@ public class Ile {
             	}
 			    
     			//déplacement
-    			if(getParcelle(a,b).estVide() && dansChampsAction(x, y, a, b, 4)){
+    			if(getParcelle(a,b).terrainClair() && dansChampsAction(x, y, a, b, 4)){
     				deplacer(x, y, a, b, plateaux, i);
     				action = true;
     			//Echange avec un personnage	
@@ -218,7 +218,7 @@ public class Ile {
             	}
 			    	
     			//déplacement
-    			if(getParcelle(a,b).estVide() && dansChampsAction(x, y, a, b, 8)){
+    			if(getParcelle(a,b).terrainClair() && dansChampsAction(x, y, a, b, 8)){
     				deplacer(x, y, a, b, plateaux, i);
     				action = true;
     			//Fouille un personnage
@@ -315,7 +315,7 @@ public class Ile {
             	}
 			    	
     			//2 choix possible: déplacement ou piège
-    			if(getParcelle(a,b).estVide() && dansChampsAction(x, y, a, b, 8)){
+    			if(getParcelle(a,b).terrainClair() && dansChampsAction(x, y, a, b, 8)){
 	    			String[] option = {"Déplacement" , "Poser un piege"};
 	    			int choix = JOptionPane.showOptionDialog(null, "Choississez votre option",  null, JOptionPane.OK_OPTION, JOptionPane.NO_OPTION, null, option, option[0]);
 	    			//déplacement
@@ -366,7 +366,7 @@ public class Ile {
             	}
 			    	
     			//déplacement
-    			if(getParcelle(a,b).estVide() && dansChampsAction(x, y, a, b, 8)){
+    			if(getParcelle(a,b).terrainClair() && dansChampsAction(x, y, a, b, 8)){
     				deplacer(x, y, a, b, plateaux, i);
     				action = true;
     			//attaque un ennemi
@@ -411,7 +411,6 @@ public class Ile {
     	}
     	//Recupération d'énergie pour les personnages dans le navire
     	int[] coordNavire= getNavire(i+1);
-    	//TODO recuperation d'une epee pour le guerrier
     	for(int p=0; p<((ParcelleNavire)getParcelle(coordNavire[0],coordNavire[1])).getNbPersonnage(); p++){
     		((ParcelleNavire)getParcelle(coordNavire[0],coordNavire[1])).getPersonnage(p).setEnergie(((ParcelleNavire)getParcelle(coordNavire[0],coordNavire[1])).getPersonnage(p).getEnergie()+10);
     	}
@@ -437,7 +436,18 @@ public class Ile {
 			grille[x][y] = new Parcelle();
 		}else{
 			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
-			echangeParcelles(x, y, a, b);			
+			if(getValeurParcelle(a,b)==7){
+				((Personnage)getParcelle(x,y)).ramasseClef();
+				grille[a][b]=new Parcelle();
+			} else if(getValeurParcelle(a,b)==10){
+				((Personnage)getParcelle(x,y)).ramasseTresor();
+				grille[a][b]=new Parcelle();
+			} else if(getValeurParcelle(a,b)==11){
+				((Personnage)getParcelle(x,y)).ramasseEpee();
+				grille[a][b]=new Parcelle();
+			} else {
+				echangeParcelles(x, y, a, b);	
+			}
 		}
 		persoMort(a,b,plateaux, i);
 		plateaux[0].setJeu(getIleTab());
@@ -452,42 +462,84 @@ public class Ile {
 	public void persoMort(int x, int y, SuperPlateau[] plateaux, int i){
 		if(((Personnage)getParcelle(x,y)).estMort()){
 			equipes[((Personnage)getParcelle(x,y)).getNumEquipe()-1].removePersonnage(((Personnage)getParcelle(x,y)));
-			if(((Personnage)getParcelle(x,y)).porteTresor() || ((Personnage)getParcelle(x,y)).porteClef()){
+			if(((Personnage)getParcelle(x,y)).porteTresor() || ((Personnage)getParcelle(x,y)).porteClef() || ((Personnage)getParcelle(x,y)).porteEpee()){
+				//a les 3
+					//TODO si personnage a les 3 items...
+				//a clef et trésor
 				if (((Personnage)getParcelle(x,y)).porteTresor() && ((Personnage)getParcelle(x,y)).porteClef()){
-					grille[x][y]= new ParcelleRocher();
-					((ParcelleRocher)getParcelle(x,y)).setTresor();
-					((ParcelleRocher)getParcelle(x,y)).visible();
+					//placer trésor
+					grille[x][y]= new Parcelle();
+					getParcelle(x,y).setValeur(10);
+					//placer clef
 					if(getParcelle(x+1,y).estVide()){
-						grille[x+1][y]= new ParcelleRocher();
-						((ParcelleRocher)getParcelle(x+1,y)).setClef();
-						((ParcelleRocher)getParcelle(x+1,y)).visible();
+						grille[x+1][y]= new Parcelle();
+						getParcelle(x+1,y).setValeur(7);
 					} else if (getParcelle(x-1,y).estVide()){
-						grille[x-1][y]= new ParcelleRocher();
-						((ParcelleRocher)getParcelle(x-1,y)).setClef();
-						((ParcelleRocher)getParcelle(x-1,y)).visible();
+						grille[x-1][y]= new Parcelle();
+						getParcelle(x-1,y).setValeur(7);
 					} else if (getParcelle(x,y+1).estVide()){
-						grille[x][y+1]= new ParcelleRocher();
-						((ParcelleRocher)getParcelle(x,y+1)).setClef();
-						((ParcelleRocher)getParcelle(x,y+1)).visible();
+						grille[x][y+1]= new Parcelle();
+						getParcelle(x,y+1).setValeur(7);
 					} else if (getParcelle(x,y-1).estVide()){
-						grille[x][y-1]= new ParcelleRocher();
-						((ParcelleRocher)getParcelle(x,y-1)).setClef();
-						((ParcelleRocher)getParcelle(x,y-1)).visible();
+						grille[x][y-1]= new Parcelle();
+						getParcelle(x,y-1).setValeur(7);
 					} //si pas de case libre autour pour poser la clef, tant pis, le tresor est déjà sorti du coffre donc ce n'est pas très important.
+				//Si clef et épée
+				} else if (((Personnage)getParcelle(x,y)).porteEpee() && ((Personnage)getParcelle(x,y)).porteClef()){
+					//placer épée
+					grille[x][y]= new Parcelle();
+					getParcelle(x,y).setValeur(11);
+					//placer clef
+					if(getParcelle(x+1,y).estVide()){
+						grille[x+1][y]= new Parcelle();
+						getParcelle(x+1,y).setValeur(7);
+					} else if (getParcelle(x-1,y).estVide()){
+						grille[x-1][y]= new Parcelle();
+						getParcelle(x-1,y).setValeur(7);
+					} else if (getParcelle(x,y+1).estVide()){
+						grille[x][y+1]= new Parcelle();
+						getParcelle(x,y+1).setValeur(7);
+					} else if (getParcelle(x,y-1).estVide()){
+						grille[x][y-1]= new Parcelle();
+						getParcelle(x,y-1).setValeur(7);
+					} //si pas de case libre autour pour poser la clef, tant pis, le tresor est déjà sorti du coffre donc ce n'est pas très important.
+				//Si trésor et épée
+				} else if(((Personnage)getParcelle(x,y)).porteEpee() && ((Personnage)getParcelle(x,y)).porteTresor()) {
+					//placer trésor
+					grille[x][y]= new Parcelle();
+					getParcelle(x,y).setValeur(10);
+					//placer épée
+					if(getParcelle(x+1,y).estVide()){
+						grille[x+1][y]= new Parcelle();
+						getParcelle(x+1,y).setValeur(11);
+					} else if (getParcelle(x-1,y).estVide()){
+						grille[x-1][y]= new Parcelle();
+						getParcelle(x-1,y).setValeur(11);
+					} else if (getParcelle(x,y+1).estVide()){
+						grille[x][y+1]= new Parcelle();
+						getParcelle(x,y+1).setValeur(11);
+					} else if (getParcelle(x,y-1).estVide()){
+						grille[x][y-1]= new Parcelle();
+						getParcelle(x,y-1).setValeur(11);
+					} //si pas de case libre autour pour poser l'épée, tant pis, on peut en récuperer en allant au bateau.				
+				}
+				//a trésor
 				} else if(((Personnage)getParcelle(x,y)).porteTresor()){
-					grille[x][y]= new ParcelleRocher();
-					((ParcelleRocher)getParcelle(x,y)).setTresor();
-					((ParcelleRocher)getParcelle(x,y)).visible();
+					grille[x][y]= new Parcelle();
+					getParcelle(x,y).setValeur(10);
+				//a clef
+				} else if(((Personnage)getParcelle(x,y)).porteClef()){
+					grille[x][y]= new Parcelle();
+					getParcelle(x,y).setValeur(7);
+				//a épée
 				} else {
-					grille[x][y]= new ParcelleRocher();
-					((ParcelleRocher)getParcelle(x,y)).setClef();
-					((ParcelleRocher)getParcelle(x,y)).visible();
+					grille[x][y]= new Parcelle();
+					getParcelle(x,y).setValeur(11);
 				}
 			} else {
 				grille[x][y]= new Parcelle();
 			}
-			plateaux[i].println("Votre personnage meurt par manque d'énergie...");
-		}
+		plateaux[i].println("Votre personnage meurt par manque d'énergie...");
 		plateaux[0].setJeu(getIleTab());
 		plateaux[1].setJeu(getIleTab());
 	}
@@ -531,6 +583,9 @@ public class Ile {
 	 * @param i le numéro du plateau courrant
 	 */
 	public void rentrerDansNavire(int x, int y, int a, int b, SuperPlateau[] plateaux, int i){
+		if(getParcelle(x,y) instanceof Guerrier) {
+			((Guerrier)getParcelle(x,y)).ramasseEpee();
+		}
 		((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
 		((ParcelleNavire)getParcelle(a,b)).addPersonnage((Personnage)getParcelle(x,y));
 		grille[x][y]=new Parcelle();
