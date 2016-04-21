@@ -57,13 +57,13 @@ public class Jouer  {
 			
 			
 			//demande du pourcentage de rocher
-			rep=new String(JOptionPane.showInputDialog(null,"Entrez le pourcentage de rocher :"));
+			rep=new String(JOptionPane.showInputDialog(null,"Entrez le pourcentage de rocher (<20%) :"));
 			//Tant que la saisie soit un chiffre et que le nombre de rochers soit >=3 et que'il soit <20% 
 			while(!(rep.matches("[1-9][0-9]*")   
 					&& (int)((nbColonnes-2)*(nbLignes-2)*Integer.parseInt(rep)/100.00)>=3 
 					&& (int)((nbColonnes-2)*(nbLignes-2)*Integer.parseInt(rep)/100.00)<(nbColonnes-2)*(nbLignes-2)*0.2-1)){
 					JOptionPane.showMessageDialog(null, "Nombre incorrecte ou pourcentage impossible à réaliser.", "Erreur", 0);
-					rep=JOptionPane.showInputDialog(null,"Entrez le pourcentage de rocher :");
+					rep=JOptionPane.showInputDialog(null,"Entrez le pourcentage de rocher (<20%) :");
 			}
 			int pourcentage=Integer.parseInt(rep);
 			

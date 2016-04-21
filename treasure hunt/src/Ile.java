@@ -1,4 +1,5 @@
 import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Random;
@@ -48,8 +49,9 @@ public class Ile {
 	
 	public void action(SuperPlateau[] plateaux, int i, int nbPersonnages) {
 		InputEvent event ;
-		int x,y,a,b =0;
+		int x = 0,y = 0,a,b =0;
 		boolean action = false;
+		boolean undo = false;
 		Random r = new Random();
 		int chance = 0;
 
@@ -61,13 +63,14 @@ public class Ile {
 		
 		// Vérification de la selection : doit être un personnage ou navire de son équipe
     	do {
-    		event=  plateaux[i].waitEvent();
-    		while(!(event instanceof MouseEvent)){
-    			event=  plateaux[i].waitEvent();
-    		}
-		   	x = plateaux[i].getX((MouseEvent) event) ;
-	    	y = plateaux[i].getY((MouseEvent) event) ;
-    	} while(!((getValeurParcelle(x, y)>=12 || (getParcelle(x,y) instanceof ParcelleNavire && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0)) && getValeurParcelle(x, y)%2==i ));
+	    		event=  plateaux[i].waitEvent();
+	    		while(!(event instanceof MouseEvent)){
+	    			event=  plateaux[i].waitEvent();
+	    		}
+			   	x = plateaux[i].getX((MouseEvent) event) ;
+		    	y = plateaux[i].getY((MouseEvent) event) ;
+	    	} while(!((getValeurParcelle(x, y)>=12 || (getParcelle(x,y) instanceof ParcelleNavire && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0)) && getValeurParcelle(x, y)%2==i ));
+    	
     	
     	//Actions si navire
     	if(getValeurParcelle(x,y) == 10+i && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0){ 
@@ -857,6 +860,19 @@ public class Ile {
 		}
 	}
 	
+	private void setArbres(){
+		int x,y;
+		for(int i=0; i<(int)((grille.length-2)*(grille[0].length-2)*(5/100.00)-2); i++) {
+			do {
+				x= alea.tirage(grille.length-2)+1;
+				y= alea.tirage(grille[0].length-2)+1;
+			}
+			while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)>6));
+			grille[x][y]=new ParcelleArbre();
+			entites.put("A"+Integer.toString(i), new int[] {x,y});
+		}
+	}
+	
 	
 	/**
 	 * Méthode qui place les deux navires aléatoirement sur les parcelles en bordure.
@@ -978,7 +994,8 @@ public class Ile {
 		setMers();	
 		setTresor();
 		setClef();
-		setRochers(pourcentage);	
+		setArbres();
+		setRochers(pourcentage);
 		setNavires();
 	}	
 	
