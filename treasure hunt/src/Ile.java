@@ -29,6 +29,7 @@ public class Ile {
 	private Equipe[] equipes=new Equipe[2];
 	
 	
+	
 		
 	
 	/**
@@ -49,11 +50,11 @@ public class Ile {
 	
 	public void action(SuperPlateau[] plateaux, int i, int nbPersonnages) {
 		InputEvent event ;
-		int x = 0,y = 0,a,b =0;
+		int x = 0,y = 0,a = 0,b =0;
 		boolean action = false;
-		boolean undo = false;
 		Random r = new Random();
 		int chance = 0;
+		int keyCode = 0;
 
 		plateaux[i].affichage();
 		plateaux[i].println(">> A votre tour J" + (i+1)) ;
@@ -92,12 +93,20 @@ public class Ile {
     		plateaux[i].println("Où souhaitez-vous le déplacer ?");
     		while(!action){
     			event=  plateaux[i].waitEvent();
-    			while(!(event instanceof MouseEvent)){
+    			while(!(event instanceof MouseEvent || event instanceof KeyEvent)){
         			event=  plateaux[i].waitEvent();
         		}
+    			if(event instanceof KeyEvent){
+    				keyCode = ((KeyEvent) event).getKeyCode() ;
+    			}else if(event instanceof MouseEvent){
     			a = plateaux[i].getX((MouseEvent) event) ;
     			b = plateaux[i].getY((MouseEvent) event) ;
+    			}
 			    
+				if (keyCode == 27) { 
+					plateaux[i].println("Vous décidez de passer votre tour");
+            		action = true ;
+            	}
     			//sortie du personnage
     			if(getParcelle(a,b).estVide() && dansChampsAction(x, y, a, b, 4)){
     				grille[a][b]=p;
@@ -116,11 +125,20 @@ public class Ile {
     		//highlight(plateaux, i, getValeurParcelle(x,y), x, y);
     		while(!action){
     			event=  plateaux[i].waitEvent();
-    			while(!(event instanceof MouseEvent)){
+    			while(!(event instanceof MouseEvent || event instanceof KeyEvent)){
         			event=  plateaux[i].waitEvent();
         		}
+    			if(event instanceof KeyEvent){
+    				keyCode = ((KeyEvent) event).getKeyCode() ;
+    			}else if(event instanceof MouseEvent){
     			a = plateaux[i].getX((MouseEvent) event) ;
     			b = plateaux[i].getY((MouseEvent) event) ;
+    			}
+			    
+				if (keyCode == 27) { 
+					plateaux[i].println("Vous décidez de passer votre tour");
+            		action = true ;
+            	}
 			    
     			//déplacement
     			if(getParcelle(a,b).estVide() && dansChampsAction(x, y, a, b, 4)){
@@ -193,11 +211,20 @@ public class Ile {
     		plateaux[i].println("Vous avez choisis un voleur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
     		while(!action){
     			event=  plateaux[i].waitEvent();
-    			while(!(event instanceof MouseEvent)){
+    			while(!(event instanceof MouseEvent || event instanceof KeyEvent)){
         			event=  plateaux[i].waitEvent();
         		}
+    			if(event instanceof KeyEvent){
+    				keyCode = ((KeyEvent) event).getKeyCode() ;
+    			}else if(event instanceof MouseEvent){
     			a = plateaux[i].getX((MouseEvent) event) ;
     			b = plateaux[i].getY((MouseEvent) event) ;
+    			}
+			    
+				if (keyCode == 27) { 
+					plateaux[i].println("Vous décidez de passer votre tour");
+            		action = true ;
+            	}
 			    	
     			//déplacement
     			if(getParcelle(a,b).estVide() && dansChampsAction(x, y, a, b, 8)){
@@ -284,11 +311,20 @@ public class Ile {
     		plateaux[i].println("Vous avez choisis un piegeur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
     		while(!action){
     			event=  plateaux[i].waitEvent();
-    			while(!(event instanceof MouseEvent)){
+    			while(!(event instanceof MouseEvent || event instanceof KeyEvent)){
         			event=  plateaux[i].waitEvent();
         		}
+    			if(event instanceof KeyEvent){
+    				keyCode = ((KeyEvent) event).getKeyCode() ;
+    			}else if(event instanceof MouseEvent){
     			a = plateaux[i].getX((MouseEvent) event) ;
     			b = plateaux[i].getY((MouseEvent) event) ;
+    			}
+			    
+				if (keyCode == 27) { 
+					plateaux[i].println("Vous décidez de passer votre tour");
+            		action = true ;
+            	}
 			    	
     			//2 choix possible: déplacement ou piège
     			if(getParcelle(a,b).estVide() && dansChampsAction(x, y, a, b, 8)){
@@ -326,11 +362,20 @@ public class Ile {
     		plateaux[i].println("Vous avez choisis un guerrier de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
     		while(!action){
     			event=  plateaux[i].waitEvent();
-    			while(!(event instanceof MouseEvent)){
+    			while(!(event instanceof MouseEvent || event instanceof KeyEvent)){
         			event=  plateaux[i].waitEvent();
         		}
+    			if(event instanceof KeyEvent){
+    				keyCode = ((KeyEvent) event).getKeyCode() ;
+    			}else if(event instanceof MouseEvent){
     			a = plateaux[i].getX((MouseEvent) event) ;
     			b = plateaux[i].getY((MouseEvent) event) ;
+    			}
+			    
+				if (keyCode == 27) { 
+					plateaux[i].println("Vous décidez de passer votre tour");
+            		action = true ;
+            	}
 			    	
     			//déplacement
     			if(getParcelle(a,b).estVide() && dansChampsAction(x, y, a, b, 8)){
