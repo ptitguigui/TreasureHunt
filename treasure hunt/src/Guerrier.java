@@ -21,9 +21,10 @@ public class Guerrier extends Personnage {
 		}
 		super.items[0]=false;
 		super.items[1]=false;
+		super.items[2]=true;
 	}
 	
-	public void attaqueEnnemi(Personnage p){
-		p.energie-=30;
+	public void attaqueEnnemi(Personnage p, int degats){
+		p.energie-=degats;
 	}
 }

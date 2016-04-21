@@ -206,20 +206,55 @@ public class Ile {
     				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-10);
     				
     				//s'il ne porte rien
-    				if (!((Personnage)getParcelle(a,b)).porteClef() && !((Personnage)getParcelle(a,b)).porteTresor()){
+    				if (!((Personnage)getParcelle(a,b)).porteClef() && !((Personnage)getParcelle(a,b)).porteTresor() && !((Personnage)getParcelle(a,b)).porteEpee()){
     					plateaux[i].println("Mais vous ne trouvez rien.") ; //sinon rien   
     				}
+    				
+    				//S'il porte quelque chose
+    				String clef="Clef"; String tresor="Trésor"; String epee="Epée";
+    				int nbItems=((Personnage)getParcelle(a,b)).getNbItems();
+    				String[] option = new String[nbItems];
+    				int choix;
+    				if (nbItems==1){
+    					if(((Personnage)getParcelle(a,b)).porteClef()){
+    						choix=0;
+    					}else if(((Personnage)getParcelle(a,b)).porteTresor()){
+    						choix=1; 						
+						} else if(((Personnage)getParcelle(a,b)).porteEpee()){
+							choix=2;
+						}
+    				}
+    				//TODO JOptionPane qui permet de savoir quel item on souhaite voler
+    				for(int j=0; j<option.length; j++) {
+    					if(((Personnage)getParcelle(a,b)).porteClef()){
+    						
+    					}
+						if(((Personnage)getParcelle(a,b)).porteTresor()){
+						    						
+						}
+						if(((Personnage)getParcelle(a,b)).porteEpee()){
+							
+						}
+    				}
+	    			choix = JOptionPane.showOptionDialog(null, "Choississez l'objet que vous souhaitez voler",  null, JOptionPane.OK_OPTION, JOptionPane.NO_OPTION, null, option, option[0]);
+	    			
     				//si le personnage porte la clef
-    				if(((Personnage)getParcelle(a,b)).porteClef()){  
+    				if(choix==0){  
     					((Voleur)getParcelle(x,y)).setVoleClef(((Personnage)getParcelle(a,b)));
-    					plateaux[i].println("Et vous lui volez la clé ! ") ;
-    					plateaux[1-i].println("On vous a volez la clé ! ") ;
+    					plateaux[i].println("Et vous lui volé la clé ! ") ;
+    					plateaux[1-i].println("On vous a voléla clé ! ") ;
     				}
     				//si le personnage porte le trésor
-    				if(((Personnage)getParcelle(a,b)).porteTresor()){ 
+    				if(choix==1){ 
     					((Voleur)getParcelle(x,y)).setVoleTresor(((Personnage)getParcelle(a,b)));
-    					plateaux[i].println("Et vous lui volez le trésor ! ") ;
-    					plateaux[1-i].println("On vous a volez le trésor ! ") ;
+    					plateaux[i].println("Et vous lui volé le trésor ! ") ;
+    					plateaux[1-i].println("On vous a volé le trésor ! ") ;
+    				}
+    				//si le personnage porte une épée
+    				if(choix==2){ 
+    					((Voleur)getParcelle(x,y)).setVoleEpee(((Personnage)getParcelle(a,b)));
+    					plateaux[i].println("Et vous lui volé son épée ! ") ;
+    					plateaux[1-i].println("On vous a volé votre épée ! ") ;
     				}
     				persoMort(x,y,plateaux,i);
     				action = true;
@@ -254,7 +289,7 @@ public class Ile {
 			    	
     			//2 choix possible: déplacement ou piège
     			if(getParcelle(a,b).estVide() && dansChampsAction(x, y, a, b, 8)){
-	    			Object[] option = {"Déplacement" , "Poser un piege"};
+	    			String[] option = {"Déplacement" , "Poser un piege"};
 	    			int choix = JOptionPane.showOptionDialog(null, "Choississez votre option",  null, JOptionPane.OK_OPTION, JOptionPane.NO_OPTION, null, option, option[0]);
 	    			//déplacement
 	    			if(choix ==0){   	
@@ -300,20 +335,27 @@ public class Ile {
     				action = true;
     			//attaque un ennemi
     			} else if(dansChampsAction(x,y,a,b,8) && getValeurParcelle(a,b)>=12 && !personnageAllieACote(x, y, a, b, 8)){
-    				chance = r.nextInt(2);
-    				plateaux[i].println("Vous attaquez un personnage...") ;
-    				plateaux[1-i].println("On vous attaque !") ;
-    				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-10);
-    				if(chance==0){
-    				plateaux[i].println("Et vous lui infliger 30 points de dégâts !!") ;
-    				plateaux[1-i].println("Vous avez perdu 30 points d'énergie...") ;
-    				((Guerrier)getParcelle(x,y)).attaqueEnnemi(((Personnage)getParcelle(a,b))); 
-    				persoMort(a,b,plateaux,i);
-    				}else{
-    					plateaux[i].println("Mais vous manquez votre cible...") ;
-    					plateaux[1-i].println("Vous avez esquivé.") ;
+    				if(!((Personnage)getParcelle(x,y)).porteEpee()){
+    					plateaux[i].println("Vous ne pouvez pas l'attaquer, vous n'avez plus votre épée.") ;
+    				} else {
+    					//attaque seulement s'il a une épée
+	    				chance = r.nextInt(2);
+	    				plateaux[i].println("Vous attaquez un personnage...") ;
+	    				plateaux[1-i].println("On vous attaque !") ;
+	    				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-10);
+	    				if(chance==0){
+	    					//dégats aléatoire entre 1 et 50 ?
+		    				int degats=r.nextInt(50)+1;
+		    				plateaux[i].println("Et vous lui infliger " + degats + " points de dégâts !!") ;
+		    				plateaux[1-i].println("Vous avez perdu " + degats + " points d'énergie...") ;
+		    				((Guerrier)getParcelle(x,y)).attaqueEnnemi(((Personnage)getParcelle(a,b)), degats); 
+		    				persoMort(a,b,plateaux,i);
+	    				}else{
+	    					plateaux[i].println("Mais vous manquez votre cible...") ;
+	    					plateaux[1-i].println("Vous avez esquivé.") ;
+	    				}
+	    				persoMort(x,y,plateaux,i);
     				}
-    				persoMort(x,y,plateaux,i);
     				action = true;    				
     			//Echange avec un personnage	
     			}else if(personnageAllieACote(x, y, a, b, 8)){

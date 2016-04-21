@@ -23,9 +23,10 @@ public class Personnage extends Parcelle{
 	/**
 	 * Attribut créant un tableau de boolean correspondant aux items du personnage.
 	 * items[0] = clef
-	 * item[1] = trésor
+	 * items[1] = trésor
+	 * items[2] = épée
 	 */
-	protected boolean[] items=new boolean[2];
+	protected boolean[] items=new boolean[3];
 	
 	
 	
@@ -40,6 +41,7 @@ public class Personnage extends Parcelle{
 		maxEnergie=0;
 		items[0]=false;
 		items[1]=false;
+		items[2]=false;
 	}	
 	
 	
@@ -105,6 +107,34 @@ public class Personnage extends Parcelle{
 	 */
 	public boolean porteTresor() {
 		return items[1];
+	}
+	
+	/**
+	 * Méthode permettant de savoir si le personnage porte une epée ou non.
+	 * @return vrai s'il possède une épée, faux sinon.
+	 */
+	public boolean porteEpee() {
+		return items[2];
+	}
+	
+	public void ramasseClef(){
+		items[0]=true;
+	}
+	
+	public void ramasseTresor(){
+		items[1]=true;
+	}
+	
+	public void ramasseEpee(){
+		items[2]=true;
+	}
+	
+	public int getNbItems(){
+		int nb=0;
+		if(items[0]){ nb+=1;}
+		if(items[1]){ nb+=1;}
+		if(items[2]){ nb+=1;}
+		return nb;
 	}
 	
 	/**

@@ -33,11 +33,20 @@ public class Voleur extends Personnage {
 	}
 
 	/**
-	 * Méthode permettant d'ajouter le trésor d'un personnage et de l'ajouter aux items du voleur.
+	 * Méthode permettant de voler le trésor d'un personnage et de l'ajouter aux items du voleur.
 	 * @param p personnage auquel on vole le trésor.
 	 */
 	public void setVoleTresor(Personnage p){
 		items[1] = true ;
-		p.items[0]=false;
+		p.items[1]=false;
+	}
+	
+	/**
+	 * Méthode permettant de voler l'épée d'un personnage et de l'ajouter aux items du voleur.
+	 * @param p personnage auquel on vole l'épée.
+	 */
+	public void setVoleEpee(Personnage p){
+		items[2] = true ;
+		p.items[2]=false;
 	}
 }
