@@ -52,7 +52,7 @@ public class Ile {
 		InputEvent event ;
 		int x = 0,y = 0,a = 0,b =0;
 		boolean action = false;
-		Random r = new Random();
+		Aleatoire alea = new Aleatoire();
 		int chance = 0;
 		int keyCode = 0;
 
@@ -70,11 +70,11 @@ public class Ile {
 	    		}
 			   	x = plateaux[i].getX((MouseEvent) event) ;
 		    	y = plateaux[i].getY((MouseEvent) event) ;
-	    	} while(!((getValeurParcelle(x, y)>=12 || (getParcelle(x,y) instanceof ParcelleNavire && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0)) && getValeurParcelle(x, y)%2==i ));
+	    	} while(!((getParcelle(x, y) instanceof Personnage || (getParcelle(x,y) instanceof ParcelleNavire && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0)) && getValeurParcelle(x, y)%2==i ));
     	
     	
     	//Actions si navire
-    	if(getValeurParcelle(x,y) == 10+i && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0){ 
+    	if(getParcelle(x,y) instanceof ParcelleNavire && getValeurParcelle(x, y)%2==i && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0){ 
     		plateaux[i].println("Vous avez choisis votre navire");
     		Personnage p;
     		if (((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()==1){
@@ -93,9 +93,6 @@ public class Ile {
     		plateaux[i].println("Où souhaitez-vous le déplacer ?");
     		while(!action){
     			event=  plateaux[i].waitEvent();
-    			while(!(event instanceof MouseEvent || event instanceof KeyEvent)){
-        			event=  plateaux[i].waitEvent();
-        		}
     			if(event instanceof KeyEvent){
     				keyCode = ((KeyEvent) event).getKeyCode() ;
     			}else if(event instanceof MouseEvent){
@@ -120,14 +117,11 @@ public class Ile {
     	}
 		    
     	//Actions si explorateur
-    	if(getValeurParcelle(x,y) == 12+i){ 
+    	if(getParcelle(x,y) instanceof Explorateur && getValeurParcelle(x, y)%2==i ){ 
     		plateaux[i].println("Vous avez choisis un explorateur de J"+(i+1)+", il a " + ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
     		//highlight(plateaux, i, getValeurParcelle(x,y), x, y);
     		while(!action){
     			event=  plateaux[i].waitEvent();
-    			while(!(event instanceof MouseEvent || event instanceof KeyEvent)){
-        			event=  plateaux[i].waitEvent();
-        		}
     			if(event instanceof KeyEvent){
     				keyCode = ((KeyEvent) event).getKeyCode() ;
     			}else if(event instanceof MouseEvent){
@@ -195,7 +189,7 @@ public class Ile {
     				persoMort(x,y,plateaux,i);
     				action=true;
     			//Rentrer dans le bateau
-    			} else if(getValeurParcelle(a,b)==10+i && dansChampsAction(a,b,x,y,8)){
+    			} else if(getParcelle(a,b) instanceof ParcelleNavire && getValeurParcelle(x, y)%2==i && dansChampsAction(a,b,x,y,8)){
     				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(equipes[i].nbPersonnages())){
     					rentrerDansNavire(x,y,a,b,plateaux,i);
     					action=true;
@@ -207,13 +201,10 @@ public class Ile {
     		}
     	}
 		//Action si voleur
-    	if(getValeurParcelle(x,y) == 14+i){ 
+    	if(getParcelle(x,y) instanceof Voleur && getValeurParcelle(x, y)%2==i ){ 
     		plateaux[i].println("Vous avez choisis un voleur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
     		while(!action){
     			event=  plateaux[i].waitEvent();
-    			while(!(event instanceof MouseEvent || event instanceof KeyEvent)){
-        			event=  plateaux[i].waitEvent();
-        		}
     			if(event instanceof KeyEvent){
     				keyCode = ((KeyEvent) event).getKeyCode() ;
     			}else if(event instanceof MouseEvent){
@@ -293,7 +284,7 @@ public class Ile {
     				echangeItem(x, y, a, b, plateaux, i);
     				action = true;
     			//Rentrer dans navire
-    			} else if(getValeurParcelle(a,b)==10+i && dansChampsAction(a,b,x,y,8)){
+    			} else if(getParcelle(a,b) instanceof ParcelleNavire && getValeurParcelle(x, y)%2==i && dansChampsAction(a,b,x,y,8)){
     				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(equipes[i].nbPersonnages())){
     					rentrerDansNavire(x,y,a,b,plateaux,i);
     					action=true;
@@ -307,13 +298,10 @@ public class Ile {
     	
     	
     	//Action si piegeur 
-    	if(getValeurParcelle(x,y) == 16+i){ 
+    	if(getParcelle(x,y) instanceof Piegeur && getValeurParcelle(x, y)%2==i ){ 
     		plateaux[i].println("Vous avez choisis un piegeur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
     		while(!action){
     			event=  plateaux[i].waitEvent();
-    			while(!(event instanceof MouseEvent || event instanceof KeyEvent)){
-        			event=  plateaux[i].waitEvent();
-        		}
     			if(event instanceof KeyEvent){
     				keyCode = ((KeyEvent) event).getKeyCode() ;
     			}else if(event instanceof MouseEvent){
@@ -345,7 +333,7 @@ public class Ile {
     				echangeItem(x, y, a, b, plateaux, i);
     				action = true;
     			//Rentrer dans navire
-    			} else if(getValeurParcelle(a,b)==10+i && dansChampsAction(a,b,x,y,8)){
+    			} else if(getParcelle(a,b) instanceof ParcelleNavire && getValeurParcelle(x, y)%2==i && dansChampsAction(a,b,x,y,8)){
     				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(equipes[i].nbPersonnages())){
     					rentrerDansNavire(x,y,a,b,plateaux,i);
     					action=true;
@@ -358,7 +346,7 @@ public class Ile {
     	}
     	
     	//Action si Guerrier
-    	if(getValeurParcelle(x,y) == 18+i){ 
+    	if(getParcelle(x,y) instanceof Guerrier && getValeurParcelle(x, y)%2==i ){ 
     		plateaux[i].println("Vous avez choisis un guerrier de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
     		while(!action){
     			event=  plateaux[i].waitEvent();
@@ -387,13 +375,13 @@ public class Ile {
     					plateaux[i].println("Vous ne pouvez pas l'attaquer, vous n'avez plus votre épée.") ;
     				} else {
     					//attaque seulement s'il a une épée
-	    				chance = r.nextInt(2);
+	    				chance = alea.tirage(2);
 	    				plateaux[i].println("Vous attaquez un personnage...") ;
 	    				plateaux[1-i].println("On vous attaque !") ;
 	    				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-10);
 	    				if(chance==0){
 	    					//dégats aléatoire entre 1 et 50 ?
-		    				int degats=r.nextInt(50)+1;
+		    				int degats=alea.tirage(50)+1;
 		    				plateaux[i].println("Et vous lui infliger " + degats + " points de dégâts !!") ;
 		    				plateaux[1-i].println("Vous avez perdu " + degats + " points d'énergie...") ;
 		    				((Guerrier)getParcelle(x,y)).attaqueEnnemi(((Personnage)getParcelle(a,b)), degats); 
@@ -410,7 +398,7 @@ public class Ile {
     				echangeItem(x, y, a, b, plateaux, i);
     				action = true;
     			//Rentrer dans navire
-    			} else if(getValeurParcelle(a,b)==10+i && dansChampsAction(a,b,x,y,8)){
+    			} else if(getParcelle(a,b) instanceof ParcelleNavire && getValeurParcelle(x, y)%2==i  && dansChampsAction(a,b,x,y,8)){
     				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(equipes[i].nbPersonnages())){
     					rentrerDansNavire(x,y,a,b,plateaux,i);
     					action=true;
@@ -423,6 +411,7 @@ public class Ile {
     	}
     	//Recupération d'énergie pour les personnages dans le navire
     	int[] coordNavire= getNavire(i+1);
+    	//TODO recuperation d'une epee pour le guerrier
     	for(int p=0; p<((ParcelleNavire)getParcelle(coordNavire[0],coordNavire[1])).getNbPersonnage(); p++){
     		((ParcelleNavire)getParcelle(coordNavire[0],coordNavire[1])).getPersonnage(p).setEnergie(((ParcelleNavire)getParcelle(coordNavire[0],coordNavire[1])).getPersonnage(p).getEnergie()+10);
     	}
@@ -440,7 +429,7 @@ public class Ile {
 	 */
 	public void deplacer(int x, int y, int a, int b, SuperPlateau[] plateaux, int i){
 		plateaux[i].println("Déplacement effectué...");
-		if(getValeurParcelle(a,b)==9){
+		if(getParcelle(a,b) instanceof ParcellePiege){
 			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-30);
 			plateaux[i].println("Vous être pris dans un piege ! Vous perdez 30 points d'énergie.");
 			plateaux[((ParcellePiege)getParcelle(a,b)).getNumEquipe()-1].println("Quelqu'un a marché dans votre piège !") ;
@@ -514,6 +503,7 @@ public class Ile {
 	 * @param i le numéro du plateau courrant
 	 */
 	public void echangeItem(int x, int y, int a, int b, SuperPlateau[] plateaux, int i){
+		//TODO ajouter echange epee
 		if(((Personnage)getParcelle(x,y)).porteTresor()){  //si le personnage (x,y) porte le tresor
 			((Personnage)getParcelle(x,y)).donneItem((Personnage)getParcelle(a,b), 1);	
 			plateaux[i].println("Vous donnez le trésor à un allié.") ;
@@ -630,7 +620,7 @@ public class Ile {
 	 * @return un booleen
 	 */
 	public boolean rocherACote(int x, int y, int a, int b){
-		return grille[a][b].getValeur()>=3 && grille[a][b].getValeur()<=5 && dansChampsAction(x,y,a,b,4); //4 car seul les explorateurs peuvent soulever.
+		return grille[a][b] instanceof ParcelleRocher && dansChampsAction(x,y,a,b,4); //4 car seul les explorateurs peuvent soulever.
 	}
 	
 	/**
@@ -643,7 +633,7 @@ public class Ile {
 	 * @return un booleen
 	 */
 	public boolean personnageACote(int x, int y, int a, int b, int nbDirections){
-		return (grille[a][b].getValeur() >= 12)&& dansChampsAction(x, y, a, b, nbDirections);
+		return (grille[a][b] instanceof Personnage)&& dansChampsAction(x, y, a, b, nbDirections);
 	}	
 	/**
 	 * Methode qui renvoi un booleen pour savoir si un personnage de coord (x,y) se situe a coté d'un autre personnage de coord(a,b) et si celui est un allié.
@@ -907,7 +897,7 @@ public class Ile {
 	
 	private void setArbres(){
 		int x,y;
-		for(int i=0; i<(int)((grille.length-2)*(grille[0].length-2)*(5/100.00)-2); i++) {
+		for(int i=0; i<(int)((grille.length-2)*(grille[0].length-2)*(5/100.00)); i++) {
 			do {
 				x= alea.tirage(grille.length-2)+1;
 				y= alea.tirage(grille[0].length-2)+1;
@@ -1039,9 +1029,9 @@ public class Ile {
 		setMers();	
 		setTresor();
 		setClef();
-		setArbres();
 		setRochers(pourcentage);
 		setNavires();
+		setArbres();
 	}	
 	
 	/**

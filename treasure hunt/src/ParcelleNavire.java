@@ -17,7 +17,7 @@ public class ParcelleNavire extends Parcelle {
 	 * @param numJoueur un entier.
 	 */
 	ParcelleNavire(int numJoueur){
-		super.valeur=9+numJoueur;
+		super.valeur=11+numJoueur;
 	}
 	
 	/**
