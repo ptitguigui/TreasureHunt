@@ -120,6 +120,7 @@ public class GestionPlateaux {
 		}
 		
 		//trésor visible ou non
+		//TODO bug du getTresor ?
 		if (jeuJ1b[coordTresor[0]][coordTresor[1]] && tresorJ1){
 			jeuJ1[coordTresor[0]][coordTresor[1]]=8;
 		} else if (jeuJ1b[coordTresor[0]][coordTresor[1]] && !tresorJ1){

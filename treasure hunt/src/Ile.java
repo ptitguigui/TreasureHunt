@@ -1,8 +1,8 @@
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 import javax.swing.JOptionPane;
 
@@ -47,6 +47,9 @@ public class Ile {
 		equipes[0]=new Equipe(1);
 		equipes[1]=new Equipe(2);
 	}
+	
+	
+	//TODO transférer les méthodes d'actions dans GestionPlateaux
 	
 	public void action(SuperPlateau[] plateaux, int i, int nbPersonnages) {
 		InputEvent event ;
@@ -140,7 +143,7 @@ public class Ile {
     				action = true;
     			//Echange avec un personnage	
     			}else if(personnageAllieACote(x, y, a, b, 4)){
-    				echangeItem(x, y, a, b, plateaux, i);
+    				echangeItem(x, y, a, b, plateaux, i, false);
     				action = true;
     			//Soulève un rocher
     			} else if (rocherACote(x, y, a, b)){
@@ -222,66 +225,15 @@ public class Ile {
     				deplacer(x, y, a, b, plateaux, i);
     				action = true;
     			//Fouille un personnage
-    			} else if(dansChampsAction(x,y,a,b,8) && getValeurParcelle(a,b)>=12 && !personnageAllieACote(x, y, a, b, 8)){
+    			} else if(dansChampsAction(x,y,a,b,8) && getParcelle(a,b) instanceof Personnage && !personnageAllieACote(x, y, a, b, 8)){
     				plateaux[i].println("Vous fouillez un personnage...") ;
     				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-10);
-    				
-    				//s'il ne porte rien
-    				if (!((Personnage)getParcelle(a,b)).porteClef() && !((Personnage)getParcelle(a,b)).porteTresor() && !((Personnage)getParcelle(a,b)).porteEpee()){
-    					plateaux[i].println("Mais vous ne trouvez rien.") ; //sinon rien   
-    				}
-    				
-    				//S'il porte quelque chose
-    				String clef="Clef"; String tresor="Trésor"; String epee="Epée";
-    				int nbItems=((Personnage)getParcelle(a,b)).getNbItems();
-    				String[] option = new String[nbItems];
-    				int choix;
-    				if (nbItems==1){
-    					if(((Personnage)getParcelle(a,b)).porteClef()){
-    						choix=0;
-    					}else if(((Personnage)getParcelle(a,b)).porteTresor()){
-    						choix=1; 						
-						} else if(((Personnage)getParcelle(a,b)).porteEpee()){
-							choix=2;
-						}
-    				}
-    				//TODO JOptionPane qui permet de savoir quel item on souhaite voler
-    				for(int j=0; j<option.length; j++) {
-    					if(((Personnage)getParcelle(a,b)).porteClef()){
-    						
-    					}
-						if(((Personnage)getParcelle(a,b)).porteTresor()){
-						    						
-						}
-						if(((Personnage)getParcelle(a,b)).porteEpee()){
-							
-						}
-    				}
-	    			choix = JOptionPane.showOptionDialog(null, "Choississez l'objet que vous souhaitez voler",  null, JOptionPane.OK_OPTION, JOptionPane.NO_OPTION, null, option, option[0]);
-	    			
-    				//si le personnage porte la clef
-    				if(choix==0){  
-    					((Voleur)getParcelle(x,y)).setVoleClef(((Personnage)getParcelle(a,b)));
-    					plateaux[i].println("Et vous lui volé la clé ! ") ;
-    					plateaux[1-i].println("On vous a voléla clé ! ") ;
-    				}
-    				//si le personnage porte le trésor
-    				if(choix==1){ 
-    					((Voleur)getParcelle(x,y)).setVoleTresor(((Personnage)getParcelle(a,b)));
-    					plateaux[i].println("Et vous lui volé le trésor ! ") ;
-    					plateaux[1-i].println("On vous a volé le trésor ! ") ;
-    				}
-    				//si le personnage porte une épée
-    				if(choix==2){ 
-    					((Voleur)getParcelle(x,y)).setVoleEpee(((Personnage)getParcelle(a,b)));
-    					plateaux[i].println("Et vous lui volé son épée ! ") ;
-    					plateaux[1-i].println("On vous a volé votre épée ! ") ;
-    				}
+    				echangeItem(x, y, a, b, plateaux, i, true); //voler
     				persoMort(x,y,plateaux,i);
     				action = true;
     			//Echange avec un personnage	
     			}else if(personnageAllieACote(x, y, a, b, 8)){
-    				echangeItem(x, y, a, b, plateaux, i);
+    				echangeItem(x, y, a, b, plateaux, i, false);
     				action = true;
     			//Rentrer dans navire
     			} else if(getParcelle(a,b) instanceof ParcelleNavire && getValeurParcelle(x, y)%2==i && dansChampsAction(a,b,x,y,8)){
@@ -323,14 +275,18 @@ public class Ile {
 	    				deplacer(x, y, a, b, plateaux, i);
 	    			//pose un piege	
 	    			}else if(choix ==1){
-	    				setPiege(i+1,a,b);
-	    				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-5);
-	    				persoMort(x,y,plateaux,i);
+	    				if(getParcelle(a,b).estVide()){
+	    					setPiege(i+1,a,b);
+	    					((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-5);
+	    					persoMort(x,y,plateaux,i);
+	    				} else {
+	    					plateaux[i].println("Vous ne pouvez poser de piège, un objet s'y trouve.");
+	    				}
 	    			}
 	    			action = true;  				
     			//Echange avec un personnage	
     			}else if(personnageAllieACote(x, y, a, b, 8)){
-    				echangeItem(x, y, a, b, plateaux, i);
+    				echangeItem(x, y, a, b, plateaux, i, false);
     				action = true;
     			//Rentrer dans navire
     			} else if(getParcelle(a,b) instanceof ParcelleNavire && getValeurParcelle(x, y)%2==i && dansChampsAction(a,b,x,y,8)){
@@ -370,7 +326,7 @@ public class Ile {
     				deplacer(x, y, a, b, plateaux, i);
     				action = true;
     			//attaque un ennemi
-    			} else if(dansChampsAction(x,y,a,b,8) && getValeurParcelle(a,b)>=12 && !personnageAllieACote(x, y, a, b, 8)){
+    			} else if(dansChampsAction(x,y,a,b,8) && getParcelle(a,b) instanceof Personnage && !personnageAllieACote(x, y, a, b, 8)){
     				if(!((Personnage)getParcelle(x,y)).porteEpee()){
     					plateaux[i].println("Vous ne pouvez pas l'attaquer, vous n'avez plus votre épée.") ;
     				} else {
@@ -385,7 +341,7 @@ public class Ile {
 		    				plateaux[i].println("Et vous lui infliger " + degats + " points de dégâts !!") ;
 		    				plateaux[1-i].println("Vous avez perdu " + degats + " points d'énergie...") ;
 		    				((Guerrier)getParcelle(x,y)).attaqueEnnemi(((Personnage)getParcelle(a,b)), degats); 
-		    				persoMort(a,b,plateaux,i);
+		    				persoMort(a,b,plateaux,1-i);
 	    				}else{
 	    					plateaux[i].println("Mais vous manquez votre cible...") ;
 	    					plateaux[1-i].println("Vous avez esquivé.") ;
@@ -395,7 +351,7 @@ public class Ile {
     				action = true;    				
     			//Echange avec un personnage	
     			}else if(personnageAllieACote(x, y, a, b, 8)){
-    				echangeItem(x, y, a, b, plateaux, i);
+    				echangeItem(x, y, a, b, plateaux, i, false);
     				action = true;
     			//Rentrer dans navire
     			} else if(getParcelle(a,b) instanceof ParcelleNavire && getValeurParcelle(x, y)%2==i  && dansChampsAction(a,b,x,y,8)){
@@ -434,25 +390,33 @@ public class Ile {
 			plateaux[((ParcellePiege)getParcelle(a,b)).getNumEquipe()-1].println("Quelqu'un a marché dans votre piège !") ;
 			grille[a][b]= grille[x][y];
 			grille[x][y] = new Parcelle();
+			persoMort(a,b,plateaux, i);
 		}else{
 			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
 			if(getValeurParcelle(a,b)==7){
 				((Personnage)getParcelle(x,y)).ramasseClef();
+				plateaux[i].println("Vous avez ramassé la clef.");
 				grille[a][b]=new Parcelle();
+				persoMort(x,y,plateaux, i);
 			} else if(getValeurParcelle(a,b)==10){
 				((Personnage)getParcelle(x,y)).ramasseTresor();
+				plateaux[i].println("Vous avez ramassé le trésor.");
 				grille[a][b]=new Parcelle();
+				persoMort(x,y,plateaux, i);
 			} else if(getValeurParcelle(a,b)==11){
 				((Personnage)getParcelle(x,y)).ramasseEpee();
+				plateaux[i].println("Vous avez ramassé une épée.");
 				grille[a][b]=new Parcelle();
+				persoMort(x,y,plateaux, i);
 			} else {
-				echangeParcelles(x, y, a, b);	
+				echangeParcelles(x, y, a, b);
+				persoMort(a,b,plateaux, i);	
 			}
 		}
-		persoMort(a,b,plateaux, i);
 		plateaux[0].setJeu(getIleTab());
 		plateaux[1].setJeu(getIleTab());
 	}
+	
 	/**
 	 * Methode permettant de supprimer un personnage de coord (x,y) si celui-ci est mort
 	 * @param x un entier
@@ -463,66 +427,68 @@ public class Ile {
 		if(((Personnage)getParcelle(x,y)).estMort()){
 			equipes[((Personnage)getParcelle(x,y)).getNumEquipe()-1].removePersonnage(((Personnage)getParcelle(x,y)));
 			if(((Personnage)getParcelle(x,y)).porteTresor() || ((Personnage)getParcelle(x,y)).porteClef() || ((Personnage)getParcelle(x,y)).porteEpee()){
+				int aleaX=alea.tirage(3)-1; // -1, 0 ou 1
+				int aleaY=alea.tirage(3)-1;
 				//a les 3
-					//TODO si personnage a les 3 items...
+				if (((Personnage)getParcelle(x,y)).porteTresor() && ((Personnage)getParcelle(x,y)).porteClef() && ((Personnage)getParcelle(x,y)).porteEpee()){
+					//place le trésor
+					grille[x][y]= new Parcelle();
+					getParcelle(x,y).setValeur(10);
+					//place l'épée
+					if(nbVoisinsVide(x,y,8)>=1){ //s'il y a au moins une case vide, place l'épée, sinon tant pis. (évite la boucle infinie)
+						while (!getParcelle(x+aleaX,y+aleaY).estVide()){
+							aleaX=alea.tirage(3)-1;
+							aleaY=alea.tirage(3)-1;
+						}
+						getParcelle(x+aleaX,y+aleaY).setValeur(11);
+					}
+					//place la clef
+					if(nbVoisinsVide(x,y,8)>=1){
+						while (!getParcelle(x+aleaX,y+aleaY).estVide()){
+							aleaX=alea.tirage(3)-1;
+							aleaY=alea.tirage(3)-1;
+						}
+						getParcelle(x+aleaX,y+aleaY).setValeur(7);
+					}
 				//a clef et trésor
-				if (((Personnage)getParcelle(x,y)).porteTresor() && ((Personnage)getParcelle(x,y)).porteClef()){
+				} else if (((Personnage)getParcelle(x,y)).porteTresor() && ((Personnage)getParcelle(x,y)).porteClef()){
 					//placer trésor
 					grille[x][y]= new Parcelle();
 					getParcelle(x,y).setValeur(10);
-					//placer clef
-					if(getParcelle(x+1,y).estVide()){
-						grille[x+1][y]= new Parcelle();
-						getParcelle(x+1,y).setValeur(7);
-					} else if (getParcelle(x-1,y).estVide()){
-						grille[x-1][y]= new Parcelle();
-						getParcelle(x-1,y).setValeur(7);
-					} else if (getParcelle(x,y+1).estVide()){
-						grille[x][y+1]= new Parcelle();
-						getParcelle(x,y+1).setValeur(7);
-					} else if (getParcelle(x,y-1).estVide()){
-						grille[x][y-1]= new Parcelle();
-						getParcelle(x,y-1).setValeur(7);
-					} //si pas de case libre autour pour poser la clef, tant pis, le tresor est déjà sorti du coffre donc ce n'est pas très important.
+					//place la clef
+					if(nbVoisinsVide(x,y,8)>=1){
+						while (!getParcelle(x+aleaX,y+aleaY).estVide()){
+							aleaX=alea.tirage(3)-1;
+							aleaY=alea.tirage(3)-1;
+						}
+						getParcelle(x+aleaX,y+aleaY).setValeur(7);
+					}
 				//Si clef et épée
 				} else if (((Personnage)getParcelle(x,y)).porteEpee() && ((Personnage)getParcelle(x,y)).porteClef()){
-					//placer épée
-					grille[x][y]= new Parcelle();
-					getParcelle(x,y).setValeur(11);
 					//placer clef
-					if(getParcelle(x+1,y).estVide()){
-						grille[x+1][y]= new Parcelle();
-						getParcelle(x+1,y).setValeur(7);
-					} else if (getParcelle(x-1,y).estVide()){
-						grille[x-1][y]= new Parcelle();
-						getParcelle(x-1,y).setValeur(7);
-					} else if (getParcelle(x,y+1).estVide()){
-						grille[x][y+1]= new Parcelle();
-						getParcelle(x,y+1).setValeur(7);
-					} else if (getParcelle(x,y-1).estVide()){
-						grille[x][y-1]= new Parcelle();
-						getParcelle(x,y-1).setValeur(7);
-					} //si pas de case libre autour pour poser la clef, tant pis, le tresor est déjà sorti du coffre donc ce n'est pas très important.
+					grille[x][y]= new Parcelle();
+					getParcelle(x,y).setValeur(7);
+					//placer l'épée
+					if(nbVoisinsVide(x,y,8)>=1){
+						while (!getParcelle(x+aleaX,y+aleaY).estVide()){
+							aleaX=alea.tirage(3)-1;
+							aleaY=alea.tirage(3)-1;
+						}
+						getParcelle(x+aleaX,y+aleaY).setValeur(11);
+					}
 				//Si trésor et épée
 				} else if(((Personnage)getParcelle(x,y)).porteEpee() && ((Personnage)getParcelle(x,y)).porteTresor()) {
 					//placer trésor
 					grille[x][y]= new Parcelle();
 					getParcelle(x,y).setValeur(10);
-					//placer épée
-					if(getParcelle(x+1,y).estVide()){
-						grille[x+1][y]= new Parcelle();
-						getParcelle(x+1,y).setValeur(11);
-					} else if (getParcelle(x-1,y).estVide()){
-						grille[x-1][y]= new Parcelle();
-						getParcelle(x-1,y).setValeur(11);
-					} else if (getParcelle(x,y+1).estVide()){
-						grille[x][y+1]= new Parcelle();
-						getParcelle(x,y+1).setValeur(11);
-					} else if (getParcelle(x,y-1).estVide()){
-						grille[x][y-1]= new Parcelle();
-						getParcelle(x,y-1).setValeur(11);
-					} //si pas de case libre autour pour poser l'épée, tant pis, on peut en récuperer en allant au bateau.				
-				}
+					//place l'épée
+					if(nbVoisinsVide(x,y,8)>=1){
+						while (!getParcelle(x+aleaX,y+aleaY).estVide()){
+							aleaX=alea.tirage(3)-1;
+							aleaY=alea.tirage(3)-1;
+						}
+						getParcelle(x+aleaX,y+aleaY).setValeur(11);		
+					}
 				//a trésor
 				} else if(((Personnage)getParcelle(x,y)).porteTresor()){
 					grille[x][y]= new Parcelle();
@@ -539,7 +505,9 @@ public class Ile {
 			} else {
 				grille[x][y]= new Parcelle();
 			}
-		plateaux[i].println("Votre personnage meurt par manque d'énergie...");
+			plateaux[i].println("Votre personnage meurt par manque d'énergie...");
+			
+		}
 		plateaux[0].setJeu(getIleTab());
 		plateaux[1].setJeu(getIleTab());
 	}
@@ -554,22 +522,99 @@ public class Ile {
 	 * @param plateaux les plateaux des deux joueurs
 	 * @param i le numéro du plateau courrant
 	 */
-	public void echangeItem(int x, int y, int a, int b, SuperPlateau[] plateaux, int i){
-		//TODO ajouter echange epee
-		if(((Personnage)getParcelle(x,y)).porteTresor()){  //si le personnage (x,y) porte le tresor
-			((Personnage)getParcelle(x,y)).donneItem((Personnage)getParcelle(a,b), 1);	
-			plateaux[i].println("Vous donnez le trésor à un allié.") ;
-		}else if (((Personnage)getParcelle(a,b)).porteTresor()) { //si le personnage (a,b) porte le tresor
-			((Personnage)getParcelle(a,b)).donneItem((Personnage)getParcelle(x,y), 1);	
-			plateaux[i].println("Vous prennez le trésor à un allié.") ;
-		}else if (((Personnage)getParcelle(x,y)).porteClef()){  //si le personnage (x,y) porte la clef
-			((Personnage)getParcelle(x,y)).donneItem((Personnage)getParcelle(a,b), 0);
-			plateaux[i].println("Vous donnez la clef a un allié.") ;
-		}else if (((Personnage)getParcelle(a,b)).porteClef()){  //si le personnage (a,b) porte la clef
-			((Personnage)getParcelle(a,b)).donneItem((Personnage)getParcelle(x,y), 0);
-			plateaux[i].println("Vous prennez la clef a un allié.") ;
-		}else {
-			plateaux[i].println("Vos deux personnages discutent tranquillement...") ;
+	public void echangeItem(int x, int y, int a, int b, SuperPlateau[] plateaux, int i, boolean vole){
+		Personnage donneur=(Personnage)getParcelle(x,y);
+		Personnage receveur=(Personnage)getParcelle(a,b);
+		if(!vole){
+			if(donneur.getNbItems()==0 && receveur.getNbItems()==0){
+				plateaux[i].println("Vos deux personnages discutent tranquillement, n'ayant aucun item à s'échanger...") ;
+			} else {
+				String[] options=new String[]{"1ère séléction", "2e séléction"};
+				int rep = JOptionPane.showOptionDialog(null, "Choississez le personnage qui donnera un objet",  null, JOptionPane.OK_OPTION, JOptionPane.NO_OPTION, null, options, options[0]);
+				if(rep==1){ 
+					donneur=receveur;
+					receveur=(Personnage)getParcelle(x,y);
+				}
+			}
+		}
+		//si le donneur n'a rien
+		if (!donneur.porteClef() && !donneur.porteTresor() && !donneur.porteEpee()){
+			if (vole){ plateaux[i].println("Mais vous ne trouvez rien.") ; }
+			else { plateaux[i].println("Vos deux personnages discutent tranquillement,\ncar le personnage choisi n'a aucun item à échanger...") ; }
+		//S'il porte quelque chose
+		} else {
+			int nbItems=donneur.getNbItems();
+			int choix=0;
+			if (nbItems==1){
+				if(donneur.porteClef()){
+					choix=0;
+				}else if(donneur.porteTresor()){
+					choix=1; 						
+				} else if(donneur.porteEpee()){
+					choix=2;
+				}
+			} else {
+				ArrayList<String> itemsListe=new ArrayList<>();
+				String clef="Clef"; String tresor="Trésor"; String epee="Epée";
+				if(donneur.porteClef()){
+					itemsListe.add(clef);
+				}
+				if(donneur.porteTresor()){
+					itemsListe.add(tresor);						
+				}
+				if(donneur.porteEpee()){
+					itemsListe.add(epee);
+				}
+				String[] itemsTab = new String[itemsListe.size()];
+				for(int j=0; j<itemsTab.length; j++) {
+					itemsTab[j]=itemsListe.get(j);
+				}
+				//TODO régler bug
+				String str;
+				if(vole){ str="voler";}
+				else{ str="échanger";}
+				int rep = JOptionPane.showOptionDialog(null, "Choississez l'objet que vous souhaitez " + str,  null, JOptionPane.OK_OPTION, JOptionPane.NO_OPTION, null, itemsTab, itemsTab[0]);
+				if(itemsTab[rep].equals(clef)){
+					choix=0;
+				} else if(itemsTab[rep].equals(tresor)){
+					choix=1;
+				} else if(itemsTab[rep].equals(epee)){
+					choix=2;
+				}
+			}
+			//Prend clef
+			if(choix==0){  
+				if(vole){
+					((Voleur)getParcelle(x,y)).setVoleClef(((Personnage)getParcelle(a,b)));
+					plateaux[i].println("Et vous lui volé la clé !") ;
+					plateaux[1-i].println("On vous a volé la clé !") ;
+			} else {
+				donneur.donneItem(receveur, 0);
+				plateaux[i].println("Vous échangez la clef.") ;
+			}
+			}
+			//Prend trésor
+			if(choix==1){ 
+				if(vole){
+					((Voleur)getParcelle(x,y)).setVoleTresor(((Personnage)getParcelle(a,b)));
+					plateaux[i].println("Et vous lui volé le trésor !") ;
+					plateaux[1-i].println("On vous a volé le trésor !") ;
+				} else {
+					donneur.donneItem(receveur, 1);
+					plateaux[i].println("Vous échangez le trésor.") ;
+				}
+			}
+			//Prend épée
+			if(choix==2){ 
+				if(vole){
+					((Voleur)getParcelle(x,y)).setVoleEpee(((Personnage)getParcelle(a,b)));
+					plateaux[i].println("Et vous lui volé son épée !") ;
+					plateaux[1-i].println("On vous a volé votre épée !") ;
+				} else {
+					donneur.donneItem(receveur, 2);
+					plateaux[i].println("Vous échangez l'épée.") ;
+				}
+			}
 		}
 	}
 	
@@ -726,16 +771,18 @@ public class Ile {
 	 * @param y un entier correspondant à la deuxième coordonnée
 	 * @return le nombre de cases vides autour de la case correspondant aux coordonnées passées en paramètre.
 	 */
-	public int nbVoisinsVide(int x, int y){
+	public int nbVoisinsVide(int x, int y, int directions){
 		int nb=0;
 		if(grille[x+1][y].estVide()){ nb += 1; }
 		if(grille[x-1][y].estVide()){ nb += 1; }
 		if(grille[x][y+1].estVide()){ nb += 1; }
 		if(grille[x][y-1].estVide()){ nb += 1; }
-		if(grille[x+1][y+1].estVide()){	nb += 1; }
-		if(grille[x+1][y-1].estVide()){ nb += 1; }
-		if(grille[x-1][y+1].estVide()){ nb += 1; }
-		if(grille[x-1][y-1].estVide()){	nb += 1; }
+		if(directions==8) {
+			if(grille[x+1][y+1].estVide()){	nb += 1; }
+			if(grille[x+1][y-1].estVide()){ nb += 1; }
+			if(grille[x-1][y+1].estVide()){ nb += 1; }
+			if(grille[x-1][y-1].estVide()){	nb += 1; }
+		}
 		return nb;
 	}
 
@@ -944,7 +991,7 @@ public class Ile {
 				x= alea.tirage(grille.length-2)+1;
 				y= alea.tirage(grille[0].length-2)+1;
 			}
-			while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)>6));
+			while(!(grille[x][y].estVide() && nbVoisinsVide(x, y, 8)>6));
 			grille[x][y]=new ParcelleRocher();
 			entites.put("R"+Integer.toString(i), new int[] {x,y});
 		}
@@ -957,7 +1004,7 @@ public class Ile {
 				x= alea.tirage(grille.length-2)+1;
 				y= alea.tirage(grille[0].length-2)+1;
 			}
-			while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)>6));
+			while(!(grille[x][y].estVide() && nbVoisinsVide(x, y, 8)>6));
 			grille[x][y]=new ParcelleArbre();
 			entites.put("A"+Integer.toString(i), new int[] {x,y});
 		}
@@ -975,7 +1022,7 @@ public class Ile {
 			y=alea.tirage(grille[0].length-2)+1;
 			if (x==0){ x=grille.length-2;}
 		}
-		while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)==5));
+		while(!(grille[x][y].estVide() && nbVoisinsVide(x, y, 8)==5));
 		grille[x][y]=new ParcelleNavire(1);
 		entites.put("n", new int[] {x,y});
 		
@@ -985,7 +1032,7 @@ public class Ile {
 			y= alea.tirage(2);
 			if (y==0){ y=grille[0].length-2;}
 		}
-		while(!(grille[x][y].estVide()&& nbVoisinsVide(x, y)==5));
+		while(!(grille[x][y].estVide()&& nbVoisinsVide(x, y, 8)==5));
 		grille[x][y]=new ParcelleNavire(2);
 		entites.put("N", new int[] {x,y});
 	}
@@ -999,7 +1046,7 @@ public class Ile {
 			x= alea.tirage(grille.length-2)+1;
 			y= alea.tirage(grille[0].length-2)+1;
 		}
-		while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)>7));
+		while(!(grille[x][y].estVide() && nbVoisinsVide(x, y, 8)>7));
 		grille[x][y]=new ParcelleRocher();
 		((ParcelleRocher)grille[x][y]).setTresor();
 		entites.put("T", new int[] {x,y});
@@ -1014,7 +1061,7 @@ public class Ile {
 			x= alea.tirage(grille.length-2)+1;
 			y= alea.tirage(grille[0].length-2)+1;
 		}
-		while(!(grille[x][y].estVide() && nbVoisinsVide(x, y)>7));
+		while(!(grille[x][y].estVide() && nbVoisinsVide(x, y, 8)>7));
 		grille[x][y]=new ParcelleRocher();
 		((ParcelleRocher)grille[x][y]).setClef();
 		entites.put("C", new int[] {x,y});

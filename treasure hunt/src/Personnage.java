@@ -140,11 +140,11 @@ public class Personnage extends Parcelle{
 	/**
 	 * Méthode permettant de donner un objet d'un personnage à un autre.
 	 * @param p l'autre personnage.
-	 * @param i l'objet (0 pour la clef, 1 pour le trésor)
+	 * @param i l'objet (0 pour la clef, 1 pour le trésor, 2 pour l'épée)
 	 */
 	public void donneItem(Personnage p, int i){
 		if(items[i]==true){
-			p.items[i]=items[i];
+			p.items[i]=true;
 			items[i]=false;
 		}
 	}

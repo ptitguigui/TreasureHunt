@@ -171,14 +171,13 @@ public class Jouer  {
 				monIle.setPersonnages(1, true, nbExplo1, nbVoleurs1, nbPiegeurs1, nbGuerriers1);
 				monIle.setPersonnages(2, true, nbExplo2, nbVoleurs2, nbPiegeurs2, nbGuerriers2);
 			} else {
-				//TODO mettre personnages dans les navires
 				monIle.setPersonnages(1, false, nbExplo1, nbVoleurs1, nbPiegeurs1, nbGuerriers1);
 				monIle.setPersonnages(2, false, nbExplo2, nbVoleurs2, nbPiegeurs2, nbGuerriers2);
 			}
 			
 			int[][] jeu=monIle.getIleTab();
 			
-			
+			//TODO passage à GestionPlateaux
 			SuperPlateau[] plateaux=new SuperPlateau[2];
 			plateaux[0]=new SuperPlateau(IMGS,10,true);
 			plateaux[1]=new SuperPlateau(IMGS,10,true);
@@ -197,6 +196,7 @@ public class Jouer  {
 				System.out.println(monIle);
 			
 			//déplacement
+				//TODO Ajout des conditions de victoire (rentrer dans bateau avec trésor, ou adversaire n'ayant plus aucun perso)
 			while(true){		        		        
 				for(int i=0; i<2; i++){
 					monIle.action(plateaux, i, nbExplo1+nbVoleurs1+nbPiegeurs1+nbGuerriers1);
