@@ -203,14 +203,18 @@ public class GestionPlateaux {
 				//visible par défaut, donc rendre invisible pour l'adversaire
 				int x=pieges1.get(idx).getX();
 				int y=pieges1.get(idx).getY();
-				jeuJ2[x][y]=1; //sable
+				if(jeuJ2b[x][y]){
+					jeuJ2[x][y]=1; //sable
+				}
 			}
 		} else if (pieges2.size()>0) {
 			for(int idx=0; idx<pieges2.size(); idx++){
 				//visible par défaut, donc rendre invisible pour l'adversaire
 				int x=pieges2.get(idx).getX();
 				int y=pieges2.get(idx).getY();
-				jeuJ1[x][y]=1; //sable
+				if(jeuJ1b[x][y]){
+					jeuJ1[x][y]=1; //sable
+				}
 			}
 		}
 		
