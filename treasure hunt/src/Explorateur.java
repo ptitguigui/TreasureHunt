@@ -11,7 +11,7 @@ public class Explorateur extends Personnage {
 		super.numEquipe=numEquipe;
 		super.maxEnergie=100;
 		super.energie=maxEnergie;
-		super.valeur=11+numEquipe;
+		super.valeur=13+numEquipe;
 		} else {
 			super.nom="Problème d'initialisation, mauvais n° d'équipe (classe Explorateur)";
 			super.numEquipe=numEquipe;

@@ -1,15 +1,17 @@
 
 public class GestionPlateaux {
 	private SuperPlateau[] plateaux=new SuperPlateau[2];
-	final String[] IMGS={"treasure hunt/imgs/sable.png",
+	private final String[] IMGS={"treasure hunt/imgs/sable.png",
 			"treasure hunt/imgs/mer.png",
 			"treasure hunt/imgs/rocher1.png",
 			"treasure hunt/imgs/rocher2.png",
 			"treasure hunt/imgs/rocher3.png",
 			"treasure hunt/imgs/arbre.png",
 			"treasure hunt/imgs/clef.png",
-			"treasure hunt/imgs/tresor.png",
+			"treasure hunt/imgs/coffre.png",
 			"treasure hunt/imgs/piege.png",
+			"treasure hunt/imgs/tresor.png",
+			"treasure hunt/imgs/epee.png",
 			"treasure hunt/imgs/1_bateau.png",
 			"treasure hunt/imgs/2_bateau.png",
 			"treasure hunt/imgs/1_explorateur.png",
@@ -118,6 +120,7 @@ public class GestionPlateaux {
 		}
 		
 		//trésor visible ou non
+		//TODO bug du getTresor ?
 		if (jeuJ1b[coordTresor[0]][coordTresor[1]] && tresorJ1){
 			jeuJ1[coordTresor[0]][coordTresor[1]]=8;
 		} else if (jeuJ1b[coordTresor[0]][coordTresor[1]] && !tresorJ1){

@@ -16,18 +16,20 @@ public class Parcelle {
 	 * 5 = rocher3
 	 * 6 = arbre
 	 * 7 = clef
-	 * 8 = tresor
+	 * 8 = coffre
 	 * 9 = piege
-	 * 10 = navire1
-	 * 11 = navire2
-	 * 12 = explorateur1
-	 * 13 = explorateur2
-	 * 14 = voleur1
-	 * 15 = voleur2
-	 * 16 = piegeur1
-	 * 17 = piegeur2
-	 * 18 = guerrier1
-	 * 19 = guerrier2
+	 * 10 = tresor
+	 * 11 = epee
+	 * 12 = navire1
+	 * 13 = navire2
+	 * 14 = explorateur1
+	 * 15 = explorateur2
+	 * 16 = voleur1
+	 * 17 = voleur2
+	 * 18 = piegeur1
+	 * 19 = piegeur2
+	 * 20 = guerrier1
+	 * 21 = guerrier2
 	 */
 	protected int valeur;
 	
@@ -61,11 +63,19 @@ public class Parcelle {
 	public String toString(){
 		return ""+valeur;
 	}
+	
 	/**
-	 * Méthode vérifiant si la parcelle est vide ou non (c'est à dire s'il s'agit d'un terrain clair ou non).
+	 * Méthode vérifiant si la parcelle est un terrain clair ou non.
+	 * @return vrai si la parcelle est un terrain clair, faux sinon.
+	 */
+	public boolean terrainClair(){
+		return valeur == 1 || valeur == 9 || valeur == 11 || valeur == 7 || valeur == 10;
+	}
+	/**
+	 * Méthode vérifiant si la parcelle est vide ou non (c'est à dire qu'il n'y a aucun élément dessus).
 	 * @return vrai si la parcelle est vide, faux sinon.
 	 */
 	public boolean estVide() {
-		return (getValeur() == 1 || getValeur() == 9);
+		return valeur==1;
 	}
 }
