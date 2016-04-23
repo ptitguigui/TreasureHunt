@@ -64,7 +64,6 @@ public class Ile {
 	 * Methode permettant de faire toutes les actions possible du jeu 
 	 * @param plateaux les plateaux des deux joueurs
 	 * @param i un entier
-	 * @param nbPersonnages un entier
 	 */
 	public void action(SuperPlateau[] plateaux, int i) {
 		InputEvent event ;
@@ -453,6 +452,7 @@ public class Ile {
 	 * @param x un entier
 	 * @param y un entiter
 	 * @param plateaux les plateaux des deux joueurs
+	 * @param i le numéro du plateau
 	 */
 	public void persoMort(int x, int y, SuperPlateau[] plateaux, int i){
 		if(((Personnage)getParcelle(x,y)).estMort()){
@@ -553,6 +553,7 @@ public class Ile {
 	 * @param b un entier
 	 * @param plateaux les plateaux des deux joueurs
 	 * @param i le numéro du plateau courrant
+	 * @param vole booléen permettant de savoir s'il s'agit d'un vol ou d'un échange
 	 */
 	public void echangeItem(int x, int y, int a, int b, SuperPlateau[] plateaux, int i, boolean vole){
 		Personnage receveur=(Personnage)getParcelle(x,y); //aussi égale au voleur
@@ -823,6 +824,7 @@ public class Ile {
 	 * Méthode comptant le nombre de cases vides autour d'une case (compte les 8 cases autours, c'est-à-dire les diagonales inclues).
 	 * @param x un entier correspondant à la première coordonnée
 	 * @param y un entier correspondant à la deuxième coordonnée
+	 * @param directions un entier permettant de savoir le nombre de directions vers lesquels le personnage peut se déplacer.
 	 * @return le nombre de cases vides autour de la case correspondant aux coordonnées passées en paramètre.
 	 */
 	public int nbVoisinsVide(int x, int y, int directions){
@@ -857,7 +859,8 @@ public class Ile {
 	}
 	
 	/**
-	 *  Méthode plaçant les explorateurs sur l'ile , le nombre d'explorateurs correspond à l'entier précisé en paramètre.
+	 * Méthode plaçant les explorateurs sur l'ile , le nombre d'explorateurs correspond à l'entier précisé en paramètre.
+	 * @param test un booléen permettant de savoir s'il s'agit d'un test ou non
 	 * @param nbExplorateurs, le nombre d'explorateurs dans l'équipe
 	 * @param numEquipe, le numero de l'équipe où l'explorateur est situé
 	 */
@@ -897,6 +900,7 @@ public class Ile {
 	
 	/**
 	 *  Méthode plaçant les voleurs sur l'ile , le nombre de voleurs correspond à l'entier précisé en paramètre.
+	 * @param test un booléen permettant de savoir s'il s'agit d'un test ou non
 	 * @param nbVoleurs, le nombre de voleurs dans l'équipe
 	 * @param numEquipe, le numero de l'équipe où le voleur est situé
 	 */
@@ -935,6 +939,7 @@ public class Ile {
 	}
 	/**
 	 *  Méthode plaçant les piegeurs sur l'ile , le nombre de piegeurs correspond à l'entier précisé en paramètre.
+	 * @param test un booléen permettant de savoir s'il s'agit d'un test ou non
 	 * @param nbPiegeurs, le nombre de piegeur dans l'équipe
 	 * @param numEquipe, le numero de l'équipe où le piegeur est situé
 	 */
@@ -973,6 +978,7 @@ public class Ile {
 	}
 	/**
 	 *  Méthode plaçant les guerriers sur l'ile , le nombre de guerriers correspond à l'entier précisé en paramètre.
+	 * @param test un booléen permettant de savoir s'il s'agit d'un test ou non
 	 * @param nbGuerriers, le nombre de guerriers dans l'équipe
 	 * @param numEquipe, le numero de l'équipe où le piegeur est situé
 	 */
@@ -1171,8 +1177,11 @@ public class Ile {
 	/**
 	 * Méthode permettant de placer les personnages sur l'ile.
 	 * @param numEquipe numéro du joueur.
+	 * @param test un booléen permettant de savoir s'il s'agit d'un test ou non
 	 * @param nbExplorateurs nombre d'explorateur voulu.
 	 * @param nbVoleurs nombre de voleurs voulu.
+	 * @param nbPiegeurs nombre de piegeurs voulu.
+	 * @param nbGuerriers nombre de guerriers voulu.
 	 */
 	public void setPersonnages(int numEquipe, boolean test, int nbExplorateurs, int nbVoleurs, int nbPiegeurs, int nbGuerriers){
 		if(numEquipe>0 && numEquipe<3) {
