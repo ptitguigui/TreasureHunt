@@ -22,15 +22,23 @@ public class Ile {
 	 */
 	private Aleatoire alea=new Aleatoire();
 	/**
-	 * Attribut réunissant les coordonnées de tous les éléments positionnés sur l'ile.
+	 * Attribut correspondant aux deux équipes.
 	 */
-	private HashMap<String, int[]> entites =new HashMap<>();
-	
 	private Equipe[] equipes=new Equipe[2];
+	/**
+	 * Attribut permettant de connaitre la position du trésor.
+	 */
+	private int[] coordTresor=new int[2];
+	/**
+	 * 
+	 */
+	private ParcelleNavire N1;
+	private ParcelleNavire N2;
+	private ArrayList<ParcellePiege> pieges1=new ArrayList<>();
+	private ArrayList<ParcellePiege> pieges2=new ArrayList<>();
+	private int[] dernierDeplacement=new int[2];
 	
 	
-	
-		
 	
 	/**
 	 * Constructeur créant une ile de taille x par y.
@@ -48,8 +56,10 @@ public class Ile {
 		equipes[1]=new Equipe(2);
 	}
 	
+	public int[] getDernierDeplacement(){
+		return dernierDeplacement;
+	}
 	
-	//TODO transférer les méthodes d'actions dans GestionPlateaux
 	/**
 	 * Methode permettant de faire toutes les actions possible du jeu 
 	 * @param plateaux les plateaux des deux joueurs
@@ -80,6 +90,7 @@ public class Ile {
 		    	y = plateaux[i].getY((MouseEvent) event) ;
 	    	} while(!((getParcelle(x, y) instanceof Personnage || (getParcelle(x,y) instanceof ParcelleNavire && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0)) && getValeurParcelle(x, y)%2==i ));
     	
+		dernierDeplacement=new int[]{x,y};
     	
     	//Actions si navire
     	if(getParcelle(x,y) instanceof ParcelleNavire && getValeurParcelle(x, y)%2==i && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0){ 
@@ -120,6 +131,7 @@ public class Ile {
 					plateaux[0].setJeu(jeu);
 					plateaux[1].setJeu(jeu);
     				action = true;
+					dernierDeplacement=new int[]{a,b};
     			}
     		}
     	}
@@ -158,6 +170,7 @@ public class Ile {
     				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-5);
     				if(((ParcelleRocher)getParcelle(a,b)).getTresor()){ //Si trésor
     					((ParcelleRocher)getParcelle(a, b)).visible();
+						equipes[i].setTresor();
     					jeu=getIleTab();
     					plateaux[0].setJeu(jeu);
     					plateaux[1].setJeu(jeu);
@@ -378,6 +391,10 @@ public class Ile {
 		event = plateaux[i].waitEvent(500);	// Délai pour permettre la lecture.
 	}
 	
+	public Equipe getEquipe(int numEquipe){
+		return equipes[numEquipe-1];
+	}
+	
 	/**
 	 * Méthode permettant de déplacer le personnage de coordonnées (x,y) à la case de coordonnées (a,b).
 	 * @param x un entier
@@ -393,8 +410,15 @@ public class Ile {
 			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-30);
 			plateaux[i].println("Vous être pris dans un piege ! Vous perdez 30 points d'énergie.");
 			plateaux[((ParcellePiege)getParcelle(a,b)).getNumEquipe()-1].println("Quelqu'un a marché dans votre piège !") ;
+			ParcellePiege piege=(ParcellePiege) grille[a][b];
+			if(piege.getNumEquipe()==1){
+				pieges1.remove(piege);
+			} else {
+				pieges2.remove(piege);
+			}
 			grille[a][b]= grille[x][y];
 			grille[x][y] = new Parcelle();
+			dernierDeplacement=new int[]{a,b};
 			persoMort(a,b,plateaux, i);
 		}else{
 			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
@@ -405,7 +429,6 @@ public class Ile {
 				persoMort(x,y,plateaux, i);	
 			} else if(getValeurParcelle(a,b)==10){
 				((Personnage)getParcelle(x,y)).ramasseTresor();
-				System.out.println("trésor : " + ((Personnage)getParcelle(x,y)).porteTresor());
 				plateaux[i].println("Vous avez ramassé le trésor.");
 				grille[a][b]=new Parcelle();
 				persoMort(x,y,plateaux, i);	
@@ -417,6 +440,7 @@ public class Ile {
 			} else {
 				plateaux[i].println("Déplacement effectué...");
 				echangeParcelles(x, y, a, b);
+				dernierDeplacement=new int[]{a,b};
 				persoMort(a,b,plateaux, i);	
 			}
 		}
@@ -625,6 +649,7 @@ public class Ile {
 			}
 		}
 	}
+	
 	/**
 	 * Methode permettant de definir si la partie est finis ou non et de montrer qui a gagné
 	 * @param plateaux les plateaux des deux joueurs
@@ -721,6 +746,7 @@ public class Ile {
 		}
 		return false;
 	}
+	
 	/*
 	public void highlight(SuperPlateau[] plateaux, int i, int valeurPerso, int x, int y){
 		if(valeurPerso==9+i){
@@ -822,7 +848,13 @@ public class Ile {
 	 * @param b un entier (coordonnée y)
 	 */
 	private void setPiege(int numEquipe, int a, int b){
-		grille[a][b]= new ParcellePiege(numEquipe);
+		ParcellePiege piege=new ParcellePiege(numEquipe, a, b);
+		grille[a][b]=piege;
+		if(numEquipe==1){
+			pieges1.add(piege);
+		} else {
+			pieges2.add(piege);
+		}
 	}
 	
 	/**
@@ -851,11 +883,6 @@ public class Ile {
 				y=Integer.parseInt(saisie);
 							
 				grille[x][y]=new Explorateur("Explorateur", numEquipe);
-				if (numEquipe==1){
-					entites.put("E"+Integer.toString(i), new int[] {x,y});
-				} else {
-					entites.put("e"+Integer.toString(i), new int[] {x,y});
-				}
 			} else {
 				int[] coordN=getNavire(numEquipe);
 				Personnage p=new Explorateur("Explorateur", numEquipe);
@@ -895,11 +922,6 @@ public class Ile {
 				y=Integer.parseInt(saisie);
 							
 				grille[x][y]=new Voleur("Voleur", numEquipe);
-				if (numEquipe==1){
-					entites.put("V"+Integer.toString(i), new int[] {x,y});
-				} else {
-					entites.put("v"+Integer.toString(i), new int[] {x,y});
-				}
 			} else {
 				int[] coordN=getNavire(numEquipe);
 				Personnage p=new Voleur("Voleur", numEquipe);
@@ -938,11 +960,6 @@ public class Ile {
 				y=Integer.parseInt(saisie);
 							
 				grille[x][y]=new Piegeur("Piegeur", numEquipe);
-				if (numEquipe==1){
-					entites.put("P"+Integer.toString(i), new int[] {x,y});
-				} else {
-					entites.put("p"+Integer.toString(i), new int[] {x,y});
-				}
 			} else {
 				int[] coordN=getNavire(numEquipe);
 				Personnage p=new Piegeur("Piegeur", numEquipe);
@@ -981,11 +998,6 @@ public class Ile {
 				y=Integer.parseInt(saisie);
 							
 				grille[x][y]=new Guerrier("Guerrier", numEquipe);
-				if (numEquipe==1){
-					entites.put("G"+Integer.toString(i), new int[] {x,y});
-				} else {
-					entites.put("g"+Integer.toString(i), new int[] {x,y});
-				}
 			} else {
 				int[] coordN=getNavire(numEquipe);
 				Personnage p=new Guerrier("Guerrier", numEquipe);
@@ -1006,13 +1018,9 @@ public class Ile {
 		for(int c=0; c<grille.length; c++) {
 			for(int l=0; l<grille[0].length; l++) {
 			grille[0][l]=new ParcelleMer();
-			entites.put("M", new int[] {0,l});
 			grille[grille.length-1][l]=new ParcelleMer();
-			entites.put("M", new int[] {grille.length-1,l});
 			grille[c][0]=new ParcelleMer();
-			entites.put("M", new int[] {c,0});
 			grille[c][grille[0].length-1]=new ParcelleMer();
-			entites.put("M", new int[] {c,grille[0].length-1});
 			}
 		}
 	}
@@ -1030,7 +1038,6 @@ public class Ile {
 			}
 			while(!(grille[x][y].estVide() && nbVoisinsVide(x, y, 8)>6));
 			grille[x][y]=new ParcelleRocher();
-			entites.put("R"+Integer.toString(i), new int[] {x,y});
 		}
 	}
 	
@@ -1046,7 +1053,6 @@ public class Ile {
 			}
 			while(!(grille[x][y].estVide() && nbVoisinsVide(x, y, 8)>6));
 			grille[x][y]=new ParcelleArbre();
-			entites.put("A"+Integer.toString(i), new int[] {x,y});
 		}
 	}
 		
@@ -1062,8 +1068,8 @@ public class Ile {
 			if (x==0){ x=grille.length-2;}
 		}
 		while(!(grille[x][y].estVide() && nbVoisinsVide(x, y, 8)==5));
-		grille[x][y]=new ParcelleNavire(1);
-		entites.put("n", new int[] {x,y});
+		N1=new ParcelleNavire(1, x, y);
+		grille[x][y]=N1;
 		
 		//placement du 2e navire
 		do {
@@ -1072,8 +1078,8 @@ public class Ile {
 			if (y==0){ y=grille[0].length-2;}
 		}
 		while(!(grille[x][y].estVide()&& nbVoisinsVide(x, y, 8)==5));
-		grille[x][y]=new ParcelleNavire(2);
-		entites.put("N", new int[] {x,y});
+		N2=new ParcelleNavire(2, x ,y);
+		grille[x][y]=N2;
 	}
 	 
 	/**
@@ -1088,7 +1094,8 @@ public class Ile {
 		while(!(grille[x][y].estVide() && nbVoisinsVide(x, y, 8)>7));
 		grille[x][y]=new ParcelleRocher();
 		((ParcelleRocher)grille[x][y]).setTresor();
-		entites.put("T", new int[] {x,y});
+		coordTresor[0]=x;
+		coordTresor[1]=y;
 	}
 	
 	/**
@@ -1103,19 +1110,6 @@ public class Ile {
 		while(!(grille[x][y].estVide() && nbVoisinsVide(x, y, 8)>7));
 		grille[x][y]=new ParcelleRocher();
 		((ParcelleRocher)grille[x][y]).setClef();
-		entites.put("C", new int[] {x,y});
-	}
-		
-	/**
-	 * Méthode retournant les coordonnées des rochers (sans compter la clef et le trésor).
-	 * @return les coordonnées des rochers sous forme d'un tableau à deux dimensions int[][].
-	 */
-	public int[][] getRochers() {
-		int[][] coord=new int[2][(int)(grille.length*grille[0].length*0.1-2)];
-		for(int i=0; i<coord[0].length; i++){
-			coord[i]=entites.get("R"+Integer.toString(i));
-		}
-		return coord;
 	}
 	
 	/**
@@ -1125,9 +1119,9 @@ public class Ile {
 	 */
 	public int[] getNavire(int numEquipe){
 		if(numEquipe==1){
-			return entites.get("n");
+			return new int[]{N1.getX(), N1.getY()};
 		} else {
-			return entites.get("N");
+			return new int[]{N2.getX(), N2.getY()};
 		}
 	}
 	
@@ -1137,15 +1131,15 @@ public class Ile {
 	 */
 		
 	public int[] getTresor() {
-		return entites.get("T");
+		return coordTresor;
 	}
 	
-	/**
-	 * Méthode retournant les coordonnées de la clef.
-	 * @return les coordonnées de la clef sous forme d'un tableau int[].
-	 */
-	public int[] getClef() {
-		return entites.get("C");		
+	public ArrayList<ParcellePiege> getPieges(int numEquipe){
+		if(numEquipe==1){
+			return pieges1;
+		} else {
+			return pieges2;
+		}
 	}
 	
 	/**

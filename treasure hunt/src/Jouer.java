@@ -166,8 +166,10 @@ public class Jouer  {
 			//Création de l'ile				
 			Ile monIle = new Ile(nbColonnes,nbLignes);
 			monIle.initialiser(pourcentage);
+			boolean brouillard=true;
 			
 			if(menu==1){
+				brouillard=false;
 				monIle.setPersonnages(1, true, nbExplo1, nbVoleurs1, nbPiegeurs1, nbGuerriers1);
 				monIle.setPersonnages(2, true, nbExplo2, nbVoleurs2, nbPiegeurs2, nbGuerriers2);
 			} else {
@@ -177,37 +179,40 @@ public class Jouer  {
 			
 			int[][] jeu=monIle.getIleTab();
 			
-			//TODO passage à GestionPlateaux
+			/*
 			SuperPlateau[] plateaux=new SuperPlateau[2];
 			plateaux[0]=new SuperPlateau(IMGS,10,true);
 			plateaux[1]=new SuperPlateau(IMGS,10,true);
 			plateaux[0].setJeu(jeu);
 			plateaux[1].setJeu(jeu);
 			plateaux[0].affichage();
-			plateaux[1].affichage();
+			plateaux[1].affichage();*/
 			
 			
 			//BROUILLARD DE GUERRE
-			/*GestionPlateaux gestion=new GestionPlateaux(monIle, true);
+			GestionPlateaux gestion=new GestionPlateaux(monIle, true);
 			SuperPlateau[] plateaux=gestion.getPlateaux();
-			gestion.affichage();*/
+			gestion.affichage();
+			int[] dernierDeplacement=new int[2];
 			
 			//affichage texte
 				System.out.println(monIle);
 			
 			//déplacement
-				//TODO Ajout des conditions de victoire (rentrer dans bateau avec trésor, ou adversaire n'ayant plus aucun perso)
-				int i;
-				boolean finis = false;
-				while(!finis){	
-					i=0;
-					while(!(monIle.finPartie(plateaux)) && i <2){
-						monIle.action(plateaux, i, nbExplo1+nbVoleurs1+nbPiegeurs1+nbGuerriers1);						
-						if(monIle.finPartie(plateaux))
-								finis = true;
-						i++;
+			int i;
+			boolean finis = false;
+			while(!finis){	
+				i=0;
+				while(!(monIle.finPartie(plateaux)) && i <2){
+					monIle.action(plateaux, i, nbExplo1+nbVoleurs1+nbPiegeurs1+nbGuerriers1);
+					dernierDeplacement=monIle.getDernierDeplacement();
+					gestion.add(dernierDeplacement[0], dernierDeplacement[1], i+1);
+					if(monIle.finPartie(plateaux)) {
+						finis = true;
 					}
-				}	 		
+					i++;
+				}
+			}	 		
 		}
 	}
 }
