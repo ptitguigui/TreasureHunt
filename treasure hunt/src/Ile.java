@@ -383,8 +383,8 @@ public class Ile {
 	 * @param i le numéro du plateau courrant
 	 */
 	public void deplacer(int x, int y, int a, int b, SuperPlateau[] plateaux, int i){
-		plateaux[i].println("Déplacement effectué...");
 		if(getParcelle(a,b) instanceof ParcellePiege){
+			plateaux[i].println("Déplacement effectué...");
 			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-30);
 			plateaux[i].println("Vous être pris dans un piege ! Vous perdez 30 points d'énergie.");
 			plateaux[((ParcellePiege)getParcelle(a,b)).getNumEquipe()-1].println("Quelqu'un a marché dans votre piège !") ;
@@ -397,18 +397,20 @@ public class Ile {
 				((Personnage)getParcelle(x,y)).ramasseClef();
 				plateaux[i].println("Vous avez ramassé la clef.");
 				grille[a][b]=new Parcelle();
-				persoMort(x,y,plateaux, i);
+				persoMort(x,y,plateaux, i);	
 			} else if(getValeurParcelle(a,b)==10){
 				((Personnage)getParcelle(x,y)).ramasseTresor();
+				System.out.println("trésor : " + ((Personnage)getParcelle(x,y)).porteTresor());
 				plateaux[i].println("Vous avez ramassé le trésor.");
 				grille[a][b]=new Parcelle();
-				persoMort(x,y,plateaux, i);
+				persoMort(x,y,plateaux, i);	
 			} else if(getValeurParcelle(a,b)==11){
 				((Personnage)getParcelle(x,y)).ramasseEpee();
 				plateaux[i].println("Vous avez ramassé une épée.");
 				grille[a][b]=new Parcelle();
-				persoMort(x,y,plateaux, i);
+				persoMort(x,y,plateaux, i);	
 			} else {
+				plateaux[i].println("Déplacement effectué...");
 				echangeParcelles(x, y, a, b);
 				persoMort(a,b,plateaux, i);	
 			}
@@ -523,17 +525,17 @@ public class Ile {
 	 * @param i le numéro du plateau courrant
 	 */
 	public void echangeItem(int x, int y, int a, int b, SuperPlateau[] plateaux, int i, boolean vole){
-		Personnage donneur=(Personnage)getParcelle(x,y);
-		Personnage receveur=(Personnage)getParcelle(a,b);
+		Personnage receveur=(Personnage)getParcelle(x,y); //aussi égale au voleur
+		Personnage donneur=(Personnage)getParcelle(a,b); // personnage 1volé
 		if(!vole){
 			if(donneur.getNbItems()==0 && receveur.getNbItems()==0){
 				plateaux[i].println("Vos deux personnages discutent tranquillement, n'ayant aucun item à s'échanger...") ;
 			} else {
 				String[] options=new String[]{"1ère séléction", "2e séléction"};
 				int rep = JOptionPane.showOptionDialog(null, "Choississez le personnage qui donnera un objet",  null, JOptionPane.OK_OPTION, JOptionPane.NO_OPTION, null, options, options[0]);
-				if(rep==1){ 
+				if(rep==0){ 
 					donneur=receveur;
-					receveur=(Personnage)getParcelle(x,y);
+					receveur=(Personnage)getParcelle(a,b);
 				}
 			}
 		}
