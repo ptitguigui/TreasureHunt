@@ -7,7 +7,7 @@ public class Piegeur extends Personnage {
 	/**
 	 * Constructeur créant un piegeur.
 	 * @param nom String.
-	 * @param numEquipe int (1 ou 2).
+	 * @param numEquipe un entier (1 ou 2).
 	 */
 	Piegeur(String nom, int numEquipe){
 		if (numEquipe>0 && numEquipe <3){
