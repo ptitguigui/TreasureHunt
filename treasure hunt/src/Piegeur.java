@@ -1,3 +1,8 @@
+/**
+ * Classe définissant un piegeur.
+ * @author vitsem
+ *
+ */
 public class Piegeur extends Personnage {
 	/**
 	 * Constructeur créant un piegeur.

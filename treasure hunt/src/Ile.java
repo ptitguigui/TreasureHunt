@@ -30,12 +30,24 @@ public class Ile {
 	 */
 	private int[] coordTresor=new int[2];
 	/**
-	 * 
+	 * Attribut mémorisant le navire du joueur 1 (et donc ses coordonnées aussi).
 	 */
 	private ParcelleNavire N1;
+	/**
+	 * Attribut mémorisant le navire du joueur 2 (et donc ses coordonnées aussi).
+	 */
 	private ParcelleNavire N2;
+	/**
+	 * ArrayList mémorisant les pieges posés par le joueur 1 (et donc leurs coordonnées aussi).
+	 */
 	private ArrayList<ParcellePiege> pieges1=new ArrayList<>();
+	/**
+	 * ArrayList mémorisant les pieges posés par le joueur 2 (et donc leurs coordonnées aussi).
+	 */
 	private ArrayList<ParcellePiege> pieges2=new ArrayList<>();
+	/**
+	 * Tableau de 2 entiers permettant de savoir les coordonnées du dernier déplacement.
+	 */
 	private int[] dernierDeplacement=new int[2];
 	
 	
@@ -56,6 +68,10 @@ public class Ile {
 		equipes[1]=new Equipe(2);
 	}
 	
+	/**
+	 * Méthode retournant le dernier déplacement effectué.
+	 * @return le dernier déplacement effectué sous forme de 2 entiers.
+	 */
 	public int[] getDernierDeplacement(){
 		return dernierDeplacement;
 	}
@@ -81,13 +97,13 @@ public class Ile {
 		
 		// Vérification de la selection : doit être un personnage ou navire de son équipe
     	do {
+	    	event=  plateaux[i].waitEvent();
+	    	while(!(event instanceof MouseEvent)){
 	    		event=  plateaux[i].waitEvent();
-	    		while(!(event instanceof MouseEvent)){
-	    			event=  plateaux[i].waitEvent();
-	    		}
-			   	x = plateaux[i].getX((MouseEvent) event) ;
-		    	y = plateaux[i].getY((MouseEvent) event) ;
-	    	} while(!((getParcelle(x, y) instanceof Personnage || (getParcelle(x,y) instanceof ParcelleNavire && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0)) && getValeurParcelle(x, y)%2==i ));
+	    	}
+		 	x = plateaux[i].getX((MouseEvent) event) ;
+		   	y = plateaux[i].getY((MouseEvent) event) ;
+	    } while(!((getParcelle(x, y) instanceof Personnage || (getParcelle(x,y) instanceof ParcelleNavire && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0)) && getValeurParcelle(x, y)%2==i ));
     	
 		dernierDeplacement=new int[]{x,y};
     	
@@ -390,6 +406,11 @@ public class Ile {
 		event = plateaux[i].waitEvent(500);	// Délai pour permettre la lecture.
 	}
 	
+	/**
+	 * Méthode retournant une Equipe.
+	 * @param numEquipe le numéro d'équipe (1 ou 2).
+	 * @return une Equipe.
+	 */
 	public Equipe getEquipe(int numEquipe){
 		return equipes[numEquipe-1];
 	}
@@ -1139,6 +1160,11 @@ public class Ile {
 		return coordTresor;
 	}
 	
+	/**
+	 * Méthode retournant la liste des pièges posés par un joueur.
+	 * @param numEquipe le numéro du joueur (1 ou 2).
+	 * @return la liste des pièges posés par un joueur.
+	 */
 	public ArrayList<ParcellePiege> getPieges(int numEquipe){
 		if(numEquipe==1){
 			return pieges1;
