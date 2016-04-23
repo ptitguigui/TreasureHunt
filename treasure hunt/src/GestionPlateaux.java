@@ -1,7 +1,16 @@
 import java.util.ArrayList;
-
+/**
+ * Classe permettant de gérer les plateaux
+ * @author vitsem
+ */
 public class GestionPlateaux {
+	/**
+	 * Attribut désignant les différents plateaux.
+	 */
 	private SuperPlateau[] plateaux=new SuperPlateau[2];
+	/**
+	 * Attribut servant à charger les images du jeu.
+	 */
 	private final String[] IMGS={"treasure hunt/imgs/sable.png",
 			"treasure hunt/imgs/mer.png",
 			"treasure hunt/imgs/rocher1.png",
@@ -23,18 +32,39 @@ public class GestionPlateaux {
 			"treasure hunt/imgs/2_piegeur.png",
 			"treasure hunt/imgs/1_guerrier.png",
 			"treasure hunt/imgs/2_guerrier.png"};
-		//tableau omniscient
+	/**
+	 * Attribut permettant de connaitre le point de vue omniscient de l'ile, et donc de tout savoir en temps réel.
+	 */
 	private int[][] jeu;
+	/**
+	 * L'ile liée aux plateaux.
+	 */
 	private Ile monIle;
+	/**
+	 * Le tableau de booléens du joueur 1 permettant d'effectuer un filtre sur sa vision de l'ile et donc de faire un effet brouillard de guerre.
+	 */
 	private boolean[][] jeuJ1b;
+	/**
+	 * Le tableau de booléens du joueur 2 permettant d'effectuer un filtre sur sa vision de l'ile et donc de faire un effet brouillard de guerre.
+	 */
 	private boolean[][] jeuJ2b;
+	/**
+	 * Le tableau d'entier du joueur 1 désignant ce qu'il voit.
+	 */
 	private int[][] jeuJ1;
+	/**
+	 * Le tableau d'entier du joueur 2 désignant ce qu'il voit.
+	 */
 	private int[][] jeuJ2;
-	private boolean tresorJ1=false;
-	private boolean tresorJ2=false;
+	/**
+	 * Les coordonnées du trésor.
+	 */
 	private int[] coordTresor=new int[2];
 	
-	//pas de brouillard par défaut
+	/**
+	 * Constructeur du gestionnaire de plateaux, le brouillard est désactivé par défaut.
+	 * @param monIle l'ile liée aux plateaux.
+	 */
 	GestionPlateaux(Ile monIle){
 		this.monIle=monIle;
 		plateaux[0]=new SuperPlateau(IMGS,10,true);
@@ -53,6 +83,11 @@ public class GestionPlateaux {
 		coordTresor=monIle.getTresor();
 	}
 	
+	/**
+	 * Constructeur du gestionnaire de plateaux.
+	 * @param monIle l'ile liée aux plateaux.
+	 * @param brouillard un booléen permettant d'activer ou non le brouillard de guerre.
+	 */
 	GestionPlateaux(Ile monIle, boolean brouillard){
 		this.monIle=monIle;
 		plateaux[0]=new SuperPlateau(IMGS,10,true);
@@ -73,10 +108,20 @@ public class GestionPlateaux {
 		add(monIle.getNavire(2)[0], monIle.getNavire(2)[1], 2);
 	}
 	
+	/**
+	 * Méthode permettant de retourner les plateaux du gestionnaire.
+	 * @return les plateaux du gestionnaire.
+	 */
 	public SuperPlateau[] getPlateaux(){
 		return plateaux;
 	}
 	
+	/**
+	 * Méthode permettant d'ajouter une case visible ainsi que les 8 cases autour, dans le champs de vision d'un joueur.
+	 * @param a la coordonnée x de la case.
+	 * @param b la coordonnée y de la case.
+	 * @param numEquipe le numéro d'équipe du joueur.
+	 */
 	public void add(int a, int b, int numEquipe){
 		if(numEquipe==1){
 			jeuJ1b[a][b]=true;
@@ -102,6 +147,10 @@ public class GestionPlateaux {
 		update();
 	}
 	
+	/**
+	 * Méthode permettant de mettre à jour la vision des joueurs.
+	 * Elle agit aussi sur la visibilité ou non du trésor et des pièges.
+	 */
 	public void update(){
 		jeu=monIle.getIleTab();
 		for(int c=0; c<jeu.length; c++) {
@@ -119,8 +168,8 @@ public class GestionPlateaux {
 			}
 		}
 		
-		tresorJ1=monIle.getEquipe(1).tresorVisible();
-		tresorJ2=monIle.getEquipe(2).tresorVisible();
+		boolean tresorJ1=monIle.getEquipe(1).tresorVisible();
+		boolean tresorJ2=monIle.getEquipe(2).tresorVisible();
 		if (jeuJ1b[coordTresor[0]][coordTresor[1]] && tresorJ1){
 			jeuJ1[coordTresor[0]][coordTresor[1]]=8;
 		} else if (jeuJ1b[coordTresor[0]][coordTresor[1]] && !tresorJ1){
@@ -155,12 +204,19 @@ public class GestionPlateaux {
 		plateaux[1].setJeu(jeuJ2);
 	}
 	
+	/**
+	 * Méthode permettant d'afficher les plateaux.
+	 */
 	public void affichage(){
 		plateaux[0].affichage();
 		plateaux[1].affichage();
 	}
 
-	public void action(int i, int nbPersonnages){
-		monIle.action(plateaux, i, nbPersonnages);
+	/**
+	 * Méthode permettant à un joueur d'effectuer une action.
+	 * @param i le numéro du plateau (donc le numéro du joueur -1).
+	 */
+	public void action(int i){
+		monIle.action(plateaux, i);
 	}
 }

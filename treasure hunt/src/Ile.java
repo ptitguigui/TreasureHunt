@@ -66,7 +66,7 @@ public class Ile {
 	 * @param i un entier
 	 * @param nbPersonnages un entier
 	 */
-	public void action(SuperPlateau[] plateaux, int i, int nbPersonnages) {
+	public void action(SuperPlateau[] plateaux, int i) {
 		InputEvent event ;
 		int x = 0,y = 0,a = 0,b =0;
 		boolean action = false;
@@ -601,7 +601,6 @@ public class Ile {
 				for(int j=0; j<itemsTab.length; j++) {
 					itemsTab[j]=itemsListe.get(j);
 				}
-				//TODO régler bug
 				String str;
 				if(vole){ str="voler";}
 				else{ str="échanger";}
