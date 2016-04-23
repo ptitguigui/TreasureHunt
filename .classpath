@@ -4,7 +4,5 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/jcommon-1.0.23.jar"/>
 	<classpathentry kind="lib" path="lib/jfreechart-1.0.19.jar"/>
-	<classpathentry kind="lib" path="/poo_tools/bin"/>
-	<classpathentry kind="lib" path="/poo_tools/src/tps"/>
 	<classpathentry kind="output" path="treasure hunt/bin"/>
 </classpath>
