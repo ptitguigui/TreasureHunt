@@ -1,3 +1,8 @@
+/**
+ * Classe définissant un voleur.
+ * @author vitsem
+ *
+ */
 public class Voleur extends Personnage {
  
 	/**

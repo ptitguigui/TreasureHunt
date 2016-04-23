@@ -1,3 +1,8 @@
+/**
+ * Classe définissant un explorateur.
+ * @author vitsem
+ *
+ */
 public class Explorateur extends Personnage {
 
 	/**

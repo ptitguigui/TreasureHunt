@@ -1,3 +1,8 @@
+/**
+ * Classe défissant un guerrier.
+ * @author vitsem
+ *
+ */
 public class Guerrier extends Personnage {
 
 	/**

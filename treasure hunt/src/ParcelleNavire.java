@@ -11,23 +11,39 @@ public class ParcelleNavire extends Parcelle {
 	 * Attribut correspondant à une liste de personnages, c'est à dire à l'équipage présent dans le navire.
 	 */
 	private ArrayList<Personnage> equipage=new ArrayList<>();
+	/**
+	 * Attribut correspondant à la coordonnée x du navire.
+	 */
+	private int x;
+	/**
+	 *  Attribut correspondant à la coordonnée y du navire.
+	 */
+	private int y;
 	
 	/**
 	 * Constructeur initialisant le navire selon le numéro du joueur.
 	 * @param numJoueur un entier.
+	 * @param x coordonnée x
+	 * @param y coordonnée y
 	 */
-	ParcelleNavire(int numJoueur){
+	ParcelleNavire(int numJoueur, int x, int y){
 		super.valeur=11+numJoueur;
+		this.x=x;
+		this.y=y;
 	}
 	
 	/**
 	 * Constructeur initialisant le navire selon le numéro du joueur, avec une liste de personnages.
 	 * @param numJoueur un entier.
+	 * @param x coordonnée x
+	 * @param y coordonnée y
 	 * @param equipage une liste de personnages.
 	 */
-	ParcelleNavire(int numJoueur, ArrayList<Personnage> equipage){
+	ParcelleNavire(int numJoueur, int x, int y, ArrayList<Personnage> equipage){
 		super.valeur=9+numJoueur;
 		this.equipage=equipage;
+		this.x=x;
+		this.y=y;
 	}
 	
 	/**
@@ -89,4 +105,19 @@ public class ParcelleNavire extends Parcelle {
 		return true;
 	}
 
+	/**
+	 * Méthode retournant la coordonnée x du navire.
+	 * @return la coordonnée x du navire.
+	 */
+	public int getX(){
+		return x;
+	}
+	
+	/**
+	 * Méthode retournant la coordonnée y du navire.
+	 * @return la coordonnée y du navire.
+	 */
+	public int getY(){
+		return y;
+	}
 }

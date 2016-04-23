@@ -117,18 +117,31 @@ public class Personnage extends Parcelle{
 		return items[2];
 	}
 	
+	/**
+	 * Méthode ajoutant une clef aux items du personnage.
+	 */
 	public void ramasseClef(){
 		items[0]=true;
 	}
 	
+	/**
+	 * Méthode ajoutant un trésor aux items du personnage.
+	 */
 	public void ramasseTresor(){
 		items[1]=true;
 	}
 	
+	/**
+	 * Méthode ajoutant une épée aux items du personnage.
+	 */
 	public void ramasseEpee(){
 		items[2]=true;
 	}
 	
+	/**
+	 * Méthode retournant le nombre d'items que possède le personnage.
+	 * @return le nombre d'items que possède le personnage.
+	 */
 	public int getNbItems(){
 		int nb=0;
 		if(items[0]){ nb+=1;}
