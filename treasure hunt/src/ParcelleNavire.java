@@ -83,7 +83,7 @@ public class ParcelleNavire extends Parcelle {
 	 * @return le nombre de personnage sur le navire.
 	 */
 	public boolean peutMonterABord(int nbPersonnages){
-		if (equipage.size()+1>=nbPersonnages){
+		if (equipage.size()+1>=nbPersonnages && nbPersonnages!=1){
 			return false;
 		}
 		return true;

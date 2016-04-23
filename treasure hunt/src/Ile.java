@@ -50,7 +50,12 @@ public class Ile {
 	
 	
 	//TODO transférer les méthodes d'actions dans GestionPlateaux
-	
+	/**
+	 * Methode permettant de faire toutes les actions possible du jeu 
+	 * @param plateaux les plateaux des deux joueurs
+	 * @param i un entier
+	 * @param nbPersonnages un entier
+	 */
 	public void action(SuperPlateau[] plateaux, int i, int nbPersonnages) {
 		InputEvent event ;
 		int x = 0,y = 0,a = 0,b =0;
@@ -336,8 +341,8 @@ public class Ile {
 	    				plateaux[1-i].println("On vous attaque !") ;
 	    				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-10);
 	    				if(chance==0){
-	    					//dégats aléatoire entre 1 et 50 ?
-		    				int degats=alea.tirage(50)+1;
+	    					//dégats aléatoire entre 1 et 50 
+		    				int degats=100;//alea.tirage(50)+1;
 		    				plateaux[i].println("Et vous lui infliger " + degats + " points de dégâts !!") ;
 		    				plateaux[1-i].println("Vous avez perdu " + degats + " points d'énergie...") ;
 		    				((Guerrier)getParcelle(x,y)).attaqueEnnemi(((Personnage)getParcelle(a,b)), degats); 
@@ -508,6 +513,7 @@ public class Ile {
 				grille[x][y]= new Parcelle();
 			}
 			plateaux[i].println("Votre personnage meurt par manque d'énergie...");
+			plateaux[1-i].println("Vous avez tué un personnage !");
 			
 		}
 		plateaux[0].setJeu(getIleTab());
@@ -619,6 +625,24 @@ public class Ile {
 			}
 		}
 	}
+	/**
+	 * Methode permettant de definir si la partie est finis ou non et de montrer qui a gagné
+	 * @param plateaux les plateaux des deux joueurs
+	 * @return un boolean (true or false)
+	 */
+	public boolean finPartie(SuperPlateau[] plateaux ){
+		if(equipes[1].aPerdu() || equipes[0].aGagne()){
+			plateaux[0].println("Felicitation J1, vous avez gagnez la partie") ;
+			plateaux[1].println("Malheuresement vous avez perdu la partie") ;
+			return true;
+		}else if(equipes[0].aPerdu() || equipes[1].aGagne()){
+			plateaux[1].println("Felicitation J2, vous avez gagnez la partie") ;
+			plateaux[0].println("Malheuresement vous avez perdu la partie") ;
+			return true;
+		}else{
+			return false;
+		}
+	}
 	
 	/**
 	 * Méthode permettant de rentrer le personnage (x,y) dans le navire en (a,b).
@@ -632,6 +656,9 @@ public class Ile {
 	public void rentrerDansNavire(int x, int y, int a, int b, SuperPlateau[] plateaux, int i){
 		if(getParcelle(x,y) instanceof Guerrier) {
 			((Guerrier)getParcelle(x,y)).ramasseEpee();
+		}
+		if(((Personnage)getParcelle(x,y)).porteTresor()){
+			equipes[i].gagne();
 		}
 		((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
 		((ParcelleNavire)getParcelle(a,b)).addPersonnage((Personnage)getParcelle(x,y));
@@ -844,7 +871,7 @@ public class Ile {
 	
 	/**
 	 *  Méthode plaçant les voleurs sur l'ile , le nombre de voleurs correspond à l'entier précisé en paramètre.
-	 * @param nbVoleurs, le nombre d'explorateurs dans l'équipe
+	 * @param nbVoleurs, le nombre de voleurs dans l'équipe
 	 * @param numEquipe, le numero de l'équipe où le voleur est situé
 	 */
 	private void setVoleurs(boolean test, int nbVoleurs, int numEquipe){
@@ -885,7 +912,11 @@ public class Ile {
 			}
 		}
 	}
-	
+	/**
+	 *  Méthode plaçant les piegeurs sur l'ile , le nombre de piegeurs correspond à l'entier précisé en paramètre.
+	 * @param nbPiegeurs, le nombre de piegeur dans l'équipe
+	 * @param numEquipe, le numero de l'équipe où le piegeur est situé
+	 */
 	private void setPiegeurs(boolean test, int nbPiegeurs, int numEquipe){
 		int x, y;
 		for(int i=1; i<=nbPiegeurs; i++){
@@ -924,7 +955,11 @@ public class Ile {
 			}
 		}
 	}
-	
+	/**
+	 *  Méthode plaçant les guerriers sur l'ile , le nombre de guerriers correspond à l'entier précisé en paramètre.
+	 * @param nbGuerriers, le nombre de guerriers dans l'équipe
+	 * @param numEquipe, le numero de l'équipe où le piegeur est situé
+	 */
 	private void setGuerriers(boolean test, int nbGuerriers, int numEquipe){
 		int x, y;
 		for(int i=1; i<=nbGuerriers; i++){
@@ -999,6 +1034,9 @@ public class Ile {
 		}
 	}
 	
+	/**
+	 * Methode plaçant les arbres de façon aléatoire 
+	 */
 	private void setArbres(){
 		int x,y;
 		for(int i=0; i<(int)((grille.length-2)*(grille[0].length-2)*(5/100.00)); i++) {
@@ -1011,8 +1049,7 @@ public class Ile {
 			entites.put("A"+Integer.toString(i), new int[] {x,y});
 		}
 	}
-	
-	
+		
 	/**
 	 * Méthode qui place les deux navires aléatoirement sur les parcelles en bordure.
 	 */

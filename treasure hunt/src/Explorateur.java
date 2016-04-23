@@ -1,7 +1,7 @@
 public class Explorateur extends Personnage {
 
 	/**
-	 * Constructeur créant un voleur.
+	 * Constructeur créant un explorateur.
 	 * @param nom String.
 	 * @param numEquipe int (1 ou 2).
 	 */

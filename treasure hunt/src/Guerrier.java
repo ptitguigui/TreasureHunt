@@ -23,7 +23,11 @@ public class Guerrier extends Personnage {
 		super.items[1]=false;
 		super.items[2]=true;
 	}
-	
+	/**
+	 * Methode permettant de faire attaquer le guerrier 
+	 * @param p un Personnage, la cible du guerrier
+	 * @param degats un entier, les points de dégats infligés
+	 */
 	public void attaqueEnnemi(Personnage p, int degats){
 		p.energie-=degats;
 	}

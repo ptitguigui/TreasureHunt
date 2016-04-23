@@ -197,13 +197,17 @@ public class Jouer  {
 			
 			//déplacement
 				//TODO Ajout des conditions de victoire (rentrer dans bateau avec trésor, ou adversaire n'ayant plus aucun perso)
-			while(true){		        		        
-				for(int i=0; i<2; i++){
-					monIle.action(plateaux, i, nbExplo1+nbVoleurs1+nbPiegeurs1+nbGuerriers1);
+				int i;
+				boolean finis = false;
+				while(!finis){	
+					i=0;
+					while(!(monIle.finPartie(plateaux)) && i <2){
+						monIle.action(plateaux, i, nbExplo1+nbVoleurs1+nbPiegeurs1+nbGuerriers1);						
+						if(monIle.finPartie(plateaux))
+								finis = true;
+						i++;
+					}
 				}	 		
-			}
-			
-				
 		}
 	}
 }

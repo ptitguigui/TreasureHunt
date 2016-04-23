@@ -6,7 +6,9 @@ import java.util.Random;
  *
  */
 public class Aleatoire {
-	
+	/**
+	 * Attribut correspondant a un nombre aléatoire permettant de créer un tirage
+	 */
 	private Random r=new Random();
 	
 	/**
