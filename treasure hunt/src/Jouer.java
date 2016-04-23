@@ -204,9 +204,7 @@ public class Jouer  {
 			while(!finis){	
 				i=0;
 				while(!(monIle.finPartie(plateaux)) && i <2){
-					monIle.action(plateaux, i);
-					dernierDeplacement=monIle.getDernierDeplacement();
-					gestion.add(dernierDeplacement[0], dernierDeplacement[1], i+1);
+					gestion.action(i);
 					if(monIle.finPartie(plateaux)) {
 						finis = true;
 					}
