@@ -3,8 +3,12 @@
  * @author vitsem
  *
  */
+<<<<<<< HEAD
 public class ParcelleArbre extends Parcelle {
 
+=======
+public class ParcelleArbre extends Parcelle {
+>>>>>>> branch 'master' of https://github.com/ptitguigui/TreasureHunt.git
 
 	/**
 	 * Constructeur initialisant l'arbre.
