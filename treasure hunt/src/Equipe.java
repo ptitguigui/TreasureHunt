@@ -39,7 +39,7 @@ public class Equipe {
 	
 	/**
 	 * Methode permettant de supprimer un personnage dans la liste d'équipe
-	 * @param p
+	 * @param p un personnage
 	 */
 	public void removePersonnage(Personnage p){
 		equipe.remove(p);
@@ -62,7 +62,7 @@ public class Equipe {
 	
 	/**
 	 * Méthode permettant de savoir si le joueur a trouvé le trésor ou non.
-	 * @returnsi le joueur a trouvé le trésor ou non.
+	 * @return si le joueur a trouvé le trésor ou non.
 	 */
 	public boolean tresorVisible(){
 		return tresorVisible;

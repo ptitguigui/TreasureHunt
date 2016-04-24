@@ -53,7 +53,7 @@ public class ParcelleRocher extends Parcelle{
 	
 	/**
 	 * Méthode retournant la valeur initiale du rocher, défini par un random à sa création.
-	 * @return
+	 * @return la valeur initiale du rocher.
 	 */
 	public int getValeurIni(){
 		return valeurRocherIni;
