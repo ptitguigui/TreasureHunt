@@ -16,27 +16,27 @@ public class GestionPlateaux {
 	/**
 	 * Attribut servant à charger les images du jeu.
 	 */
-	private final String[] IMGS={"treasure hunt/imgs/sable.png",
-			"treasure hunt/imgs/mer.png",
-			"treasure hunt/imgs/rocher1.png",
-			"treasure hunt/imgs/rocher2.png",
-			"treasure hunt/imgs/rocher3.png",
-			"treasure hunt/imgs/arbre.png",
-			"treasure hunt/imgs/clef.png",
-			"treasure hunt/imgs/coffre.png",
-			"treasure hunt/imgs/piege.png",
-			"treasure hunt/imgs/tresor.png",
-			"treasure hunt/imgs/epee.png",
-			"treasure hunt/imgs/1_bateau.png",
-			"treasure hunt/imgs/2_bateau.png",
-			"treasure hunt/imgs/1_explorateur.png",
-			"treasure hunt/imgs/2_explorateur.png",
-			"treasure hunt/imgs/1_voleur.png",
-			"treasure hunt/imgs/2_voleur.png",
-			"treasure hunt/imgs/1_piegeur.png",
-			"treasure hunt/imgs/2_piegeur.png",
-			"treasure hunt/imgs/1_guerrier.png",
-			"treasure hunt/imgs/2_guerrier.png"};
+	private final String[] IMGS={"../ressources/tps/sable.png",
+			"../ressources/tps/mer.png",
+			"../ressources/tps/rocher1.png",
+			"../ressources/tps/rocher2.png",
+			"../ressources/tps/rocher3.png",
+			"../ressources/tps/arbre.png",
+			"../ressources/tps/clef.png",
+			"../ressources/tps/coffre.png",
+			"../ressources/tps/piege.png",
+			"../ressources/tps/tresor.png",
+			"../ressources/tps/epee.png",
+			"../ressources/tps/1_bateau.png",
+			"../ressources/tps/2_bateau.png",
+			"../ressources/tps/1_explorateur.png",
+			"../ressources/tps/2_explorateur.png",
+			"../ressources/tps/1_voleur.png",
+			"../ressources/tps/2_voleur.png",
+			"../ressources/tps/1_piegeur.png",
+			"../ressources/tps/2_piegeur.png",
+			"../ressources/tps/1_guerrier.png",
+			"../ressources/tps/2_guerrier.png"};
 	/**
 	 * Attribut permettant de connaitre le point de vue omniscient de l'ile, et donc de tout savoir en temps réel.
 	 */
