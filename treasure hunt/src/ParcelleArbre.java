@@ -1,8 +1,4 @@
-/**
- * Classe créant une parcelle correspondant à un arbre.
- * @author vitsem
- *
- */
+
 public class ParcelleArbre extends Parcelle {
 
 	/**
