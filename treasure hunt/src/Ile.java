@@ -272,6 +272,7 @@ public class Ile {
 	 * @return un boolean (true or false)
 	 */
 	public boolean finPartie(SuperPlateau[] plateaux ){
+		//TODO phrases en x2, trouver le problème
 		if(equipes[1].aPerdu() || equipes[0].aGagne()){
 			plateaux[0].println("Felicitation J1, vous avez gagnez la partie") ;
 			plateaux[1].println("Malheuresement vous avez perdu la partie") ;
