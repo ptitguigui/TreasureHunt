@@ -361,25 +361,6 @@ public class Ile {
 		return false;
 	}
 	
-	/*
-	public void highlight(SuperPlateau[] plateaux, int i, int valeurPerso, int x, int y){
-		if(valeurPerso==9+i){
-			int[] valeursDeplacable=new int[]{1,3,5,7+i,9+i,11+i,13+i,15+i};
-			for(int j=0; j<valeursDeplacable.length; j++){
-				if (grille[x+1][y].getValeur()==valeursDeplacable[j]){
-					plateaux[i].setHighlight(x+1,y);
-				} else if (grille[x-1][y].getValeur()==valeursDeplacable[j]){
-					plateaux[i].setHighlight(x-1,y);
-				} else if (grille[x][y+1].getValeur()==valeursDeplacable[j]){
-					plateaux[i].setHighlight(x,y+1);
-				} else if (grille[x][y-1].getValeur()==valeursDeplacable[j]){
-					plateaux[i].setHighlight(x,y-1);
-				}
-			}
-		}
-		
-	}*/
-	
 	/**
 	 * Methode qui renvoi un booleen pour savoir si un personnage de coord (x,y) se situe a coté d'un rocher de coord(a,b)
 	 * @param x un entier

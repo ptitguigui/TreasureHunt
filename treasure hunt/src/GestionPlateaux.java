@@ -308,7 +308,9 @@ public class GestionPlateaux {
     	//Actions si explorateur
     	if(getParcelle(x,y) instanceof Explorateur && getParcelle(x, y).getValeur()%2==i ){ 
     		plateaux[i].println("Vous avez choisis un explorateur de J"+(i+1)+", il a " + ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
-    		//highlight(plateaux, i, getValeurParcelle(x,y), x, y);
+    		
+    		highlight(plateaux, i, x, y);
+    		
     		while(!action){
     			event=  plateaux[i].waitEvent();
     			if(event instanceof KeyEvent){
@@ -759,5 +761,26 @@ public class GestionPlateaux {
 	 */
 	public boolean personnageAllieACote(int x, int y, int a, int b, int nbDirections){
 		return monIle.personnageAllieACote(x, y, a, b, nbDirections);
+	}
+	
+	public void highlight(SuperPlateau[] plateaux, int i, int x, int y){
+		int[] valeursDeplacable;
+		if(getParcelle(x,y) instanceof Explorateur){
+			valeursDeplacable=new int[]{1,3,4,5,7,8,9,10,11,12+i,14+i,16+i,18+i,20+i};
+			for(int j=0; j<valeursDeplacable.length; j++){
+				if (getParcelle(x+1,y).getValeur()==valeursDeplacable[j]){
+					plateaux[i].setHighlight(y,x+1);
+				}
+				if (getParcelle(x-1,y).getValeur()==valeursDeplacable[j]){
+					plateaux[i].setHighlight(y,x-1);
+				}
+				if (getParcelle(x,y+1).getValeur()==valeursDeplacable[j]){
+					plateaux[i].setHighlight(y+1,x);
+				}
+				if (getParcelle(x,y-1).getValeur()==valeursDeplacable[j]){
+					plateaux[i].setHighlight(y-1,x);
+				}
+			}
+		}
 	}
 }

@@ -1,5 +1,6 @@
-import java.awt.event.MouseEvent;
+import java.awt.Color;
 import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
 
 import tps.Plateau;
 
@@ -155,7 +156,7 @@ public class SuperPlateau {
 	 * @param y La colonne de la cellule.
 	 */
 	public void setHighlight(int x, int y) {
-		p.setHighlight(x, y);
+		p.setHighlight(x, y, Color.BLUE);
 	}
 	/**
 	 * Efface la surbrillance pour une cellule du plateau. La cellule est déterminée par
