@@ -261,6 +261,9 @@ public class GestionPlateaux {
     	//Actions si navire
     	if(getParcelle(x,y) instanceof ParcelleNavire && getParcelle(x, y).getValeur()%2==i && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0){ 
     		plateaux[i].println("Vous avez choisis votre navire");
+    		
+    		highlight(plateaux, i, x, y);
+    		
     		Personnage p;
     		if (((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()==1){
     			p=((ParcelleNavire)getParcelle(x,y)).getPersonnage(0);
@@ -406,6 +409,9 @@ public class GestionPlateaux {
 		//Action si voleur
     	if(getParcelle(x,y) instanceof Voleur && getParcelle(x, y).getValeur()%2==i ){ 
     		plateaux[i].println("Vous avez choisis un voleur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
+    		
+    		highlight(plateaux, i, x, y);
+    		
     		while(!action){
     			event=  plateaux[i].waitEvent();
     			if(event instanceof KeyEvent){
@@ -452,6 +458,9 @@ public class GestionPlateaux {
     	//Action si piegeur 
     	if(getParcelle(x,y) instanceof Piegeur && getParcelle(x, y).getValeur()%2==i ){ 
     		plateaux[i].println("Vous avez choisis un piegeur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
+    		
+    		highlight(plateaux, i, x, y);
+    		
     		while(!action){
     			event=  plateaux[i].waitEvent();
     			if(event instanceof KeyEvent){
@@ -504,6 +513,9 @@ public class GestionPlateaux {
     	//Action si Guerrier
     	if(getParcelle(x,y) instanceof Guerrier && getParcelle(x, y).getValeur()%2==i ){ 
     		plateaux[i].println("Vous avez choisis un guerrier de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
+    		
+    		highlight(plateaux, i, x, y);
+    		
     		while(!action){
     			event=  plateaux[i].waitEvent();
     			while(!(event instanceof MouseEvent || event instanceof KeyEvent)){
@@ -765,20 +777,45 @@ public class GestionPlateaux {
 	
 	public void highlight(SuperPlateau[] plateaux, int i, int x, int y){
 		int[] valeursDeplacable;
-		if(getParcelle(x,y) instanceof Explorateur){
-			valeursDeplacable=new int[]{1,3,4,5,7,8,9,10,11,12+i,14+i,16+i,18+i,20+i};
-			for(int j=0; j<valeursDeplacable.length; j++){
-				if (getParcelle(x+1,y).getValeur()==valeursDeplacable[j]){
-					plateaux[i].setHighlight(y,x+1);
+		int directions=8;
+		if(getParcelle(x,y) instanceof ParcelleNavire){
+			valeursDeplacable=new int[]{1,7,9,10,11}; //sable, clef, piege, trésor, épée
+			directions=4;
+		} else if(getParcelle(x,y) instanceof Explorateur){
+			valeursDeplacable=new int[]{1,3,4,5,7,8,9,10,11,12+i,14+i,16+i,18+i,20+i}; //sable, rochers, clef, coffre, piege, trésor, épée, navire allié et alliés
+			directions=4;
+		} else if(getParcelle(x,y) instanceof Voleur || getParcelle(x,y) instanceof Guerrier){
+			valeursDeplacable=new int[]{1,7,9,10,11,12+i,14,15,16,17,18,19,20,21}; //sable, clef, piege, trésor, épée, navire allié et tout les personnages
+		} else if(getParcelle(x,y) instanceof Piegeur){
+			valeursDeplacable=new int[]{1,7,9,10,11,12+i,14+i,16+i,18+i,20+i}; //sable, clef, piege, trésor, épée, navire allié et alliés
+		} else {
+			valeursDeplacable=new int[]{};
+		}
+		for(int j=0; j<valeursDeplacable.length; j++){
+			if (getParcelle(x+1,y).getValeur()==valeursDeplacable[j]){
+				plateaux[i].setHighlight(y,x+1);
+			}
+			if (getParcelle(x-1,y).getValeur()==valeursDeplacable[j]){
+				plateaux[i].setHighlight(y,x-1);
+			}
+			if (getParcelle(x,y+1).getValeur()==valeursDeplacable[j]){
+				plateaux[i].setHighlight(y+1,x);
+			}
+			if (getParcelle(x,y-1).getValeur()==valeursDeplacable[j]){
+				plateaux[i].setHighlight(y-1,x);
+			}
+			if(directions==8){
+				if (getParcelle(x+1,y+1).getValeur()==valeursDeplacable[j]){
+					plateaux[i].setHighlight(y+1,x+1);
 				}
-				if (getParcelle(x-1,y).getValeur()==valeursDeplacable[j]){
-					plateaux[i].setHighlight(y,x-1);
+				if (getParcelle(x+1,y-1).getValeur()==valeursDeplacable[j]){
+					plateaux[i].setHighlight(y-1,x+1);
 				}
-				if (getParcelle(x,y+1).getValeur()==valeursDeplacable[j]){
-					plateaux[i].setHighlight(y+1,x);
+				if (getParcelle(x-1,y+1).getValeur()==valeursDeplacable[j]){
+					plateaux[i].setHighlight(y+1,x-1);
 				}
-				if (getParcelle(x,y-1).getValeur()==valeursDeplacable[j]){
-					plateaux[i].setHighlight(y-1,x);
+				if (getParcelle(x-1,y-1).getValeur()==valeursDeplacable[j]){
+					plateaux[i].setHighlight(y-1,x-1);
 				}
 			}
 		}
