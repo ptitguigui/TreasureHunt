@@ -16,6 +16,7 @@ import Personnages.Guerrier;
 import Personnages.Personnage;
 import Personnages.Piegeur;
 import Personnages.Voleur;
+import tps.Plateau;
 /**
  * Classe permettant de gérer les plateaux
  * @author vitsem
@@ -24,7 +25,7 @@ public class GestionPlateaux {
 	/**
 	 * Attribut désignant les différents plateaux.
 	 */
-	private SuperPlateau[] plateaux=new SuperPlateau[2];
+	private Plateau[] plateaux=new Plateau[2];
 	/**
 	 * Attribut servant à charger les images du jeu.
 	 */
@@ -95,8 +96,8 @@ public class GestionPlateaux {
 	 */
 	public GestionPlateaux(Ile monIle){
 		this.monIle=monIle;
-		plateaux[0]=new SuperPlateau(IMGS,10,true);
-		plateaux[1]=new SuperPlateau(IMGS,10,true);
+		plateaux[0]=new Plateau(IMGS,10,true);
+		plateaux[1]=new Plateau(IMGS,10,true);
 		jeu=monIle.getIleTab();
 		jeuJ1b=new boolean[jeu.length][jeu[0].length];
 		jeuJ2b=new boolean[jeu.length][jeu[0].length];
@@ -118,8 +119,8 @@ public class GestionPlateaux {
 	 */
 	public GestionPlateaux(Ile monIle, boolean brouillard){
 		this.monIle=monIle;
-		plateaux[0]=new SuperPlateau(IMGS,10,true);
-		plateaux[1]=new SuperPlateau(IMGS,10,true);
+		plateaux[0]=new Plateau(IMGS,10,true);
+		plateaux[1]=new Plateau(IMGS,10,true);
 		jeu=monIle.getIleTab();
 		jeuJ1b=new boolean[jeu.length][jeu[0].length];
 		jeuJ2b=new boolean[jeu.length][jeu[0].length];
@@ -141,7 +142,7 @@ public class GestionPlateaux {
 	 * Méthode permettant de retourner les plateaux du gestionnaire.
 	 * @return les plateaux du gestionnaire.
 	 */
-	public SuperPlateau[] getPlateaux(){
+	public Plateau[] getPlateaux(){
 		return plateaux;
 	}
 	
@@ -726,7 +727,7 @@ public class GestionPlateaux {
 	 * @param plateaux les plateaux des deux joueurs
 	 * @param i le numéro du plateau courrant
 	 */
-	public void rentrerDansNavire(int x, int y, int a, int b, SuperPlateau[] plateaux, int i){
+	public void rentrerDansNavire(int x, int y, int a, int b, Plateau[] plateaux, int i){
 		monIle.rentrerDansNavire(x, y, a, b, plateaux, i);
 	}
 	
@@ -740,7 +741,7 @@ public class GestionPlateaux {
 	 * @param i le numéro du plateau courrant
 	 * @param vole booléen permettant de savoir s'il s'agit d'un vol ou d'un échange
 	 */
-	public void echangeItem(int x, int y, int a, int b, SuperPlateau[] plateaux, int i, boolean vole){
+	public void echangeItem(int x, int y, int a, int b, Plateau[] plateaux, int i, boolean vole){
 		monIle.echangeItem(x, y, a, b, plateaux, i, vole);
 	}
 
@@ -751,7 +752,7 @@ public class GestionPlateaux {
 	 * @param plateaux les plateaux des deux joueurs
 	 * @param i le numéro du plateau
 	 */
-	public void persoMort(int x, int y, SuperPlateau[] plateaux, int i){
+	public void persoMort(int x, int y, Plateau[] plateaux, int i){
 		monIle.persoMort(x, y, plateaux, i);
 	}
 	
