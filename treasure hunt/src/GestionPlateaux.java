@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -776,6 +777,12 @@ public class GestionPlateaux {
 	}
 	
 	public void highlight(SuperPlateau[] plateaux, int i, int x, int y){
+		Color c=Color.GREEN;
+		//highlight de la case selectionnée
+		plateaux[i].setHighlight(y, x,c);
+		
+		//highlight des déplacements/actions possibles
+		c=Color.BLUE;
 		int[] valeursDeplacable;
 		int directions=8;
 		if(getParcelle(x,y) instanceof ParcelleNavire){
@@ -793,29 +800,29 @@ public class GestionPlateaux {
 		}
 		for(int j=0; j<valeursDeplacable.length; j++){
 			if (getParcelle(x+1,y).getValeur()==valeursDeplacable[j]){
-				plateaux[i].setHighlight(y,x+1);
+				plateaux[i].setHighlight(y,x+1,c);
 			}
 			if (getParcelle(x-1,y).getValeur()==valeursDeplacable[j]){
-				plateaux[i].setHighlight(y,x-1);
+				plateaux[i].setHighlight(y,x-1,c);
 			}
 			if (getParcelle(x,y+1).getValeur()==valeursDeplacable[j]){
-				plateaux[i].setHighlight(y+1,x);
+				plateaux[i].setHighlight(y+1,x,c);
 			}
 			if (getParcelle(x,y-1).getValeur()==valeursDeplacable[j]){
-				plateaux[i].setHighlight(y-1,x);
+				plateaux[i].setHighlight(y-1,x,c);
 			}
 			if(directions==8){
 				if (getParcelle(x+1,y+1).getValeur()==valeursDeplacable[j]){
-					plateaux[i].setHighlight(y+1,x+1);
+					plateaux[i].setHighlight(y+1,x+1,c);
 				}
 				if (getParcelle(x+1,y-1).getValeur()==valeursDeplacable[j]){
-					plateaux[i].setHighlight(y-1,x+1);
+					plateaux[i].setHighlight(y-1,x+1,c);
 				}
 				if (getParcelle(x-1,y+1).getValeur()==valeursDeplacable[j]){
-					plateaux[i].setHighlight(y+1,x-1);
+					plateaux[i].setHighlight(y+1,x-1,c);
 				}
 				if (getParcelle(x-1,y-1).getValeur()==valeursDeplacable[j]){
-					plateaux[i].setHighlight(y-1,x-1);
+					plateaux[i].setHighlight(y-1,x-1,c);
 				}
 			}
 		}

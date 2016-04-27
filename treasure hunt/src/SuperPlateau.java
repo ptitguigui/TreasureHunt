@@ -155,8 +155,8 @@ public class SuperPlateau {
 	 * @param x La ligne de la cellule.
 	 * @param y La colonne de la cellule.
 	 */
-	public void setHighlight(int x, int y) {
-		p.setHighlight(x, y, Color.BLUE);
+	public void setHighlight(int x, int y, Color c) {
+		p.setHighlight(x, y, c);
 	}
 	/**
 	 * Efface la surbrillance pour une cellule du plateau. La cellule est déterminée par

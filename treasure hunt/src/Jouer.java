@@ -203,7 +203,7 @@ public class Jouer  {
 			boolean finis = false;
 			while(!finis){	
 				i=0;
-				while(!(monIle.finPartie(plateaux)) && i <2){
+				while(!finis && i <2){
 					gestion.action(i);
 					if(monIle.finPartie(plateaux)) {
 						finis = true;
