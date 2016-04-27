@@ -24,8 +24,6 @@ public class Guerrier extends Personnage {
 			super.energie=maxEnergie;
 			super.valeur=0;
 		}
-		super.items[0]=false;
-		super.items[1]=false;
 		super.items[2]=true;
 	}
 	/**

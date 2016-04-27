@@ -24,8 +24,6 @@ public class Voleur extends Personnage {
 			super.energie=maxEnergie;
 			super.valeur=0;
 		}
-		super.items[0]=false;
-		super.items[1]=false;
 	}
 	
 	/**
