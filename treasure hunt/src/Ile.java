@@ -295,9 +295,6 @@ public class Ile {
 	 * @param i le numéro du plateau courrant
 	 */
 	public void rentrerDansNavire(int x, int y, int a, int b, SuperPlateau[] plateaux, int i){
-		if(getParcelle(x,y) instanceof Guerrier) {
-			((Guerrier)getParcelle(x,y)).ramasseEpee();
-		}
 		if(((Personnage)getParcelle(x,y)).porteTresor()){
 			equipes[i].gagne();
 		}

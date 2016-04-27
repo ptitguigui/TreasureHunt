@@ -456,7 +456,8 @@ public class GestionPlateaux {
     	
     	//Action si piegeur 
     	if(getParcelle(x,y) instanceof Piegeur && getParcelle(x, y).getValeur()%2==i ){ 
-    		plateaux[i].println("Vous avez choisis un piegeur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
+    		plateaux[i].println("Vous avez choisis un piegeur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?");
+    		plateaux[i].println("Mines restantes : " + ((Piegeur)getParcelle(x,y)).getMines()) ;
     		
     		highlight(i, x, y);
     		
@@ -476,21 +477,26 @@ public class GestionPlateaux {
 			    	
     			//2 choix possible: déplacement ou piège
     			if(getParcelle(a,b).terrainClair() && dansChampsAction(x, y, a, b, 8)){
-	    			String[] option = {"Déplacement" , "Poser un piege"};
-	    			int choix = JOptionPane.showOptionDialog(null, "Choississez votre option",  null, JOptionPane.OK_OPTION, JOptionPane.NO_OPTION, null, option, option[0]);
-	    			//déplacement
-	    			if(choix ==0){   	
-	    				deplacer(x, y, a, b, i);
-	    			//pose un piege	
-	    			}else if(choix ==1){
-	    				if(getParcelle(a,b).estVide()){
-	    					setPiege(i+1,a,b);
-	    					((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-5);
-	    					persoMort(x,y,plateaux,i);
-	    				} else {
-	    					plateaux[i].println("Vous ne pouvez poser de piège, un objet s'y trouve.");
-	    				}
-	    			}
+    				if(((Piegeur)getParcelle(x,y)).getMines()>0){
+		    			String[] option = {"Déplacement" , "Poser un piege"};
+		    			int choix = JOptionPane.showOptionDialog(null, "Choississez votre option",  null, JOptionPane.OK_OPTION, JOptionPane.NO_OPTION, null, option, option[0]);
+		    			//déplacement
+		    			if(choix ==0){   	
+		    				deplacer(x, y, a, b, i);
+		    			//pose un piege	
+		    			}else if(choix ==1){
+		    				if(getParcelle(a,b).estVide()){
+		    					setPiege(i+1,a,b);
+		    					((Piegeur)getParcelle(x,y)).retirerMine();
+		    					((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-5);
+		    					persoMort(x,y,plateaux,i);
+		    				} else {
+		    					plateaux[i].println("Vous ne pouvez poser de piège, un objet s'y trouve.");
+		    				}
+		    			}
+    				} else {
+    					deplacer(x, y, a, b, i);
+    				}
 	    			action = true;  				
     			//Echange avec un personnage	
     			}else if(personnageAllieACote(x, y, a, b, 8)){
@@ -499,6 +505,7 @@ public class GestionPlateaux {
     			//Rentrer dans navire
     			} else if(getParcelle(a,b) instanceof ParcelleNavire && getParcelle(x, y).getValeur()%2==i && dansChampsAction(a,b,x,y,8)){
     				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(monIle.getEquipe(i+1).nbPersonnages())){
+    					((Piegeur)getParcelle(x,y)).setMinesFull();
     					rentrerDansNavire(x,y,a,b,plateaux,i);
     					action=true;
     				} else {
@@ -567,6 +574,7 @@ public class GestionPlateaux {
     			//Rentrer dans navire
     			} else if(getParcelle(a,b) instanceof ParcelleNavire && getParcelle(x, y).getValeur()%2==i  && dansChampsAction(a,b,x,y,8)){
     				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(monIle.getEquipe(i+1).nbPersonnages())){
+    					((Guerrier)getParcelle(x,y)).ramasseEpee();
     					rentrerDansNavire(x,y,a,b,plateaux,i);
     					action=true;
     				} else {
