@@ -177,8 +177,6 @@ public class Jouer  {
 				monIle.setPersonnages(2, false, nbExplo2, nbVoleurs2, nbPiegeurs2, nbGuerriers2);
 			}
 			
-			int[][] jeu=monIle.getIleTab();
-			
 			/*
 			SuperPlateau[] plateaux=new SuperPlateau[2];
 			plateaux[0]=new SuperPlateau(IMGS,10,true);
@@ -190,10 +188,10 @@ public class Jouer  {
 			
 			
 			//BROUILLARD DE GUERRE
-			GestionPlateaux gestion=new GestionPlateaux(monIle, true);
+			GestionPlateaux gestion=new GestionPlateaux(monIle, brouillard);
+			gestion.setTitle("Treasure Hunt");
 			SuperPlateau[] plateaux=gestion.getPlateaux();
 			gestion.affichage();
-			int[] dernierDeplacement=new int[2];
 			
 			//affichage texte
 				System.out.println(monIle);

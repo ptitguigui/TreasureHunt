@@ -177,4 +177,11 @@ public class SuperPlateau {
 	public boolean isHighlight(int x, int y) {
 		return p.isHighlight(x, y);
 	}
+	/**
+	 * Détermine le titre de la fenetre associée.
+	 * @param title Le titre à afficher.
+	 */
+	public void setTitle(String title) {
+		p.setTitle(title);
+	}
 }

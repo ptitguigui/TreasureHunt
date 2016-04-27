@@ -247,8 +247,6 @@ public class GestionPlateaux {
 		plateaux[i].println(">> A votre tour J" + (i+1)) ;
 		plateaux[1-i].println(">> Au tour de votre adversaire") ;
 		
-		int[][] jeu;
-		
 		// Vérification de la selection : doit être un personnage ou navire de son équipe
     	do {
 	    	event=  plateaux[i].waitEvent();
@@ -263,7 +261,7 @@ public class GestionPlateaux {
     	if(getParcelle(x,y) instanceof ParcelleNavire && getParcelle(x, y).getValeur()%2==i && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0){ 
     		plateaux[i].println("Vous avez choisis votre navire");
     		
-    		highlight(plateaux, i, x, y);
+    		highlight(i, x, y);
     		
     		Personnage p;
     		if (((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()==1){
@@ -313,7 +311,7 @@ public class GestionPlateaux {
     	if(getParcelle(x,y) instanceof Explorateur && getParcelle(x, y).getValeur()%2==i ){ 
     		plateaux[i].println("Vous avez choisis un explorateur de J"+(i+1)+", il a " + ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
     		
-    		highlight(plateaux, i, x, y);
+    		highlight(i, x, y);
     		
     		while(!action){
     			event=  plateaux[i].waitEvent();
@@ -411,7 +409,7 @@ public class GestionPlateaux {
     	if(getParcelle(x,y) instanceof Voleur && getParcelle(x, y).getValeur()%2==i ){ 
     		plateaux[i].println("Vous avez choisis un voleur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
     		
-    		highlight(plateaux, i, x, y);
+    		highlight(i, x, y);
     		
     		while(!action){
     			event=  plateaux[i].waitEvent();
@@ -460,7 +458,7 @@ public class GestionPlateaux {
     	if(getParcelle(x,y) instanceof Piegeur && getParcelle(x, y).getValeur()%2==i ){ 
     		plateaux[i].println("Vous avez choisis un piegeur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
     		
-    		highlight(plateaux, i, x, y);
+    		highlight(i, x, y);
     		
     		while(!action){
     			event=  plateaux[i].waitEvent();
@@ -515,7 +513,7 @@ public class GestionPlateaux {
     	if(getParcelle(x,y) instanceof Guerrier && getParcelle(x, y).getValeur()%2==i ){ 
     		plateaux[i].println("Vous avez choisis un guerrier de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
     		
-    		highlight(plateaux, i, x, y);
+    		highlight(i, x, y);
     		
     		while(!action){
     			event=  plateaux[i].waitEvent();
@@ -776,7 +774,13 @@ public class GestionPlateaux {
 		return monIle.personnageAllieACote(x, y, a, b, nbDirections);
 	}
 	
-	public void highlight(SuperPlateau[] plateaux, int i, int x, int y){
+	/**
+	 * Méthode permettant de mettre la case courante en surbrillance (couleur vert) ainsi que les cases autours en fonction des différentes actions possible pour le personnage de la case courante (couleur bleu).
+	 * @param i
+	 * @param x
+	 * @param y
+	 */
+	public void highlight(int i, int x, int y){
 		Color c=Color.GREEN;
 		//highlight de la case selectionnée
 		plateaux[i].setHighlight(y, x,c);
@@ -826,5 +830,14 @@ public class GestionPlateaux {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Détermine le titre de la fenetre associée.
+	 * @param title Le titre à afficher.
+	 */
+	public void setTitle(String title) {
+		plateaux[0].setTitle(title);
+		plateaux[1].setTitle(title);
 	}
 }
