@@ -1,3 +1,4 @@
+package Personnages;
 /**
  * Classe définissant un explorateur.
  * @author vitsem
@@ -10,7 +11,7 @@ public class Explorateur extends Personnage {
 	 * @param nom String.
 	 * @param numEquipe int (1 ou 2).
 	 */
-	Explorateur(String nom, int numEquipe){
+	public Explorateur(String nom, int numEquipe){
 		if (numEquipe>0 && numEquipe <3){
 		super.nom=nom;
 		super.numEquipe=numEquipe;

@@ -1,4 +1,7 @@
+package Jeu;
 import java.util.ArrayList;
+
+import Personnages.Personnage;
 
 public class Equipe {
 	

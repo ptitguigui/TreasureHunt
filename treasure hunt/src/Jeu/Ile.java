@@ -1,3 +1,4 @@
+package Jeu;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -5,6 +6,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JOptionPane;
+
+import Parcelles.Parcelle;
+import Parcelles.ParcelleArbre;
+import Parcelles.ParcelleMer;
+import Parcelles.ParcelleNavire;
+import Parcelles.ParcelleRocher;
+import Personnages.Explorateur;
+import Personnages.Guerrier;
+import Personnages.Personnage;
+import Personnages.Piegeur;
+import Personnages.Voleur;
 
 /**
  * Classe créant le plateau de jeu, l'ile en l'occurence.
@@ -45,7 +57,7 @@ public class Ile {
 	 * @param nbColonnes un entier
 	 * @param nbLignes un entier
 	 */
-	Ile(int nbColonnes, int nbLignes) {
+	public Ile(int nbColonnes, int nbLignes) {
 		grille=new Parcelle[nbColonnes][nbLignes];
 		for(int c=0; c<grille.length; c++){
 			for(int l=0; l<grille[0].length; l++){

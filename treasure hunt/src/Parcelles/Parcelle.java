@@ -1,3 +1,4 @@
+package Parcelles;
 
 /**
  * Classe créant une parcelle contenant une valeur int.
@@ -36,7 +37,7 @@ public class Parcelle {
 	/**
 	 * Constructeur permettant de créer un terrain clair.
 	 */
-	Parcelle(){
+	public Parcelle(){
 		valeur=1;
 	}
 	

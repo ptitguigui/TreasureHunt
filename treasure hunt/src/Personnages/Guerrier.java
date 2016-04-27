@@ -1,3 +1,4 @@
+package Personnages;
 /**
  * Classe défissant un guerrier.
  * @author vitsem
@@ -10,7 +11,7 @@ public class Guerrier extends Personnage {
 	 * @param nom String.
 	 * @param numEquipe int (1 ou 2).
 	 */
-	Guerrier(String nom, int numEquipe){
+	public Guerrier(String nom, int numEquipe){
 		if (numEquipe>0 && numEquipe <3){
 		super.nom=nom;
 		super.numEquipe=numEquipe;

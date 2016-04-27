@@ -1,3 +1,4 @@
+package Personnages;
 /**
  * Classe définissant un piegeur.
  * @author vitsem
@@ -16,7 +17,7 @@ public class Piegeur extends Personnage {
 	 * @param nom String.
 	 * @param numEquipe un entier (1 ou 2).
 	 */
-	Piegeur(String nom, int numEquipe){
+	public Piegeur(String nom, int numEquipe){
 		if (numEquipe>0 && numEquipe <3){
 			super.nom=nom;
 			super.numEquipe=numEquipe;

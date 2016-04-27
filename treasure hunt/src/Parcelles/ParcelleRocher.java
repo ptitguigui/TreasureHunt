@@ -1,3 +1,6 @@
+package Parcelles;
+import Jeu.Aleatoire;
+
 /**
  * Classe créant une parcelle correspondant à un rocher, voire un trésor ou une clef.
  * @author vitsem
@@ -29,7 +32,7 @@ public class ParcelleRocher extends Parcelle{
 	/**
 	 * Constructeur initialisant le rocher avec aucun personnage dessus.
 	 */
-	ParcelleRocher(){
+	public ParcelleRocher(){
 		super.valeur=alea.tirage(3)+3;
 		valeurRocherIni=valeur;
 		msg="Mais vous n'avez rien trouvé en dessous...";

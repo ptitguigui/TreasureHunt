@@ -1,10 +1,11 @@
+package Parcelles;
 
 public class ParcelleArbre extends Parcelle {
 
 	/**
 	 * Constructeur initialisant l'arbre.
 	 */
-	ParcelleArbre(){
+	public ParcelleArbre(){
 		super.valeur = 6;
 	}
 }

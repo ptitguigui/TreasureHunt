@@ -1,3 +1,4 @@
+package Jeu;
 import java.awt.Color;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -5,6 +6,16 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
+
+import Parcelles.Parcelle;
+import Parcelles.ParcelleNavire;
+import Parcelles.ParcellePiege;
+import Parcelles.ParcelleRocher;
+import Personnages.Explorateur;
+import Personnages.Guerrier;
+import Personnages.Personnage;
+import Personnages.Piegeur;
+import Personnages.Voleur;
 /**
  * Classe permettant de gérer les plateaux
  * @author vitsem
@@ -82,7 +93,7 @@ public class GestionPlateaux {
 	 * Constructeur du gestionnaire de plateaux, le brouillard est désactivé par défaut.
 	 * @param monIle l'ile liée aux plateaux.
 	 */
-	GestionPlateaux(Ile monIle){
+	public GestionPlateaux(Ile monIle){
 		this.monIle=monIle;
 		plateaux[0]=new SuperPlateau(IMGS,10,true);
 		plateaux[1]=new SuperPlateau(IMGS,10,true);
@@ -105,7 +116,7 @@ public class GestionPlateaux {
 	 * @param monIle l'ile liée aux plateaux.
 	 * @param brouillard un booléen permettant d'activer ou non le brouillard de guerre.
 	 */
-	GestionPlateaux(Ile monIle, boolean brouillard){
+	public GestionPlateaux(Ile monIle, boolean brouillard){
 		this.monIle=monIle;
 		plateaux[0]=new SuperPlateau(IMGS,10,true);
 		plateaux[1]=new SuperPlateau(IMGS,10,true);

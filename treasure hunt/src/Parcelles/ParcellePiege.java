@@ -1,3 +1,4 @@
+package Parcelles;
 /**
  * Classe créant une parcelle correspondant à un piège.
  * @author vitsem
@@ -27,7 +28,7 @@ public class ParcellePiege extends Parcelle {
 	 * @param x coordonnée x
 	 * @param y coordonnée y
 	 */
-	ParcellePiege(int numEquipe, int x, int y){
+	public ParcellePiege(int numEquipe, int x, int y){
 		super.valeur=9;
 		this.numEquipe=numEquipe;
 		this.x=x;
