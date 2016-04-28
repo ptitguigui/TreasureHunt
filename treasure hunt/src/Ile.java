@@ -6,6 +6,11 @@ import java.util.HashMap;
 
 import javax.swing.JOptionPane;
 
+import Jeu.*;
+import Parcelles.*;
+import Personnages.*;
+import tps.*;
+
 /**
  * Classe créant le plateau de jeu, l'ile en l'occurence.
  * @author vitsem
