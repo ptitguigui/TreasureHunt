@@ -6,17 +6,9 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
-
-import Parcelles.Parcelle;
-import Parcelles.ParcelleNavire;
-import Parcelles.ParcellePiege;
-import Parcelles.ParcelleRocher;
-import Personnages.Explorateur;
-import Personnages.Guerrier;
-import Personnages.Personnage;
-import Personnages.Piegeur;
-import Personnages.Voleur;
-import tps.Plateau;
+import Parcelles.*;
+import Personnages.*;
+import tps.*;
 /**
  * Classe permettant de gérer les plateaux
  * @author vitsem

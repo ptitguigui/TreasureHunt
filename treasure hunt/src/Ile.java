@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JOptionPane;
-
+import Jeu.*;
+import Parcelles.*;
+import Personnages.*;
+import tps.*;
 
 /**
  * Classe créant le plateau de jeu, l'ile en l'occurence.
@@ -73,7 +76,7 @@ public class Ile {
 	 * @param plateaux les plateaux des deux joueurs
 	 * @param i le numéro du plateau
 	 */
-	public void persoMort(int x, int y, SuperPlateau[] plateaux, int i){
+	public void persoMort(int x, int y, Plateau[] plateaux, int i){
 		if(((Personnage)getParcelle(x,y)).estMort()){
 			equipes[((Personnage)getParcelle(x,y)).getNumEquipe()-1].removePersonnage(((Personnage)getParcelle(x,y)));
 			if(((Personnage)getParcelle(x,y)).porteTresor() || ((Personnage)getParcelle(x,y)).porteClef() || ((Personnage)getParcelle(x,y)).porteEpee()){
@@ -172,7 +175,7 @@ public class Ile {
 	 * @param i le numéro du plateau courrant
 	 * @param vole booléen permettant de savoir s'il s'agit d'un vol ou d'un échange
 	 */
-	public void echangeItem(int x, int y, int a, int b, SuperPlateau[] plateaux, int i, boolean vole){
+	public void echangeItem(int x, int y, int a, int b, Plateau[] plateaux, int i, boolean vole){
 		Personnage receveur=(Personnage)getParcelle(x,y); //aussi égale au voleur
 		Personnage donneur=(Personnage)getParcelle(a,b); // personnage 1volé
 		if(!vole){
@@ -272,7 +275,7 @@ public class Ile {
 	 * @param plateaux les plateaux des deux joueurs
 	 * @return un boolean (true or false)
 	 */
-	public boolean finPartie(SuperPlateau[] plateaux ){
+	public boolean finPartie(Plateau[] plateaux ){
 		if(equipes[1].aPerdu() || equipes[0].aGagne()){
 			plateaux[0].println("Felicitation J1, vous avez gagnez la partie") ;
 			plateaux[1].println("Malheuresement vous avez perdu la partie") ;
@@ -295,7 +298,7 @@ public class Ile {
 	 * @param plateaux les plateaux des deux joueurs
 	 * @param i le numéro du plateau courrant
 	 */
-	public void rentrerDansNavire(int x, int y, int a, int b, SuperPlateau[] plateaux, int i){
+	public void rentrerDansNavire(int x, int y, int a, int b, Plateau[] plateaux, int i){
 		if(getParcelle(x,y) instanceof Guerrier) {
 			((Guerrier)getParcelle(x,y)).ramasseEpee();
 		}
