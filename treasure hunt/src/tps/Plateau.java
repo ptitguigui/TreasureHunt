@@ -1,5 +1,6 @@
 package tps;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -17,6 +18,7 @@ import javax.swing.JFrame;
  * @author M2103-Team
  */
 public class Plateau {
+	private static boolean defaultVisibility = true ;
 	private static final long serialVersionUID = 1L;
 	private JFrame window ;
 	private GraphicPane graphic ;
@@ -66,6 +68,14 @@ public class Plateau {
 		@Override
 		public void keyTyped(KeyEvent e) {
 		}
+	}
+	/**
+	 * Détermine la visibilité par défaut des plateaux construits. La valeur initiale est true : 
+	 * tout plateau construit est immédiatement affiché.
+	 * @param defaultValue vrai si tout plateau est affiché immédiatement 
+	 */
+	public static void setDefaultVisibility(boolean defaultValue) {
+		defaultVisibility = defaultValue ;
 	}
 	/**
 	 * Construit un plateau de jeu vide de dimension taille x taille.
@@ -144,6 +154,13 @@ public class Plateau {
 	public void affichage(){ 
 		window.setVisible(true);	// Révèle la fenêtre.
 		window.repaint(); 			// Délégué à Swing (appelle indirectement graphic.paintComponent via Swing)
+	}
+	/**
+	 * Détermine le titre de la fenetre associée.
+	 * @param title Le titre à afficher.
+	 */
+	public void setTitle(String title) {
+		window.setTitle(title) ;
 	}
 	/**
 	 * prépare l'attente d'événements Swing (clavier ou souris).
@@ -270,10 +287,11 @@ public class Plateau {
 	 * </ul>
 	 * @param x La ligne de la cellule.
 	 * @param y La colonne de la cellule.
+	 * @param color La couleur du carré affiché.
 	 */
-	public void setHighlight(int x, int y) {
+	public void setHighlight(int x, int y, Color color) {
 		if (graphic != null) {
-			graphic.setHighlight(x, y);
+			graphic.setHighlight(x, y, color);
 		}
 	}
 	/**
@@ -296,5 +314,20 @@ public class Plateau {
 	 */
 	public boolean isHighlight(int x, int y) {
 		return graphic.isHighlight(x, y) ;
+	}
+	/**
+	 * Efface l'affichage de tout texte dans la partie graphique.
+	 */
+	public void clearText() {
+		graphic.clearText() ;
+	}
+	/**
+	 * Demande l'affichage d'un texte dans une case. Le texte est centré horizontalement et verticalement. Ecrit en Color.BLACK.
+	 * @param x Le numéro de ligne de la cellule où apparaît le texte.
+	 * @param y Le numéro de colonne de la cellule où apparaît le texte.
+	 * @param msg les texte à afficher.
+	 */
+	public void setText(int x, int y, String msg) {
+		graphic.setText(x, y, msg) ;		
 	}
 }
