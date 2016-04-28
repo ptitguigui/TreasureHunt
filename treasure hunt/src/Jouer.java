@@ -190,7 +190,7 @@ public class Jouer  {
 			
 			
 			//BROUILLARD DE GUERRE
-			GestionPlateaux gestion=new GestionPlateaux(monIle, true);
+			GestionPlateaux gestion=new GestionPlateaux(monIle, brouillard);
 			SuperPlateau[] plateaux=gestion.getPlateaux();
 			gestion.affichage();
 			int[] dernierDeplacement=new int[2];

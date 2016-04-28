@@ -464,6 +464,7 @@ public class Ile {
 	 */
 	private void setExplorateurs(boolean test, int nbExplorateurs, int numEquipe){
 		int x, y;
+		Personnage p;
 		for(int i=1; i<=nbExplorateurs; i++){
 			if(test){
 				String saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée x de l'explorateur n°" + i + " de l'équipe " + numEquipe));
@@ -481,12 +482,14 @@ public class Ile {
 					saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée y de l'explorateur n°" + i + " de l'équipe " + numEquipe);
 				}
 				y=Integer.parseInt(saisie);
+				p=new Explorateur("Explorateur", numEquipe);
 							
-				grille[x][y]=new Explorateur("Explorateur", numEquipe);
+				grille[x][y]=p;
 			} else {
 				int[] coordN=getNavire(numEquipe);
-				Personnage p=new Explorateur("Explorateur", numEquipe);
+				 p=new Explorateur("Explorateur", numEquipe);
 				((ParcelleNavire)grille[coordN[0]][coordN[1]]).addPersonnage(p);
+			}
 				if(numEquipe==1){
 					equipes[0].addPersonnage(p);
 				} else {
@@ -494,7 +497,7 @@ public class Ile {
 				}
 			}
 		}
-	}
+	
 	
 	/**
 	 *  Méthode plaçant les voleurs sur l'ile , le nombre de voleurs correspond à l'entier précisé en paramètre.
@@ -504,6 +507,7 @@ public class Ile {
 	 */
 	private void setVoleurs(boolean test, int nbVoleurs, int numEquipe){
 		int x, y;
+		Personnage p;
 		for(int i=1; i<=nbVoleurs; i++){
 			if(test) {	
 				String saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée x du voleur n°" + i + " de l'équipe " + numEquipe));
@@ -521,12 +525,13 @@ public class Ile {
 					saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée y du voleur n°" + i + " de l'équipe " + numEquipe);
 				}
 				y=Integer.parseInt(saisie);
-							
-				grille[x][y]=new Voleur("Voleur", numEquipe);
+				p=new Voleur("Voleur", numEquipe);
+				grille[x][y]=p;
 			} else {
 				int[] coordN=getNavire(numEquipe);
-				Personnage p=new Voleur("Voleur", numEquipe);
+				 p=new Voleur("Voleur", numEquipe);
 				((ParcelleNavire)grille[coordN[0]][coordN[1]]).addPersonnage(p);
+			}
 				if(numEquipe==1){
 					equipes[0].addPersonnage(p);
 				} else {
@@ -534,7 +539,7 @@ public class Ile {
 				}
 			}
 		}
-	}
+	
 	/**
 	 *  Méthode plaçant les piegeurs sur l'ile , le nombre de piegeurs correspond à l'entier précisé en paramètre.
 	 * @param test un booléen permettant de savoir s'il s'agit d'un test ou non
@@ -543,6 +548,7 @@ public class Ile {
 	 */
 	private void setPiegeurs(boolean test, int nbPiegeurs, int numEquipe){
 		int x, y;
+		Personnage p;
 		for(int i=1; i<=nbPiegeurs; i++){
 			if (test){
 				String saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée x du piegeur n°" + i + " de l'équipe " + numEquipe));
@@ -560,12 +566,14 @@ public class Ile {
 					saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée y du piegeur n°" + i + " de l'équipe " + numEquipe);
 				}
 				y=Integer.parseInt(saisie);
-							
-				grille[x][y]=new Piegeur("Piegeur", numEquipe);
+
+				p=new Piegeur("Piegeur", numEquipe);
+				grille[x][y]=p;
 			} else {
 				int[] coordN=getNavire(numEquipe);
-				Personnage p=new Piegeur("Piegeur", numEquipe);
+				p=new Piegeur("Piegeur", numEquipe);
 				((ParcelleNavire)grille[coordN[0]][coordN[1]]).addPersonnage(p);
+			}
 				if(numEquipe==1){
 					equipes[0].addPersonnage(p);
 				} else {
@@ -573,7 +581,7 @@ public class Ile {
 				}
 			}
 		}
-	}
+	
 	/**
 	 *  Méthode plaçant les guerriers sur l'ile , le nombre de guerriers correspond à l'entier précisé en paramètre.
 	 * @param test un booléen permettant de savoir s'il s'agit d'un test ou non
@@ -582,6 +590,7 @@ public class Ile {
 	 */
 	private void setGuerriers(boolean test, int nbGuerriers, int numEquipe){
 		int x, y;
+		Personnage p;
 		for(int i=1; i<=nbGuerriers; i++){
 			if (test) {	
 				String saisie=new String(JOptionPane.showInputDialog(null,"Entrer la coordonnée x du guerrier n°" + i + " de l'équipe " + numEquipe));
@@ -599,20 +608,22 @@ public class Ile {
 					saisie=JOptionPane.showInputDialog(null,"Entrer la coordonnée y du guerrier n°" + i + " de l'équipe " + numEquipe);
 				}
 				y=Integer.parseInt(saisie);
-							
-				grille[x][y]=new Guerrier("Guerrier", numEquipe);
+
+				p=new Guerrier("Guerrier", numEquipe);		
+				grille[x][y]=p;
 			} else {
 				int[] coordN=getNavire(numEquipe);
-				Personnage p=new Guerrier("Guerrier", numEquipe);
+				p=new Guerrier("Guerrier", numEquipe);
 				((ParcelleNavire)grille[coordN[0]][coordN[1]]).addPersonnage(p);
-				if(numEquipe==1){
-					equipes[0].addPersonnage(p);
-				} else {
-					equipes[1].addPersonnage(p);
-				}
+			}
+			if(numEquipe==1){
+				equipes[0].addPersonnage(p);
+			} else {
+				equipes[1].addPersonnage(p);
+
 			}
 		}
-	}
+}
 	
 	/**
 	 * Méthode plaçant la mer.
