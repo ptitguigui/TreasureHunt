@@ -1,4 +1,7 @@
+package Parcelles;
 import java.util.ArrayList;
+
+import Personnages.Personnage;
 
 /**
  * Classe créant une parcelle correspondant à un navire.
@@ -26,7 +29,7 @@ public class ParcelleNavire extends Parcelle {
 	 * @param x coordonnée x
 	 * @param y coordonnée y
 	 */
-	ParcelleNavire(int numJoueur, int x, int y){
+	public ParcelleNavire(int numJoueur, int x, int y){
 		super.valeur=11+numJoueur;
 		this.x=x;
 		this.y=y;

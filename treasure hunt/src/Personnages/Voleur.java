@@ -1,3 +1,5 @@
+package Personnages;
+
 /**
  * Classe définissant un voleur.
  * @author vitsem
@@ -10,7 +12,7 @@ public class Voleur extends Personnage {
 	 * @param nom String.
 	 * @param numEquipe int (1 ou 2).
 	 */
-	Voleur(String nom, int numEquipe){
+	public Voleur(String nom, int numEquipe){
 		if (numEquipe>0 && numEquipe <3){
 		super.nom=nom;
 		super.numEquipe=numEquipe;
@@ -24,8 +26,6 @@ public class Voleur extends Personnage {
 			super.energie=maxEnergie;
 			super.valeur=0;
 		}
-		super.items[0]=false;
-		super.items[1]=false;
 	}
 	
 	/**

@@ -1,3 +1,6 @@
+package Personnages;
+import Parcelles.Parcelle;
+
 /**
  * Classe permettant de créer un personnage.
  * @author bataillj
@@ -33,7 +36,7 @@ public class Personnage extends Parcelle{
 	/**
 	 * Constructeur créant un personnage en initialisant ses attributs à 0 ou la chaine vide.
 	 */
-	Personnage(){
+	public Personnage(){
 		this.nom="Personnage non initialisé (classe Personnage)";
 		this.numEquipe = 0;
 		super.valeur=0;

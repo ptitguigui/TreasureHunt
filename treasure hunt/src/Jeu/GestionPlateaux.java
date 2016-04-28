@@ -1,9 +1,22 @@
+package Jeu;
+import java.awt.Color;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
+
+import Parcelles.Parcelle;
+import Parcelles.ParcelleNavire;
+import Parcelles.ParcellePiege;
+import Parcelles.ParcelleRocher;
+import Personnages.Explorateur;
+import Personnages.Guerrier;
+import Personnages.Personnage;
+import Personnages.Piegeur;
+import Personnages.Voleur;
+import tps.Plateau;
 /**
  * Classe permettant de gérer les plateaux
  * @author vitsem
@@ -12,7 +25,7 @@ public class GestionPlateaux {
 	/**
 	 * Attribut désignant les différents plateaux.
 	 */
-	private SuperPlateau[] plateaux=new SuperPlateau[2];
+	private Plateau[] plateaux=new Plateau[2];
 	/**
 	 * Attribut servant à charger les images du jeu.
 	 */
@@ -81,10 +94,10 @@ public class GestionPlateaux {
 	 * Constructeur du gestionnaire de plateaux, le brouillard est désactivé par défaut.
 	 * @param monIle l'ile liée aux plateaux.
 	 */
-	GestionPlateaux(Ile monIle){
+	public GestionPlateaux(Ile monIle){
 		this.monIle=monIle;
-		plateaux[0]=new SuperPlateau(IMGS,10,true);
-		plateaux[1]=new SuperPlateau(IMGS,10,true);
+		plateaux[0]=new Plateau(IMGS,10,true);
+		plateaux[1]=new Plateau(IMGS,10,true);
 		jeu=monIle.getIleTab();
 		jeuJ1b=new boolean[jeu.length][jeu[0].length];
 		jeuJ2b=new boolean[jeu.length][jeu[0].length];
@@ -104,10 +117,10 @@ public class GestionPlateaux {
 	 * @param monIle l'ile liée aux plateaux.
 	 * @param brouillard un booléen permettant d'activer ou non le brouillard de guerre.
 	 */
-	GestionPlateaux(Ile monIle, boolean brouillard){
+	public GestionPlateaux(Ile monIle, boolean brouillard){
 		this.monIle=monIle;
-		plateaux[0]=new SuperPlateau(IMGS,10,true);
-		plateaux[1]=new SuperPlateau(IMGS,10,true);
+		plateaux[0]=new Plateau(IMGS,10,true);
+		plateaux[1]=new Plateau(IMGS,10,true);
 		jeu=monIle.getIleTab();
 		jeuJ1b=new boolean[jeu.length][jeu[0].length];
 		jeuJ2b=new boolean[jeu.length][jeu[0].length];
@@ -129,7 +142,7 @@ public class GestionPlateaux {
 	 * Méthode permettant de retourner les plateaux du gestionnaire.
 	 * @return les plateaux du gestionnaire.
 	 */
-	public SuperPlateau[] getPlateaux(){
+	public Plateau[] getPlateaux(){
 		return plateaux;
 	}
 	
@@ -246,8 +259,6 @@ public class GestionPlateaux {
 		plateaux[i].println(">> A votre tour J" + (i+1)) ;
 		plateaux[1-i].println(">> Au tour de votre adversaire") ;
 		
-		int[][] jeu;
-		
 		// Vérification de la selection : doit être un personnage ou navire de son équipe
     	do {
 	    	event=  plateaux[i].waitEvent();
@@ -261,6 +272,9 @@ public class GestionPlateaux {
     	//Actions si navire
     	if(getParcelle(x,y) instanceof ParcelleNavire && getParcelle(x, y).getValeur()%2==i && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0){ 
     		plateaux[i].println("Vous avez choisis votre navire");
+    		
+    		highlight(i, x, y);
+    		
     		Personnage p;
     		if (((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()==1){
     			p=((ParcelleNavire)getParcelle(x,y)).getPersonnage(0);
@@ -308,7 +322,9 @@ public class GestionPlateaux {
     	//Actions si explorateur
     	if(getParcelle(x,y) instanceof Explorateur && getParcelle(x, y).getValeur()%2==i ){ 
     		plateaux[i].println("Vous avez choisis un explorateur de J"+(i+1)+", il a " + ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
-    		//highlight(plateaux, i, getValeurParcelle(x,y), x, y);
+    		
+    		highlight(i, x, y);
+    		
     		while(!action){
     			event=  plateaux[i].waitEvent();
     			if(event instanceof KeyEvent){
@@ -404,6 +420,9 @@ public class GestionPlateaux {
 		//Action si voleur
     	if(getParcelle(x,y) instanceof Voleur && getParcelle(x, y).getValeur()%2==i ){ 
     		plateaux[i].println("Vous avez choisis un voleur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
+    		
+    		highlight(i, x, y);
+    		
     		while(!action){
     			event=  plateaux[i].waitEvent();
     			if(event instanceof KeyEvent){
@@ -449,7 +468,11 @@ public class GestionPlateaux {
     	
     	//Action si piegeur 
     	if(getParcelle(x,y) instanceof Piegeur && getParcelle(x, y).getValeur()%2==i ){ 
-    		plateaux[i].println("Vous avez choisis un piegeur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
+    		plateaux[i].println("Vous avez choisis un piegeur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?");
+    		plateaux[i].println("Mines restantes : " + ((Piegeur)getParcelle(x,y)).getMines()) ;
+    		
+    		highlight(i, x, y);
+    		
     		while(!action){
     			event=  plateaux[i].waitEvent();
     			if(event instanceof KeyEvent){
@@ -466,21 +489,26 @@ public class GestionPlateaux {
 			    	
     			//2 choix possible: déplacement ou piège
     			if(getParcelle(a,b).terrainClair() && dansChampsAction(x, y, a, b, 8)){
-	    			String[] option = {"Déplacement" , "Poser un piege"};
-	    			int choix = JOptionPane.showOptionDialog(null, "Choississez votre option",  null, JOptionPane.OK_OPTION, JOptionPane.NO_OPTION, null, option, option[0]);
-	    			//déplacement
-	    			if(choix ==0){   	
-	    				deplacer(x, y, a, b, i);
-	    			//pose un piege	
-	    			}else if(choix ==1){
-	    				if(getParcelle(a,b).estVide()){
-	    					setPiege(i+1,a,b);
-	    					((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-5);
-	    					persoMort(x,y,plateaux,i);
-	    				} else {
-	    					plateaux[i].println("Vous ne pouvez poser de piège, un objet s'y trouve.");
-	    				}
-	    			}
+    				if(((Piegeur)getParcelle(x,y)).getMines()>0){
+		    			String[] option = {"Déplacement" , "Poser un piege"};
+		    			int choix = JOptionPane.showOptionDialog(null, "Choississez votre option",  null, JOptionPane.OK_OPTION, JOptionPane.NO_OPTION, null, option, option[0]);
+		    			//déplacement
+		    			if(choix ==0){   	
+		    				deplacer(x, y, a, b, i);
+		    			//pose un piege	
+		    			}else if(choix ==1){
+		    				if(getParcelle(a,b).estVide()){
+		    					setPiege(i+1,a,b);
+		    					((Piegeur)getParcelle(x,y)).retirerMine();
+		    					((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-5);
+		    					persoMort(x,y,plateaux,i);
+		    				} else {
+		    					plateaux[i].println("Vous ne pouvez poser de piège, un objet s'y trouve.");
+		    				}
+		    			}
+    				} else {
+    					deplacer(x, y, a, b, i);
+    				}
 	    			action = true;  				
     			//Echange avec un personnage	
     			}else if(personnageAllieACote(x, y, a, b, 8)){
@@ -489,6 +517,7 @@ public class GestionPlateaux {
     			//Rentrer dans navire
     			} else if(getParcelle(a,b) instanceof ParcelleNavire && getParcelle(x, y).getValeur()%2==i && dansChampsAction(a,b,x,y,8)){
     				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(monIle.getEquipe(i+1).nbPersonnages())){
+    					((Piegeur)getParcelle(x,y)).setMinesFull();
     					rentrerDansNavire(x,y,a,b,plateaux,i);
     					action=true;
     				} else {
@@ -502,6 +531,9 @@ public class GestionPlateaux {
     	//Action si Guerrier
     	if(getParcelle(x,y) instanceof Guerrier && getParcelle(x, y).getValeur()%2==i ){ 
     		plateaux[i].println("Vous avez choisis un guerrier de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
+    		
+    		highlight(i, x, y);
+    		
     		while(!action){
     			event=  plateaux[i].waitEvent();
     			while(!(event instanceof MouseEvent || event instanceof KeyEvent)){
@@ -554,6 +586,7 @@ public class GestionPlateaux {
     			//Rentrer dans navire
     			} else if(getParcelle(a,b) instanceof ParcelleNavire && getParcelle(x, y).getValeur()%2==i  && dansChampsAction(a,b,x,y,8)){
     				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(monIle.getEquipe(i+1).nbPersonnages())){
+    					((Guerrier)getParcelle(x,y)).ramasseEpee();
     					rentrerDansNavire(x,y,a,b,plateaux,i);
     					action=true;
     				} else {
@@ -694,7 +727,7 @@ public class GestionPlateaux {
 	 * @param plateaux les plateaux des deux joueurs
 	 * @param i le numéro du plateau courrant
 	 */
-	public void rentrerDansNavire(int x, int y, int a, int b, SuperPlateau[] plateaux, int i){
+	public void rentrerDansNavire(int x, int y, int a, int b, Plateau[] plateaux, int i){
 		monIle.rentrerDansNavire(x, y, a, b, plateaux, i);
 	}
 	
@@ -708,7 +741,7 @@ public class GestionPlateaux {
 	 * @param i le numéro du plateau courrant
 	 * @param vole booléen permettant de savoir s'il s'agit d'un vol ou d'un échange
 	 */
-	public void echangeItem(int x, int y, int a, int b, SuperPlateau[] plateaux, int i, boolean vole){
+	public void echangeItem(int x, int y, int a, int b, Plateau[] plateaux, int i, boolean vole){
 		monIle.echangeItem(x, y, a, b, plateaux, i, vole);
 	}
 
@@ -719,7 +752,7 @@ public class GestionPlateaux {
 	 * @param plateaux les plateaux des deux joueurs
 	 * @param i le numéro du plateau
 	 */
-	public void persoMort(int x, int y, SuperPlateau[] plateaux, int i){
+	public void persoMort(int x, int y, Plateau[] plateaux, int i){
 		monIle.persoMort(x, y, plateaux, i);
 	}
 	
@@ -759,5 +792,72 @@ public class GestionPlateaux {
 	 */
 	public boolean personnageAllieACote(int x, int y, int a, int b, int nbDirections){
 		return monIle.personnageAllieACote(x, y, a, b, nbDirections);
+	}
+	
+	/**
+	 * Méthode permettant de mettre la case courante en surbrillance (couleur vert) ainsi que les cases autours en fonction des différentes actions possible pour le personnage de la case courante (couleur bleu).
+	 * @param i
+	 * @param x
+	 * @param y
+	 */
+	public void highlight(int i, int x, int y){
+		Color c=Color.GREEN;
+		//highlight de la case selectionnée
+		plateaux[i].setHighlight(y, x,c);
+		
+		//highlight des déplacements/actions possibles
+		c=Color.BLUE;
+		int[] valeursDeplacable;
+		int directions=8;
+		if(getParcelle(x,y) instanceof ParcelleNavire){
+			valeursDeplacable=new int[]{1,7,9,10,11}; //sable, clef, piege, trésor, épée
+			directions=4;
+		} else if(getParcelle(x,y) instanceof Explorateur){
+			valeursDeplacable=new int[]{1,3,4,5,7,8,9,10,11,12+i,14+i,16+i,18+i,20+i}; //sable, rochers, clef, coffre, piege, trésor, épée, navire allié et alliés
+			directions=4;
+		} else if(getParcelle(x,y) instanceof Voleur || getParcelle(x,y) instanceof Guerrier){
+			valeursDeplacable=new int[]{1,7,9,10,11,12+i,14,15,16,17,18,19,20,21}; //sable, clef, piege, trésor, épée, navire allié et tout les personnages
+		} else if(getParcelle(x,y) instanceof Piegeur){
+			valeursDeplacable=new int[]{1,7,9,10,11,12+i,14+i,16+i,18+i,20+i}; //sable, clef, piege, trésor, épée, navire allié et alliés
+		} else {
+			valeursDeplacable=new int[]{};
+		}
+		for(int j=0; j<valeursDeplacable.length; j++){
+			if (getParcelle(x+1,y).getValeur()==valeursDeplacable[j]){
+				plateaux[i].setHighlight(y,x+1,c);
+			}
+			if (getParcelle(x-1,y).getValeur()==valeursDeplacable[j]){
+				plateaux[i].setHighlight(y,x-1,c);
+			}
+			if (getParcelle(x,y+1).getValeur()==valeursDeplacable[j]){
+				plateaux[i].setHighlight(y+1,x,c);
+			}
+			if (getParcelle(x,y-1).getValeur()==valeursDeplacable[j]){
+				plateaux[i].setHighlight(y-1,x,c);
+			}
+			if(directions==8){
+				if (getParcelle(x+1,y+1).getValeur()==valeursDeplacable[j]){
+					plateaux[i].setHighlight(y+1,x+1,c);
+				}
+				if (getParcelle(x+1,y-1).getValeur()==valeursDeplacable[j]){
+					plateaux[i].setHighlight(y-1,x+1,c);
+				}
+				if (getParcelle(x-1,y+1).getValeur()==valeursDeplacable[j]){
+					plateaux[i].setHighlight(y+1,x-1,c);
+				}
+				if (getParcelle(x-1,y-1).getValeur()==valeursDeplacable[j]){
+					plateaux[i].setHighlight(y-1,x-1,c);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Détermine le titre de la fenetre associée.
+	 * @param title Le titre à afficher.
+	 */
+	public void setTitle(String title) {
+		plateaux[0].setTitle(title);
+		plateaux[1].setTitle(title);
 	}
 }
