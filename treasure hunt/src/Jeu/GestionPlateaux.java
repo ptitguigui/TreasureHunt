@@ -248,8 +248,6 @@ public class GestionPlateaux {
 		int keyCode = 0;
 
 		plateaux[i].affichage();
-		plateaux[i].println(">> A votre tour J" + (i+1)) ;
-		plateaux[1-i].println(">> Au tour de votre adversaire") ;
 		
 		// Vérification de la selection : doit être un personnage ou navire de son équipe
     	do {
