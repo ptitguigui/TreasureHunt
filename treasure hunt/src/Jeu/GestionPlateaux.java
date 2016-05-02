@@ -563,28 +563,29 @@ public class GestionPlateaux {
 				action = true;
 			//attaque un ennemi
 			} else if(dansChampsAction(x,y,a,b,8) && getParcelle(a,b) instanceof Personnage && !personnageAllieACote(x, y, a, b, 8)){
-				if(!((Personnage)getParcelle(x,y)).porteEpee()){
-					plateaux[i].println("Vous ne pouvez pas l'attaquer, vous n'avez plus votre épée.") ;
+				// attaque seulement s'il a une épée
+				chance = alea.tirage(2);
+				plateaux[i].println("Vous attaquez un personnage...");
+				plateaux[1 - i].println("On vous attaque !");
+				((Personnage) getParcelle(x, y)).setEnergie(((Personnage) getParcelle(x, y)).getEnergie() - 10);
+				if (chance == 0) {
+					int degats;
+					if (!((Personnage) getParcelle(x, y)).porteEpee()) {
+						degats = alea.tirage(15) + 1;
+						plateaux[i].println("Vous n'avez plus votre épée, vos dégats sont réduits.");
+					} else {
+						degats = alea.tirage(50) + 1;
+					}
+					plateaux[i].println("Vous lui infliger " + degats + " points de dégâts !!");
+					plateaux[1 - i].println("Vous avez perdu " + degats + " points d'énergie...");
+					((Guerrier) getParcelle(x, y)).attaqueEnnemi(((Personnage) getParcelle(a, b)), degats);
+					persoMort(a, b, plateaux, 1 - i);
 				} else {
-					//attaque seulement s'il a une épée
-    				chance = alea.tirage(2);
-    				plateaux[i].println("Vous attaquez un personnage...") ;
-    				plateaux[1-i].println("On vous attaque !") ;
-    				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-10);
-    				if(chance==0){
-    					//dégats aléatoire entre 1 et 50 
-	    				int degats=alea.tirage(50)+1;
-	    				plateaux[i].println("Et vous lui infliger " + degats + " points de dégâts !!") ;
-	    				plateaux[1-i].println("Vous avez perdu " + degats + " points d'énergie...") ;
-	    				((Guerrier)getParcelle(x,y)).attaqueEnnemi(((Personnage)getParcelle(a,b)), degats); 
-	    				persoMort(a,b,plateaux,1-i);
-    				}else{
-    					plateaux[i].println("Mais vous manquez votre cible...") ;
-    					plateaux[1-i].println("Vous avez esquivé.") ;
-    				}
-    				persoMort(x,y,plateaux,i);
+					plateaux[i].println("Mais vous manquez votre cible...");
+					plateaux[1 - i].println("Vous avez esquivé.");
 				}
-				action = true;    				
+				persoMort(x, y, plateaux, i);
+				action = true;   				
 			//Echange avec un personnage	
 			}else if(personnageAllieACote(x, y, a, b, 8)){
 				echangeItem(x, y, a, b, plateaux, i, false);
