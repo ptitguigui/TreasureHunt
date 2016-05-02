@@ -202,6 +202,7 @@ public class Jouer {
 						gestion.action(i);
 						if (monIle.finPartie(plateaux)) {
 							finis = true;
+							break;
 						}
 					}
 					i++;
