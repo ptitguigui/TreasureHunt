@@ -192,14 +192,16 @@ public class Jouer {
 
 			// déplacement
 			int i;
+			int nbActions=0;
 			boolean finis = false;
 			while (!finis) {
 				i = 0;
 				while (!finis && i < 2) {
 					plateaux[i].println(">> A votre tour J" + (i+1)) ;
 					plateaux[1-i].println(">> Au tour de votre adversaire") ;
-					for(int actions=0; actions<3; actions ++){
-						gestion.action(i);
+					nbActions=0;
+					while(nbActions<3){
+						nbActions+=gestion.action(i);
 						if (monIle.finPartie(plateaux)) {
 							finis = true;
 							break;
