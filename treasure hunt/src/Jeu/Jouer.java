@@ -19,16 +19,6 @@ public class Jouer {
 		int menu = JOptionPane.showOptionDialog(null, "Bienvenue, que voulez-vous faire ?", "Treasure hunt",
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[0]);
 
-		final String[] IMGS = { "treasure hunt/imgs/sable.png", "treasure hunt/imgs/mer.png",
-				"treasure hunt/imgs/rocher1.png", "treasure hunt/imgs/rocher2.png", "treasure hunt/imgs/rocher3.png",
-				"treasure hunt/imgs/arbre.png", "treasure hunt/imgs/clef.png", "treasure hunt/imgs/coffre.png",
-				"treasure hunt/imgs/piege.png", "treasure hunt/imgs/tresor.png", "treasure hunt/imgs/epee.png",
-				"treasure hunt/imgs/1_bateau.png", "treasure hunt/imgs/2_bateau.png",
-				"treasure hunt/imgs/1_explorateur.png", "treasure hunt/imgs/2_explorateur.png",
-				"treasure hunt/imgs/1_voleur.png", "treasure hunt/imgs/2_voleur.png",
-				"treasure hunt/imgs/1_piegeur.png", "treasure hunt/imgs/2_piegeur.png",
-				"treasure hunt/imgs/1_guerrier.png", "treasure hunt/imgs/2_guerrier.png" };
-
 		if (menu == 0 || menu == 1) {
 			JOptionPane.showMessageDialog(null, "Lancement du jeu");
 

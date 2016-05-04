@@ -8,7 +8,10 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  * La classe Plateau permet d'afficher un plateau de Jeu carré
@@ -19,10 +22,10 @@ import javax.swing.JFrame;
  */
 public class Plateau {
 	private static boolean defaultVisibility = true ;
-	private static final long serialVersionUID = 1L;
 	private JFrame window ;
 	private GraphicPane graphic ;
 	private ConsolePane console ;
+	private JPanel haut;
 	/**
 	 *  Attribut ou est enregistré un événement observé. Cet attribut est
 	 * initialisé à null au début de la scrutation et rempli par l'événement observé 
@@ -103,19 +106,29 @@ public class Plateau {
 	public Plateau(String[] gif,int taille, boolean withTextArea){
 		// Instancie la fenetre principale et et les deux composants.
 		window = new JFrame() ;
+		haut = new JPanel();
+		JPanel stats= new JPanel();
 		graphic = new GraphicPane(gif, taille) ;
 		console = null ;
 
 		// Caractéristiques initiales pour la fenetre.
-		window.setTitle("Plateau de jeu ("+taille+"X"+taille+")");
+		window.setTitle("Treasure Hunt");
 		window.setLocationRelativeTo(null);
 		window.setLayout(new BorderLayout());
 		// La fermeture de la fenetre ne fait que la cacher. 
 		// cf Javadoc setDefaultCloseOperation
-		window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		// Ajouts des composants au JPanel stats
+		stats.add(new JLabel("Coucou"));
 
 		// Ajout des deux composants à la fenetre
-		window.getContentPane().add(graphic, BorderLayout.NORTH);
+		haut.setLayout(new BoxLayout(haut, BoxLayout.X_AXIS));
+		haut.add(graphic);
+		haut.add(stats);
+		
+		window.getContentPane().setLayout(new BorderLayout());
+		window.getContentPane().add(haut, BorderLayout.NORTH);
 		if (withTextArea) {
 			console = new ConsolePane() ;
 			window.getContentPane().add(console) ;
@@ -262,12 +275,13 @@ public class Plateau {
 	}
 	// Note la taille initiale est calculée d'après la taille du graphique.
 	private void resizeFromGraphic() {
-		Dimension dim = graphic.getGraphicSize() ;
+		Dimension dim = haut.getPreferredSize() ;
 		if (console == null) {
 			dim.height += 10 ;
 		} else {
 			dim.height += 150 ;
 		}
+		
 		window.getContentPane().setPreferredSize(dim) ;
 		window.pack() ;
 	}
