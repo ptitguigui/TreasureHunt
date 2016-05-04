@@ -19,6 +19,7 @@ public class Jouer {
 		int menu = JOptionPane.showOptionDialog(null, "Bienvenue, que voulez-vous faire ?", "Treasure hunt",
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, option, option[0]);
 
+<<<<<<< HEAD
 		final String[] IMGS = { "treasure hunt/imgs/sable.png","treasure hunt/imgs/herbeSec.png","treasure hunt/imgs/herbe.png", "treasure hunt/imgs/mer.png",
 				"treasure hunt/imgs/rocher1.png", "treasure hunt/imgs/rocher2.png", "treasure hunt/imgs/rocher3.png",
 				"treasure hunt/imgs/arbre.png","treasure hunt/imgs/buisson.png", "treasure hunt/imgs/clef.png", "treasure hunt/imgs/coffre.png",
@@ -29,6 +30,8 @@ public class Jouer {
 				"treasure hunt/imgs/1_piegeur.png", "treasure hunt/imgs/2_piegeur.png",
 				"treasure hunt/imgs/1_guerrier.png", "treasure hunt/imgs/2_guerrier.png" };
 
+=======
+>>>>>>> branch 'master' of https://github.com/ptitguigui/TreasureHunt.git
 		if (menu == 0 || menu == 1) {
 			JOptionPane.showMessageDialog(null, "Lancement du jeu");
 
