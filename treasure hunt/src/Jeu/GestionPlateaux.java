@@ -321,6 +321,7 @@ public class GestionPlateaux {
     			//sortie du personnage
     			if(getParcelle(a,b).estVide() && dansChampsAction(x, y, a, b, 4)){
     				setParcelle(a,b,p);
+    				plateaux[i].println("Déplacement effectué...");
     				((ParcelleNavire)getParcelle(x,y)).removePersonnage(p);
     				if(getParcelle(x, y).getValeur()%2==0){
     					plateaux[0].setJeu(jeuJ1);
