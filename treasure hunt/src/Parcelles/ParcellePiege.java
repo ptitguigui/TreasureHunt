@@ -29,7 +29,7 @@ public class ParcellePiege extends Parcelle {
 	 * @param y coordonnée y
 	 */
 	public ParcellePiege(int numEquipe, int x, int y){
-		super.valeur=9;
+		super.valeur=12;
 		this.numEquipe=numEquipe;
 		this.x=x;
 		this.y=y;

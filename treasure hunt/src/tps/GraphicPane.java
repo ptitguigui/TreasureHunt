@@ -45,11 +45,14 @@ class GraphicPane extends JPanel {
 		nbCol = taille ;
 		dimImage = 15 ; // Taille par défaut d'une case.
 		String[] imagesPath={"sable.png",
+				"herbeSec.png",
+				"herbe.png",
 				"mer.png",
 				"rocher1.png",
 				"rocher2.png",
 				"rocher3.png",
 				"arbre.png",
+				"buisson.png",
 				"clef.png",
 				"coffre.png",
 				"piege.png",

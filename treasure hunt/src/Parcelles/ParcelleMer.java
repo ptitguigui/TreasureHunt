@@ -10,7 +10,7 @@ public class ParcelleMer extends Parcelle{
 	 * Constructeur initialisant la mer.
 	 */
 	public ParcelleMer(){
-		super.valeur=2;
+		super.valeur=4;
 	}
 	
 }

@@ -33,7 +33,7 @@ public class ParcelleRocher extends Parcelle{
 	 * Constructeur initialisant le rocher avec aucun personnage dessus.
 	 */
 	public ParcelleRocher(){
-		super.valeur=alea.tirage(3)+3;
+		super.valeur=alea.tirage(3)+5;
 		valeurRocherIni=valeur;
 		msg="Mais vous n'avez rien trouvé en dessous...";
 	}

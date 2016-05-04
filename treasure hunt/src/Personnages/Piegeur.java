@@ -23,7 +23,7 @@ public class Piegeur extends Personnage {
 			super.numEquipe=numEquipe;
 			super.maxEnergie=100;
 			super.energie=maxEnergie;
-			super.valeur=17+numEquipe;
+			super.valeur=20+numEquipe;
 			mines=MAXMINES;
 		} else {
 			super.nom="Problème d'initialisation, mauvais n° d'équipe (classe Piegeur)";

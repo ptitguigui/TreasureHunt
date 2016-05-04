@@ -30,7 +30,7 @@ public class ParcelleNavire extends Parcelle {
 	 * @param y coordonnée y
 	 */
 	public ParcelleNavire(int numJoueur, int x, int y){
-		super.valeur=11+numJoueur;
+		super.valeur=14+numJoueur;
 		this.x=x;
 		this.y=y;
 	}
@@ -42,8 +42,8 @@ public class ParcelleNavire extends Parcelle {
 	 * @param y coordonnée y
 	 * @param equipage une liste de personnages.
 	 */
-	ParcelleNavire(int numJoueur, int x, int y, ArrayList<Personnage> equipage){
-		super.valeur=9+numJoueur;
+	public ParcelleNavire(int numJoueur, int x, int y, ArrayList<Personnage> equipage){
+		super.valeur=14+numJoueur;
 		this.equipage=equipage;
 		this.x=x;
 		this.y=y;

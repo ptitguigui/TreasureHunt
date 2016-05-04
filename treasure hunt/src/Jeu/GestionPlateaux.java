@@ -22,11 +22,14 @@ public class GestionPlateaux {
 	 * Attribut servant à charger les images du jeu.
 	 */
 	private final String[] IMGS={"../ressources/tps/sable.png",
+			"../treasure hunt/tps/herbeSec.png",
+			"../treasure hunt/tps/herbe.png",
 			"../ressources/tps/mer.png",
 			"../ressources/tps/rocher1.png",
 			"../ressources/tps/rocher2.png",
 			"../ressources/tps/rocher3.png",
 			"../ressources/tps/arbre.png",
+			"../treasure hunt/tps/buisson.png",
 			"../ressources/tps/clef.png",
 			"../ressources/tps/coffre.png",
 			"../ressources/tps/piege.png",
@@ -256,21 +259,21 @@ public class GestionPlateaux {
 	    	}
 		 	x = plateaux[i].getX((MouseEvent) event) ;
 		   	y = plateaux[i].getY((MouseEvent) event) ;
-	    } while(!((getParcelle(x, y) instanceof Personnage || (getParcelle(x,y) instanceof ParcelleNavire && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0)) && getParcelle(x, y).getValeur()%2==i ));
+	    } while(!((getParcelle(x, y) instanceof Personnage || (getParcelle(x,y) instanceof ParcelleNavire && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0)) && getParcelle(x, y).getValeur()%2!=i ));
     	
-    	if(getParcelle(x,y) instanceof ParcelleNavire && getParcelle(x, y).getValeur()%2==i && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0){ 
+    	if(getParcelle(x,y) instanceof ParcelleNavire && getParcelle(x, y).getValeur()%2!=i && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0){ 
     		actionEffectuee+=actionNavires(i,x,y,a,b, action, keyCode, event);
     	}		
-    	if(getParcelle(x,y) instanceof Explorateur && getParcelle(x, y).getValeur()%2==i ){ 
+    	if(getParcelle(x,y) instanceof Explorateur && getParcelle(x, y).getValeur()%2!=i ){ 
     		actionEffectuee+=actionExplorateurs(i,x,y,a,b,action,keyCode,event);
     	}
-    	if(getParcelle(x,y) instanceof Voleur && getParcelle(x, y).getValeur()%2==i ){ 
+    	if(getParcelle(x,y) instanceof Voleur && getParcelle(x, y).getValeur()%2!=i ){ 
     		actionEffectuee+=actionVoleurs(i,x,y,a,b,action,keyCode,event);
     	}
-    	if(getParcelle(x,y) instanceof Piegeur && getParcelle(x, y).getValeur()%2==i ){ 
+    	if(getParcelle(x,y) instanceof Piegeur && getParcelle(x, y).getValeur()%2!=i ){ 
     		actionEffectuee+=actionsPiegeurs(i,x,y,a,b,action,keyCode,event);
     	}
-    	if(getParcelle(x,y) instanceof Guerrier && getParcelle(x, y).getValeur()%2==i ){ 
+    	if(getParcelle(x,y) instanceof Guerrier && getParcelle(x, y).getValeur()%2!=i ){ 
     		actionEffectuee+=actionsGuerriers(i,x,y,a,b,action,keyCode,event);
     	}
     	//Recupération d'énergie pour les personnages dans le navire
@@ -323,7 +326,7 @@ public class GestionPlateaux {
     				setParcelle(a,b,p);
     				plateaux[i].println("Déplacement effectué...");
     				((ParcelleNavire)getParcelle(x,y)).removePersonnage(p);
-    				if(getParcelle(x, y).getValeur()%2==0){
+    				if(getParcelle(x, y).getValeur()%2!=0){
     					plateaux[0].setJeu(jeuJ1);
     				} else {
     					plateaux[1].setJeu(jeuJ2);
