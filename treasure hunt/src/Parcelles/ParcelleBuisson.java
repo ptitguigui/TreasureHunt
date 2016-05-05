@@ -6,5 +6,5 @@ public class ParcelleBuisson extends Parcelle {
 	 */
 	public ParcelleBuisson(){
 		super.valeur = 9;
-	}
+	}	
 }

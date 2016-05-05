@@ -81,6 +81,11 @@ public class GestionPlateaux {
 	 * ArrayList mémorisant les pieges posés par le joueur 2 (et donc leurs coordonnées aussi).
 	 */
 	private ArrayList<ParcellePiege> pieges2=new ArrayList<>();
+	/**
+	 * Attribut servant à la création de nombres aléatoires.
+	 */
+	private Aleatoire alea=new Aleatoire();
+	
 	
 	
 	
@@ -363,6 +368,9 @@ public class GestionPlateaux {
     				deplacer(x, y, a, b, i);
     				action = true;
     				actionEffectuee=1;
+    			//Manger un fruit
+    			} else if(dansChampsAction(x,y,a,b,8) && getParcelle(a,b) instanceof ParcelleArbre ||  getParcelle(a,b) instanceof ParcelleBuisson){
+    				mangerFruit(x,y,a,b,i,plateaux);
     			//Echange avec un personnage	
     			}else if(personnageAllieACote(x, y, a, b, 4)){
     				echangeItem(x, y, a, b, plateaux, i, false);
@@ -467,6 +475,9 @@ public class GestionPlateaux {
     				deplacer(x, y, a, b, i);
     				action = true;
     				actionEffectuee=1;
+    			//Manger un fruit
+    			} else if(dansChampsAction(x,y,a,b,8) && getParcelle(a,b) instanceof ParcelleArbre ||  getParcelle(a,b) instanceof ParcelleBuisson){
+    				mangerFruit(x,y,a,b,i,plateaux);
     			//Fouille un personnage
     			} else if(dansChampsAction(x,y,a,b,8) && getParcelle(a,b) instanceof Personnage && !personnageAllieACote(x, y, a, b, 8)){
     				plateaux[i].println("Vous fouillez un personnage...") ;
@@ -539,6 +550,9 @@ public class GestionPlateaux {
 				}
     			action = true; 
     			actionEffectuee=1;
+    		//Manger un fruit
+			} else if(dansChampsAction(x,y,a,b,8) && getParcelle(a,b) instanceof ParcelleArbre ||  getParcelle(a,b) instanceof ParcelleBuisson){
+				mangerFruit(x,y,a,b,i,plateaux);
 			//Echange avec un personnage	
 			}else if(personnageAllieACote(x, y, a, b, 8)){
 				echangeItem(x, y, a, b, plateaux, i, false);
@@ -586,8 +600,11 @@ public class GestionPlateaux {
 				deplacer(x, y, a, b, i);
 				action = true;
 				actionEffectuee=1;
-			//attaque un ennemi
-			} else if(dansChampsAction(x,y,a,b,8) && getParcelle(a,b) instanceof Personnage && !personnageAllieACote(x, y, a, b, 8)){
+			//Manger un fruit
+			} else if(dansChampsAction(x,y,a,b,8) && getParcelle(a,b) instanceof ParcelleArbre ||  getParcelle(a,b) instanceof ParcelleBuisson){
+				mangerFruit(x,y,a,b,i,plateaux);				
+			//attaque un ennemi					
+			}else if(dansChampsAction(x,y,a,b,8) && getParcelle(a,b) instanceof Personnage && !personnageAllieACote(x, y, a, b, 8)){
 				// attaque seulement s'il a une épée
 				Aleatoire alea = new Aleatoire();
 				int chance = alea.tirage(2);
@@ -701,6 +718,25 @@ public class GestionPlateaux {
 				add(a,b,i+1);
 				persoMort(a,b,plateaux, i);	
 			}
+		}
+	}
+	public void mangerFruit(int x, int y, int a, int b, int i, Plateau[] plateaux){
+		int energie;
+		plateaux[i].println("Votre personnage cherche des fruits...");
+		if(getParcelle(a,b).getValeur()==9){
+			energie = alea.tirage(10)+10;
+			if(energie>15)
+				plateaux[i].println("Vous trouvez beaucoup de baies et vous gagnez "+energie+" d'énergie");
+			else
+				plateaux[i].println("Vous trouvez quelques baies et vous gagnez "+energie+" d'énergie");
+			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()+energie);
+		}else{
+			energie = alea.tirage(25)+5;
+			if(energie>15)
+				plateaux[i].println("Vous trouvez une noix de coco pleine et vous gagnez "+energie+" d'énergie");
+			else
+				plateaux[i].println("Vous trouvez une noix de coco à moitié pleine et vous gagnez "+energie+" d'énergie");
+			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()+energie);
 		}
 	}
 	

@@ -168,8 +168,7 @@ public class Ile {
 			
 		}
 	}
-	
-	
+		
 	/**
 	 * Méthode permettant d'échanger un item (donner ou prendre) selon un ordre d'importance (trésor puis clef) entre le personnage (x,y) et le personnage (a,b).
 	 * @param x un entier
