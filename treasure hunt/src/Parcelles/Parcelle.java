@@ -11,7 +11,7 @@ public class Parcelle {
 	 * Attribut correspondant à la valeur de la parcelle, initialié à 1.
 	 * 0 = vide
 	 * 1 = sable
-	 * 2 = herbeSec 
+	 * 2 = herbeSeche 
 	 * 3 = herbe
 	 * 4 = mer
 	 * 5 = rocher1

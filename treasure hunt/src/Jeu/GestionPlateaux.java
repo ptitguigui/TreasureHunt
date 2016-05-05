@@ -22,7 +22,7 @@ public class GestionPlateaux {
 	 * Attribut servant à charger les images du jeu.
 	 */
 	private final String[] IMGS={"../ressources/tps/sable.png",
-			"../treasure hunt/tps/herbeSec.png",
+			"../treasure hunt/tps/herbe_Seche.png",
 			"../treasure hunt/tps/herbe.png",
 			"../ressources/tps/mer.png",
 			"../ressources/tps/rocher1.png",
