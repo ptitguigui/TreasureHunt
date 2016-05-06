@@ -172,7 +172,12 @@ public class Jouer {
 			}
 
 			// BROUILLARD DE GUERRE
-			GestionPlateaux gestion = new GestionPlateaux(monIle, brouillard);
+			GestionPlateaux gestion;
+			if(nbColonnes>nbLignes){
+				gestion = new GestionPlateaux(monIle, brouillard, nbColonnes);
+			}else{
+				gestion = new GestionPlateaux(monIle, brouillard, nbLignes);
+			}	
 			gestion.setTitle("Treasure Hunt");
 			Plateau[] plateaux = gestion.getPlateaux();
 			gestion.affichage();

@@ -94,10 +94,10 @@ public class GestionPlateaux {
 	 * Constructeur du gestionnaire de plateaux, le brouillard est désactivé par défaut.
 	 * @param monIle l'ile liée aux plateaux.
 	 */
-	public GestionPlateaux(Ile monIle){
+	public GestionPlateaux(Ile monIle, int taille){
 		this.monIle=monIle;
-		plateaux[0]=new Plateau(IMGS,10,true);
-		plateaux[1]=new Plateau(IMGS,10,true);
+		plateaux[0]=new Plateau(IMGS,taille,true);
+		plateaux[1]=new Plateau(IMGS,taille,true);
 		jeu=monIle.getIleTab();
 		jeuJ1b=new boolean[jeu.length][jeu[0].length];
 		jeuJ2b=new boolean[jeu.length][jeu[0].length];
@@ -117,10 +117,10 @@ public class GestionPlateaux {
 	 * @param monIle l'ile liée aux plateaux.
 	 * @param brouillard un booléen permettant d'activer ou non le brouillard de guerre.
 	 */
-	public GestionPlateaux(Ile monIle, boolean brouillard){
+	public GestionPlateaux(Ile monIle, boolean brouillard, int taille){
 		this.monIle=monIle;
-		plateaux[0]=new Plateau(IMGS,10,true);
-		plateaux[1]=new Plateau(IMGS,10,true);
+		plateaux[0]=new Plateau(IMGS,taille,true);
+		plateaux[1]=new Plateau(IMGS,taille,true);
 		jeu=monIle.getIleTab();
 		jeuJ1b=new boolean[jeu.length][jeu[0].length];
 		jeuJ2b=new boolean[jeu.length][jeu[0].length];

@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 
 import Parcelles.Parcelle;
 import Parcelles.ParcelleArbre;
+import Parcelles.ParcelleBuisson;
 import Parcelles.ParcelleMer;
 import Parcelles.ParcelleNavire;
 import Parcelles.ParcelleRocher;
@@ -643,13 +644,27 @@ public class Ile {
 	 */
 	private void setArbres(){
 		int x,y;
-		for(int i=0; i<(int)((grille.length-2)*(grille[0].length-2)*(5/100.00)); i++) {
+		for(int i=0; i<(int)((grille.length-2)*(grille[0].length-2)*(4/100.00)); i++) {
 			do {
 				x= alea.tirage(grille.length-2)+1;
 				y= alea.tirage(grille[0].length-2)+1;
 			}
 			while(!(grille[x][y].estVide() && nbVoisinsVide(x, y, 8)>6));
 			grille[x][y]=new ParcelleArbre();
+		}
+	}
+	/**
+	 * Methode plaçant les buissons de façon aléatoire 
+	 */
+	private void setBuissons(){
+		int x,y;
+		for(int i=0; i<(int)((grille.length-2)*(grille[0].length-2)*(4/100.00)); i++) {
+			do {
+				x= alea.tirage(grille.length-2)+1;
+				y= alea.tirage(grille[0].length-2)+1;
+			}
+			while(!(grille[x][y].estVide() && nbVoisinsVide(x, y, 8)>6));
+			grille[x][y]=new ParcelleBuisson();
 		}
 	}
 		
@@ -756,6 +771,7 @@ public class Ile {
 		setRochers(pourcentage);
 		setNavires();
 		setArbres();
+		setBuissons();
 	}	
 	
 	/**
