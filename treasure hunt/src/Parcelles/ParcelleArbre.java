@@ -6,6 +6,6 @@ public class ParcelleArbre extends Parcelle {
 	 * Constructeur initialisant l'arbre.
 	 */
 	public ParcelleArbre(){
-		super.valeur = 6;
+		super.valeur = 8;
 	}
 }
