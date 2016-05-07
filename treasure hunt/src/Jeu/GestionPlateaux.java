@@ -370,10 +370,12 @@ public class GestionPlateaux {
     				actionEffectuee=1;
     			//Manger un fruit
     			} else if(dansChampsAction(x,y,a,b,8) && getParcelle(a,b) instanceof ParcelleArbre ||  getParcelle(a,b) instanceof ParcelleBuisson){
-    				mangerFruit(x,y,a,b,i,plateaux);
+    				mangerFruit(x,y,a,b,i);
+    				action = true;
+    				actionEffectuee=1;
     			//Echange avec un personnage	
     			}else if(personnageAllieACote(x, y, a, b, 4)){
-    				echangeItem(x, y, a, b, plateaux, i, false);
+    				echangeItem(x, y, a, b, i, false);
     				action = true;
     				actionEffectuee=1;
     			//Soulève un rocher
@@ -416,7 +418,7 @@ public class GestionPlateaux {
     					event = plateaux[i].waitEvent(1000);
     					((ParcelleRocher)getParcelle(a, b)).hide();
     				}
-       		    	persoMort(x,y,plateaux,i);
+       		    	persoMort(x,y,i);
     				action=true;
     				actionEffectuee=1;
         		//Si trésor déjà trouvé, mais qu'on revient avec la clef
@@ -433,13 +435,13 @@ public class GestionPlateaux {
     						plateaux[i].println("Vous tentez de vous emparer du trésor, malheureusement vous n'avez pas la clef...");
     					}
     				}
-    				persoMort(x,y,plateaux,i);
+    				persoMort(x,y,i);
     				action=true;
     				actionEffectuee=1;
     			//Rentrer dans le bateau
     			} else if(getParcelle(a,b) instanceof ParcelleNavire && getParcelle(x, y).getValeur()%2==i && dansChampsAction(a,b,x,y,8)){
     				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(monIle.getEquipe(i+1).nbPersonnages())){
-    					rentrerDansNavire(x,y,a,b,plateaux,i);
+    					rentrerDansNavire(x,y,a,b,i);
     					action=true;
     					actionEffectuee=1;
     				} else {
@@ -477,24 +479,26 @@ public class GestionPlateaux {
     				actionEffectuee=1;
     			//Manger un fruit
     			} else if(dansChampsAction(x,y,a,b,8) && getParcelle(a,b) instanceof ParcelleArbre ||  getParcelle(a,b) instanceof ParcelleBuisson){
-    				mangerFruit(x,y,a,b,i,plateaux);
+    				mangerFruit(x,y,a,b,i);
+    				action = true;
+    				actionEffectuee=1;
     			//Fouille un personnage
     			} else if(dansChampsAction(x,y,a,b,8) && getParcelle(a,b) instanceof Personnage && !personnageAllieACote(x, y, a, b, 8)){
     				plateaux[i].println("Vous fouillez un personnage...") ;
     				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-10);
-    				echangeItem(x, y, a, b, plateaux, i, true); //voler
-    				persoMort(x,y,plateaux,i);
+    				echangeItem(x, y, a, b, i, true); //voler
+    				persoMort(x,y,i);
     				action = true;
     				actionEffectuee=1;
     			//Echange avec un personnage	
     			}else if(personnageAllieACote(x, y, a, b, 8)){
-    				echangeItem(x, y, a, b, plateaux, i, false);
+    				echangeItem(x, y, a, b, i, false);
     				action = true;
     				actionEffectuee=1;
     			//Rentrer dans navire
     			} else if(getParcelle(a,b) instanceof ParcelleNavire && getParcelle(x, y).getValeur()%2==i && dansChampsAction(a,b,x,y,8)){
     				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(monIle.getEquipe(i+1).nbPersonnages())){
-    					rentrerDansNavire(x,y,a,b,plateaux,i);
+    					rentrerDansNavire(x,y,a,b,i);
     					action=true;
     					actionEffectuee=1;
     				} else {
@@ -540,7 +544,7 @@ public class GestionPlateaux {
 	    					setPiege(i+1,a,b);
 	    					((Piegeur)getParcelle(x,y)).retirerMine();
 	    					((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-5);
-	    					persoMort(x,y,plateaux,i);
+	    					persoMort(x,y,i);
 	    				} else {
 	    					plateaux[i].println("Vous ne pouvez poser de piège, un objet s'y trouve.");
 	    				}
@@ -552,17 +556,19 @@ public class GestionPlateaux {
     			actionEffectuee=1;
     		//Manger un fruit
 			} else if(dansChampsAction(x,y,a,b,8) && getParcelle(a,b) instanceof ParcelleArbre ||  getParcelle(a,b) instanceof ParcelleBuisson){
-				mangerFruit(x,y,a,b,i,plateaux);
+				mangerFruit(x,y,a,b,i);
+				action = true;
+				actionEffectuee=1;
 			//Echange avec un personnage	
 			}else if(personnageAllieACote(x, y, a, b, 8)){
-				echangeItem(x, y, a, b, plateaux, i, false);
+				echangeItem(x, y, a, b, i, false);
 				action = true;
 				actionEffectuee=1;
 			//Rentrer dans navire
 			} else if(getParcelle(a,b) instanceof ParcelleNavire && getParcelle(x, y).getValeur()%2==i && dansChampsAction(a,b,x,y,8)){
 				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(monIle.getEquipe(i+1).nbPersonnages())){
 					((Piegeur)getParcelle(x,y)).setMinesFull();
-					rentrerDansNavire(x,y,a,b,plateaux,i);
+					rentrerDansNavire(x,y,a,b,i);
 					action=true;
 					actionEffectuee=1;
 				} else {
@@ -602,7 +608,9 @@ public class GestionPlateaux {
 				actionEffectuee=1;
 			//Manger un fruit
 			} else if(dansChampsAction(x,y,a,b,8) && getParcelle(a,b) instanceof ParcelleArbre ||  getParcelle(a,b) instanceof ParcelleBuisson){
-				mangerFruit(x,y,a,b,i,plateaux);				
+				mangerFruit(x,y,a,b,i);
+				action = true;
+				actionEffectuee=1;				
 			//attaque un ennemi					
 			}else if(dansChampsAction(x,y,a,b,8) && getParcelle(a,b) instanceof Personnage && !personnageAllieACote(x, y, a, b, 8)){
 				// attaque seulement s'il a une épée
@@ -622,24 +630,24 @@ public class GestionPlateaux {
 					plateaux[i].println("Vous lui infliger " + degats + " points de dégâts !!");
 					plateaux[1 - i].println("Vous avez perdu " + degats + " points d'énergie...");
 					((Guerrier) getParcelle(x, y)).attaqueEnnemi(((Personnage) getParcelle(a, b)), degats);
-					persoMort(a, b, plateaux, 1 - i);
+					persoMort(a, b, 1 - i);
 				} else {
 					plateaux[i].println("Mais vous manquez votre cible...");
 					plateaux[1 - i].println("Vous avez esquivé.");
 				}
-				persoMort(x, y, plateaux, i);
+				persoMort(x, y, i);
 				action = true;  
 				actionEffectuee=1;
 			//Echange avec un personnage	
 			}else if(personnageAllieACote(x, y, a, b, 8)){
-				echangeItem(x, y, a, b, plateaux, i, false);
+				echangeItem(x, y, a, b, i, false);
 				action = true;
 				actionEffectuee=1;
 			//Rentrer dans navire
 			} else if(getParcelle(a,b) instanceof ParcelleNavire && getParcelle(x, y).getValeur()%2==i  && dansChampsAction(a,b,x,y,8)){
 				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(monIle.getEquipe(i+1).nbPersonnages())){
 					((Guerrier)getParcelle(x,y)).ramasseEpee();
-					rentrerDansNavire(x,y,a,b,plateaux,i);
+					rentrerDansNavire(x,y,a,b,i);
 					action=true;
 					actionEffectuee=1;
 				} else {
@@ -693,42 +701,43 @@ public class GestionPlateaux {
 			setParcelle(x,y, new Parcelle());
 			//ajoute de la visibilité dans le brouillard
 			add(a,b,i+1);
-			persoMort(a,b,plateaux, i);
+			persoMort(a,b,i);
 		}else{
 			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
 			if(getParcelle(a,b).getValeur()==7){
 				((Personnage)getParcelle(x,y)).ramasseClef();
 				plateaux[i].println("Vous avez ramassé la clef.");
 				setParcelle(a,b, new Parcelle());
-				persoMort(x,y,plateaux, i);	
+				persoMort(x,y,i);	
 			} else if(getParcelle(a,b).getValeur()==10){
 				((Personnage)getParcelle(x,y)).ramasseTresor();
 				plateaux[i].println("Vous avez ramassé le trésor.");
 				setParcelle(a,b, new Parcelle());
-				persoMort(x,y,plateaux, i);	
+				persoMort(x,y,i);	
 			} else if (getParcelle(a,b).getValeur()==11){
 				((Personnage)getParcelle(x,y)).ramasseEpee();
 				plateaux[i].println("Vous avez ramassé une épée.");
 				setParcelle(a,b, new Parcelle());
-				persoMort(x,y,plateaux, i);	
+				persoMort(x,y,i);	
 			} else {
 				plateaux[i].println("Déplacement effectué...");
 				echangeParcelles(x, y, a, b);
 				//ajoute de la visibilité dans le brouillard
 				add(a,b,i+1);
-				persoMort(a,b,plateaux, i);	
+				persoMort(a,b,i);	
 			}
 		}
 	}
-	public void mangerFruit(int x, int y, int a, int b, int i, Plateau[] plateaux){
+	public void mangerFruit(int x, int y, int a, int b, int i){
 		int energie;
 		plateaux[i].println("Votre personnage cherche des fruits...");
-		if(getParcelle(a,b).getValeur()==9){
+		if(getParcelle(a,b) instanceof ParcelleBuisson){
 			energie = alea.tirage(10)+10;
 			if(energie>15)
 				plateaux[i].println("Vous trouvez beaucoup de baies et vous gagnez "+energie+" d'énergie");
 			else
 				plateaux[i].println("Vous trouvez quelques baies et vous gagnez "+energie+" d'énergie");
+			plateaux[i].println("Vous avez maintenant "+ ((Personnage)getParcelle(x,y)).getEnergie()+" points d'énergie");
 			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()+energie);
 		}else{
 			energie = alea.tirage(25)+5;
@@ -794,7 +803,7 @@ public class GestionPlateaux {
 	 * @param plateaux les plateaux des deux joueurs
 	 * @param i le numéro du plateau courrant
 	 */
-	public void rentrerDansNavire(int x, int y, int a, int b, Plateau[] plateaux, int i){
+	public void rentrerDansNavire(int x, int y, int a, int b, int i){
 		monIle.rentrerDansNavire(x, y, a, b, plateaux, i);
 	}
 	
@@ -808,7 +817,7 @@ public class GestionPlateaux {
 	 * @param i le numéro du plateau courrant
 	 * @param vole booléen permettant de savoir s'il s'agit d'un vol ou d'un échange
 	 */
-	public void echangeItem(int x, int y, int a, int b, Plateau[] plateaux, int i, boolean vole){
+	public void echangeItem(int x, int y, int a, int b, int i, boolean vole){
 		monIle.echangeItem(x, y, a, b, plateaux, i, vole);
 	}
 
@@ -819,7 +828,7 @@ public class GestionPlateaux {
 	 * @param plateaux les plateaux des deux joueurs
 	 * @param i le numéro du plateau
 	 */
-	public void persoMort(int x, int y, Plateau[] plateaux, int i){
+	public void persoMort(int x, int y, int i){
 		monIle.persoMort(x, y, plateaux, i);
 	}
 	
