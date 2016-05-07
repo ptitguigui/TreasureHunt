@@ -73,7 +73,7 @@ public class Parcelle {
 	 * @return vrai si la parcelle est un terrain clair, faux sinon.
 	 */
 	public boolean terrainClair(){
-		return valeur == 1 || valeur == 9 || valeur == 11 || valeur == 7 || valeur == 10;
+		return estVide() || valeur == 10 || valeur == 12 || valeur == 13 || valeur == 14;
 	}
 	/**
 	 * Méthode vérifiant si la parcelle est vide ou non (c'est à dire qu'il n'y a aucun élément dessus).

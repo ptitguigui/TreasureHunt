@@ -751,6 +751,14 @@ public class GestionPlateaux {
 			}
 		}
 	}
+	/**
+	 * Méthode permettant de faire manger un fruit à un personnage.
+	 * @param x coordonnée X du personnage
+	 * @param y coordonnée Y du personnage
+	 * @param a coordonnée X du buisson/arbre
+	 * @param b coordonnée Y du buisson/arbre
+	 * @param i le numéro du plateau courant.
+	 */
 	public void mangerFruit(int x, int y, int a, int b, int i){
 		int energie;
 		plateaux[i].println("Votre personnage cherche des fruits...");
@@ -758,10 +766,10 @@ public class GestionPlateaux {
 			energie = alea.tirage(10)+10;
 			if(energie>15)
 				plateaux[i].println("Vous trouvez beaucoup de baies et vous gagnez "+energie+" d'énergie");
-			else
+			else 
 				plateaux[i].println("Vous trouvez quelques baies et vous gagnez "+energie+" d'énergie");
-			plateaux[i].println("Vous avez maintenant "+ ((Personnage)getParcelle(x,y)).getEnergie()+" points d'énergie");
 			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()+energie);
+			plateaux[i].println("Vous avez maintenant "+ ((Personnage)getParcelle(x,y)).getEnergie()+" points d'énergie");
 		}else{
 			energie = alea.tirage(25)+5;
 			if(energie>15)
@@ -769,6 +777,7 @@ public class GestionPlateaux {
 			else
 				plateaux[i].println("Vous trouvez une noix de coco à moitié pleine et vous gagnez "+energie+" d'énergie");
 			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()+energie);
+			plateaux[i].println("Vous avez maintenant "+ ((Personnage)getParcelle(x,y)).getEnergie()+" points d'énergie");
 		}
 	}
 	
@@ -920,7 +929,7 @@ public class GestionPlateaux {
 			valeursDeplacable=new int[]{1,2,3,8,9,10,12,13,14,15+i,16,17,18,19,20,21,22,23,24}; 
 			//sable, herbe, herbe sèche, arbre, buisson, clef, piege, trésor, épée, navire allié et tout les personnages
 		} else if(getParcelle(x,y) instanceof Piegeur){
-			valeursDeplacable=new int[]{1,2,3,8,9,10,12,13,14,15+i,17+i,19+i,21+i,23+i1}; 
+			valeursDeplacable=new int[]{1,2,3,8,9,10,12,13,14,15+i,17+i,19+i,21+i,23+i}; 
 			//sable, herbe, herbe sèche, arbre, buisson, clef, piege, trésor, épée, navire allié et alliés
 		} else {
 			valeursDeplacable=new int[]{};
