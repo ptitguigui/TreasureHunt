@@ -909,15 +909,19 @@ public class GestionPlateaux {
 		int[] valeursDeplacable;
 		int directions=8;
 		if(getParcelle(x,y) instanceof ParcelleNavire){
-			valeursDeplacable=new int[]{1,7,9,10,11}; //sable, clef, piege, trésor, épée
+			valeursDeplacable=new int[]{1,2,3,10,12,13,14}; 
+			//sable, herbe, herbe sèche, clef, piege, trésor, épée
 			directions=4;
 		} else if(getParcelle(x,y) instanceof Explorateur){
-			valeursDeplacable=new int[]{1,3,4,5,7,8,9,10,11,12+i,14+i,16+i,18+i,20+i}; //sable, rochers, clef, coffre, piege, trésor, épée, navire allié et alliés
+			valeursDeplacable=new int[]{1,2,3,5,6,7,8,9,10,11,12,13,14,15+i,17+i,19+i,21+i,23+i}; 
+			//sable, herbe, herbe sèche, rochers, arbre, buisson, clef, coffre, piege, trésor, épée, navire allié et alliés
 			directions=4;
 		} else if(getParcelle(x,y) instanceof Voleur || getParcelle(x,y) instanceof Guerrier){
-			valeursDeplacable=new int[]{1,7,9,10,11,12+i,14,15,16,17,18,19,20,21}; //sable, clef, piege, trésor, épée, navire allié et tout les personnages
+			valeursDeplacable=new int[]{1,2,3,8,9,10,12,13,14,15+i,16,17,18,19,20,21,22,23,24}; 
+			//sable, herbe, herbe sèche, arbre, buisson, clef, piege, trésor, épée, navire allié et tout les personnages
 		} else if(getParcelle(x,y) instanceof Piegeur){
-			valeursDeplacable=new int[]{1,7,9,10,11,12+i,14+i,16+i,18+i,20+i}; //sable, clef, piege, trésor, épée, navire allié et alliés
+			valeursDeplacable=new int[]{1,2,3,8,9,10,12,13,14,15+i,17+i,19+i,21+i,23+i1}; 
+			//sable, herbe, herbe sèche, arbre, buisson, clef, piege, trésor, épée, navire allié et alliés
 		} else {
 			valeursDeplacable=new int[]{};
 		}
