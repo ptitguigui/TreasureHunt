@@ -92,14 +92,14 @@ public class Ile {
 				if (((Personnage)getParcelle(x,y)).porteTresor() && ((Personnage)getParcelle(x,y)).porteClef() && ((Personnage)getParcelle(x,y)).porteEpee()){
 					//place le trésor
 					grille[x][y]= new Parcelle();
-					getParcelle(x,y).setValeur(10);
+					getParcelle(x,y).setValeur(13);
 					//place l'épée
 					if(nbVoisinsVide(x,y,8)>=1){ //s'il y a au moins une case vide, place l'épée, sinon tant pis. (évite la boucle infinie)
 						while (!getParcelle(x+aleaX,y+aleaY).estVide()){
 							aleaX=alea.tirage(3)-1;
 							aleaY=alea.tirage(3)-1;
 						}
-						getParcelle(x+aleaX,y+aleaY).setValeur(11);
+						getParcelle(x+aleaX,y+aleaY).setValeur(14);
 					}
 					//place la clef
 					if(nbVoisinsVide(x,y,8)>=1){
@@ -107,59 +107,59 @@ public class Ile {
 							aleaX=alea.tirage(3)-1;
 							aleaY=alea.tirage(3)-1;
 						}
-						getParcelle(x+aleaX,y+aleaY).setValeur(7);
+						getParcelle(x+aleaX,y+aleaY).setValeur(10);
 					}
 				//a clef et trésor
 				} else if (((Personnage)getParcelle(x,y)).porteTresor() && ((Personnage)getParcelle(x,y)).porteClef()){
 					//placer trésor
 					grille[x][y]= new Parcelle();
-					getParcelle(x,y).setValeur(10);
+					getParcelle(x,y).setValeur(13);
 					//place la clef
 					if(nbVoisinsVide(x,y,8)>=1){
 						while (!getParcelle(x+aleaX,y+aleaY).estVide()){
 							aleaX=alea.tirage(3)-1;
 							aleaY=alea.tirage(3)-1;
 						}
-						getParcelle(x+aleaX,y+aleaY).setValeur(7);
+						getParcelle(x+aleaX,y+aleaY).setValeur(10);
 					}
 				//Si clef et épée
 				} else if (((Personnage)getParcelle(x,y)).porteEpee() && ((Personnage)getParcelle(x,y)).porteClef()){
 					//placer clef
 					grille[x][y]= new Parcelle();
-					getParcelle(x,y).setValeur(7);
+					getParcelle(x,y).setValeur(10);
 					//placer l'épée
 					if(nbVoisinsVide(x,y,8)>=1){
 						while (!getParcelle(x+aleaX,y+aleaY).estVide()){
 							aleaX=alea.tirage(3)-1;
 							aleaY=alea.tirage(3)-1;
 						}
-						getParcelle(x+aleaX,y+aleaY).setValeur(11);
+						getParcelle(x+aleaX,y+aleaY).setValeur(14);
 					}
 				//Si trésor et épée
 				} else if(((Personnage)getParcelle(x,y)).porteEpee() && ((Personnage)getParcelle(x,y)).porteTresor()) {
 					//placer trésor
 					grille[x][y]= new Parcelle();
-					getParcelle(x,y).setValeur(10);
+					getParcelle(x,y).setValeur(13);
 					//place l'épée
 					if(nbVoisinsVide(x,y,8)>=1){
 						while (!getParcelle(x+aleaX,y+aleaY).estVide()){
 							aleaX=alea.tirage(3)-1;
 							aleaY=alea.tirage(3)-1;
 						}
-						getParcelle(x+aleaX,y+aleaY).setValeur(11);		
+						getParcelle(x+aleaX,y+aleaY).setValeur(14);		
 					}
 				//a trésor
 				} else if(((Personnage)getParcelle(x,y)).porteTresor()){
 					grille[x][y]= new Parcelle();
-					getParcelle(x,y).setValeur(10);
+					getParcelle(x,y).setValeur(13);
 				//a clef
 				} else if(((Personnage)getParcelle(x,y)).porteClef()){
 					grille[x][y]= new Parcelle();
-					getParcelle(x,y).setValeur(7);
+					getParcelle(x,y).setValeur(10);
 				//a épée
 				} else {
 					grille[x][y]= new Parcelle();
-					getParcelle(x,y).setValeur(11);
+					getParcelle(x,y).setValeur(14);
 				}
 			} else {
 				grille[x][y]= new Parcelle();

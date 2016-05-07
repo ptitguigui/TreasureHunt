@@ -200,12 +200,12 @@ public class GestionPlateaux {
 		boolean tresorJ1=monIle.getEquipe(1).tresorVisible();
 		boolean tresorJ2=monIle.getEquipe(2).tresorVisible();
 		if (jeuJ1b[coordTresor[0]][coordTresor[1]] && tresorJ1){
-			jeuJ1[coordTresor[0]][coordTresor[1]]=8; //coffre
+			jeuJ1[coordTresor[0]][coordTresor[1]]=11; //coffre
 		} else if (jeuJ1b[coordTresor[0]][coordTresor[1]] && !tresorJ1){
 			jeuJ1[coordTresor[0]][coordTresor[1]]=((ParcelleRocher)monIle.getParcelle(coordTresor[0], coordTresor[1])).getValeurIni();
 		}
 		if (jeuJ2b[coordTresor[0]][coordTresor[1]] && tresorJ2){
-			jeuJ2[coordTresor[0]][coordTresor[1]]=8; //coffre
+			jeuJ2[coordTresor[0]][coordTresor[1]]=11; //coffre
 		} else if (jeuJ2b[coordTresor[0]][coordTresor[1]] && !tresorJ2){
 			jeuJ2[coordTresor[0]][coordTresor[1]]=((ParcelleRocher)monIle.getParcelle(coordTresor[0], coordTresor[1])).getValeurIni();
 		}
@@ -395,10 +395,10 @@ public class GestionPlateaux {
 					monIle.getEquipe(i + 1).setTresor();
 					// modification de l'affichage, affiche le coffre(réaffichage général dans la classe Jouer, juste après qu'une action est faite)
 					if (i == 0) {
-						jeuJ1[a][b] = 8;// coffre
+						jeuJ1[a][b] = 11;// coffre
 						plateaux[i].setJeu(jeuJ1);
 					} else {
-						jeuJ2[a][b] = 8;// coffre
+						jeuJ2[a][b] = 11;// coffre
 						plateaux[i].setJeu(jeuJ2);
 					}
 
@@ -414,10 +414,10 @@ public class GestionPlateaux {
 					((ParcelleRocher) getParcelle(a, b)).visible();
 					// modification de l'affichage, affiche la clef (réaffichage général dans la classe Jouer, juste après qu'une action est faite)
 					if (i == 0) {
-						jeuJ1[a][b] = 7;// clef
+						jeuJ1[a][b] = 10;// clef
 						plateaux[i].setJeu(jeuJ1);
 					} else {
-						jeuJ2[a][b] = 7;// clef
+						jeuJ2[a][b] = 10;// clef
 						plateaux[i].setJeu(jeuJ2);
 					}
 					((Explorateur) getParcelle(x, y)).setPorteClef();

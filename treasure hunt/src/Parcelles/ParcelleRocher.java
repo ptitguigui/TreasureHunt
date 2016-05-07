@@ -98,9 +98,9 @@ public class ParcelleRocher extends Parcelle{
 	 */
 	public void visible(){
 		if(clef){
-			super.valeur=7;
+			super.valeur=10;
 		} else if(tresor) {
-			super.valeur=8;
+			super.valeur=11;
 		}
 	}
 	
