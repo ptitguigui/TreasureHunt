@@ -203,6 +203,7 @@ public class Jouer {
 							break;
 						}
 					}
+					gestion.recuperationDansNavire(i);
 					i++;
 				}
 			}

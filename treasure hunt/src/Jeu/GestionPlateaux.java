@@ -281,304 +281,327 @@ public class GestionPlateaux {
     	if(getParcelle(x,y) instanceof Guerrier && getParcelle(x, y).getValeur()%2!=i ){ 
     		actionEffectuee+=actionsGuerriers(i,x,y,a,b,action,keyCode,event);
     	}
-    	//Recupération d'énergie pour les personnages dans le navire
-    	int[] coordNavire= monIle.getNavire(i+1);
-    	for(int p=0; p<((ParcelleNavire)getParcelle(coordNavire[0],coordNavire[1])).getNbPersonnage(); p++){
-    		((ParcelleNavire)getParcelle(coordNavire[0],coordNavire[1])).getPersonnage(p).setEnergie(((ParcelleNavire)getParcelle(coordNavire[0],coordNavire[1])).getPersonnage(p).getEnergie()+10);
-    	}
     	update();
 		event = plateaux[i].waitEvent(500);	// Délai pour permettre la lecture.
 		return actionEffectuee;
 	}
 	
+	public void recuperationDansNavire(int i){
+    	int[] coordNavire= monIle.getNavire(i+1);
+    	for(int p=0; p<((ParcelleNavire)getParcelle(coordNavire[0],coordNavire[1])).getNbPersonnage(); p++){
+    		((ParcelleNavire)getParcelle(coordNavire[0],coordNavire[1])).getPersonnage(p).setEnergie(((ParcelleNavire)getParcelle(coordNavire[0],coordNavire[1])).getPersonnage(p).getEnergie()+10);
+    	}
+	}
 	
-    	public int actionNavires(int i, int x, int y, int a, int b, boolean action, int keyCode, InputEvent event){
-    		int actionEffectuee=0;
-    		
-    		plateaux[i].println("Vous avez choisis votre navire");
-    		highlight(i, x, y);
-    		
-    		Personnage p;
-    		if (((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()==1){
-    			p=((ParcelleNavire)getParcelle(x,y)).getPersonnage(0);
-    			plateaux[i].println("Seul le personnage "+p.getNom()+" est dans le navire, il a "+p.getEnergie()+" energie.");
-    		} else {
-    			String[] choix = new String[((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()];
-    			for(int j=0; j<choix.length; j++) {
-    				choix[j]=((ParcelleNavire)getParcelle(x,y)).getPersonnage(j).getNom();
-    			}
-    		    String nom = (String)JOptionPane.showInputDialog(null, "Quel personnage voulez-vous sortir ?", "Equipage du navire",
-    		    		JOptionPane.QUESTION_MESSAGE, null, choix, choix[0]);
-    		    p=((ParcelleNavire)getParcelle(x,y)).getPersonnage(nom);
-    		    plateaux[i].println("Vous avez selectionné le personnage "+p.getNom()+", il a "+p.getEnergie()+" energie.");
-    		}
-    		plateaux[i].println("Où souhaitez-vous le déplacer ?");
-    		while(!action){
-    			event=  plateaux[i].waitEvent();
-    			if(event instanceof KeyEvent){
-    				keyCode = ((KeyEvent) event).getKeyCode() ;
-    			}else if(event instanceof MouseEvent){
-    			a = plateaux[i].getX((MouseEvent) event) ;
-    			b = plateaux[i].getY((MouseEvent) event) ;
-    			}
-			    
-				if (keyCode == 27) { 
-					plateaux[i].println("Vous avez déselectionné votre personnage.");
-            		action = true ;
-            	}
-    			//sortie du personnage
-    			if(getParcelle(a,b).estVide() && dansChampsAction(x, y, a, b, 4)){
-    				setParcelle(a,b,p);
-    				plateaux[i].println("Déplacement effectué...");
-    				((ParcelleNavire)getParcelle(x,y)).removePersonnage(p);
-    				if(getParcelle(x, y).getValeur()%2!=0){
-    					plateaux[0].setJeu(jeuJ1);
-    				} else {
-    					plateaux[1].setJeu(jeuJ2);
-    				}
-    				action = true;
-    				actionEffectuee=1;
-    				//ajoute de la visibilité dans le brouillard
-					add(a,b,i+1);
-    			}
-    		}
-    		return actionEffectuee;
-    	}
-    	public int actionExplorateurs(int i,int x,int y,int a,int b,boolean action,int keyCode,InputEvent event){
-    		plateaux[i].println("Vous avez choisis un explorateur de J"+(i+1)+", il a " + ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
-    		highlight(i, x, y);
-    		int actionEffectuee=0;
-    		
-    		while(!action){
-    			event=  plateaux[i].waitEvent();
-    			if(event instanceof KeyEvent){
-    				keyCode = ((KeyEvent) event).getKeyCode() ;
-    			}else if(event instanceof MouseEvent){
-    			a = plateaux[i].getX((MouseEvent) event) ;
-    			b = plateaux[i].getY((MouseEvent) event) ;
-    			}
-			    
-				if (keyCode == 27) { 
-					plateaux[i].println("Vous avez déselectionné votre personnage.");
-            		action = true ;
-            	}
-			    
-    			//déplacement
-    			if(getParcelle(a,b).terrainClair() && dansChampsAction(x, y, a, b, 4)){
-    				deplacer(x, y, a, b, i);
-    				action = true;
-    				actionEffectuee=1;
-    			//Manger un fruit
-    			} else if(dansChampsAction(x,y,a,b,8) && getParcelle(a,b) instanceof ParcelleArbre ||  getParcelle(a,b) instanceof ParcelleBuisson){
-    				mangerFruit(x,y,a,b,i);
-    				action = true;
-    				actionEffectuee=1;
-    			//Echange avec un personnage	
-    			}else if(personnageAllieACote(x, y, a, b, 4)){
-    				echangeItem(x, y, a, b, i, false);
-    				action = true;
-    				actionEffectuee=1;
-    			//Soulève un rocher
-    			} else if (rocherACote(x, y, a, b)){
-    				plateaux[i].println("L'explorateur soulève un rocher");
-    		    	event = plateaux[i].waitEvent(500) ;    				
-					plateaux[i].println(((ParcelleRocher)getParcelle(a,b)).getMessage());
-    				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-5);
-    				if(((ParcelleRocher)getParcelle(a,b)).getTresor()){ //Si trésor
-    					((ParcelleRocher)getParcelle(a, b)).visible();
-						monIle.getEquipe(i+1).setTresor();
-						//modification de l'affichage, affiche le coffre(réaffichage général dans la classe Jouer, juste après qu'une action est faite)
-						if(i==0){
-							jeuJ1[a][b]=8;//coffre
-							plateaux[i].setJeu(jeuJ1);
-						} else {
-							jeuJ2[a][b]=8;//coffre
-							plateaux[i].setJeu(jeuJ2);
-						}
-    					
-    					if (((Personnage)getParcelle(x,y)).porteClef()){
-    						((Explorateur)getParcelle(x,y)).setPorteTresor();
-    						((ParcelleRocher)getParcelle(a,b)).setTresor(); //change le message du trésor
-    						plateaux[i].println("Votre clef rentre parfaitement dans la serrure, vous l'ouvrez et vous emparez du trésor !");
-    					} else {
-    						plateaux[i].println("Malheureusement, vous n'avez pas la clef...");
-    					}
-    				} else if(((ParcelleRocher)getParcelle(a,b)).getClef()){ //Si clef
-    					((ParcelleRocher)getParcelle(a, b)).visible();
-    					//modification de l'affichage, affiche la clef (réaffichage général dans la classe Jouer, juste après qu'une action est faite)
-						if(i==0){
-							jeuJ1[a][b]=7;//clef
-							plateaux[i].setJeu(jeuJ1);
-						} else {
-							jeuJ2[a][b]=7;//clef
-							plateaux[i].setJeu(jeuJ2);
-						}
-    					((Explorateur)getParcelle(x,y)).setPorteClef();
-    					((ParcelleRocher)getParcelle(a,b)).setClef(); //passe la clef à false et change le message
-    					event = plateaux[i].waitEvent(1000);
-    					((ParcelleRocher)getParcelle(a, b)).hide();
-    				}
-       		    	persoMort(x,y,i);
-    				action=true;
-    				actionEffectuee=1;
-        		//Si trésor déjà trouvé, mais qu'on revient avec la clef
-    			} else if (getParcelle(a,b).getValeur()==8 && dansChampsAction(x,y,a,b,4)){
-    				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-5);
-    				if (!((ParcelleRocher)getParcelle(a,b)).getTresor()){
-    					plateaux[i].println("Vous avez trouvé le coffre ! Malheureusement pour vous, il a déjà été vidé de son contenu...");
-    				} else {
-    					if(((Personnage)getParcelle(x,y)).porteClef()){
-    						plateaux[i].println("Votre clef rentre parfaitement dans la serrure, vous l'ouvrez et vous emparez du trésor !");
-    						((Explorateur)getParcelle(x,y)).setPorteTresor();
-    						((ParcelleRocher)getParcelle(a,b)).setTresor(); //change le message du trésor
-    					} else {
-    						plateaux[i].println("Vous tentez de vous emparer du trésor, malheureusement vous n'avez pas la clef...");
-    					}
-    				}
-    				persoMort(x,y,i);
-    				action=true;
-    				actionEffectuee=1;
-    			//Rentrer dans le bateau
-    			} else if(getParcelle(a,b) instanceof ParcelleNavire && getParcelle(x, y).getValeur()%2==i && dansChampsAction(a,b,x,y,8)){
-    				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(monIle.getEquipe(i+1).nbPersonnages())){
-    					rentrerDansNavire(x,y,a,b,i);
-    					action=true;
-    					actionEffectuee=1;
-    				} else {
-    					plateaux[i].println("Vous ne pouvez pas rentrer dans le navire, vous etes le dernier personnage sur l'île."
-    							+ "\n Choississez une autre action.");
-    				}
-    			}
-    		}
-    		return actionEffectuee;
-    	}
-    	public int actionVoleurs(int i,int x,int y,int a,int b,boolean action,int keyCode,InputEvent event){
-    		
-    		plateaux[i].println("Vous avez choisis un voleur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
-    		int actionEffectuee=0;
-    		highlight(i, x, y);
-    		
-    		while(!action){
-    			event=  plateaux[i].waitEvent();
-    			if(event instanceof KeyEvent){
-    				keyCode = ((KeyEvent) event).getKeyCode() ;
-    			}else if(event instanceof MouseEvent){
-    			a = plateaux[i].getX((MouseEvent) event) ;
-    			b = plateaux[i].getY((MouseEvent) event) ;
-    			}
-			    
-				if (keyCode == 27) { 
-					plateaux[i].println("Vous avez déselectionné votre personnage.");
-            		action = true ;
-            	}
-			    	
-    			//déplacement
-    			if(getParcelle(a,b).terrainClair() && dansChampsAction(x, y, a, b, 8)){
-    				deplacer(x, y, a, b, i);
-    				action = true;
-    				actionEffectuee=1;
-    			//Manger un fruit
-    			} else if(dansChampsAction(x,y,a,b,8) && getParcelle(a,b) instanceof ParcelleArbre ||  getParcelle(a,b) instanceof ParcelleBuisson){
-    				mangerFruit(x,y,a,b,i);
-    				action = true;
-    				actionEffectuee=1;
-    			//Fouille un personnage
-    			} else if(dansChampsAction(x,y,a,b,8) && getParcelle(a,b) instanceof Personnage && !personnageAllieACote(x, y, a, b, 8)){
-    				plateaux[i].println("Vous fouillez un personnage...") ;
-    				((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-10);
-    				echangeItem(x, y, a, b, i, true); //voler
-    				persoMort(x,y,i);
-    				action = true;
-    				actionEffectuee=1;
-    			//Echange avec un personnage	
-    			}else if(personnageAllieACote(x, y, a, b, 8)){
-    				echangeItem(x, y, a, b, i, false);
-    				action = true;
-    				actionEffectuee=1;
-    			//Rentrer dans navire
-    			} else if(getParcelle(a,b) instanceof ParcelleNavire && getParcelle(x, y).getValeur()%2==i && dansChampsAction(a,b,x,y,8)){
-    				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(monIle.getEquipe(i+1).nbPersonnages())){
-    					rentrerDansNavire(x,y,a,b,i);
-    					action=true;
-    					actionEffectuee=1;
-    				} else {
-    					plateaux[i].println("Vous ne pouvez pas rentrer dans le navire, vous etes le dernier personnage sur l'île."
-    							+ "\n Choississez une autre action.");
-    				}
-    			}
-    		}  	
-    		return actionEffectuee;
-    	}
-    	
-    public int actionsPiegeurs(int i,int x,int y,int a,int b,boolean action,int keyCode,InputEvent event){
-    	plateaux[i].println("Vous avez choisis un piegeur de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?");
-		plateaux[i].println("Mines restantes : " + ((Piegeur)getParcelle(x,y)).getMines()) ;
-		int actionEffectuee=0;
+	public int actionNavires(int i, int x, int y, int a, int b, boolean action, int keyCode, InputEvent event) {
+		int actionEffectuee = 0;
+
+		plateaux[i].println("Vous avez choisis votre navire");
 		highlight(i, x, y);
-		
-		while(!action){
-			event=  plateaux[i].waitEvent();
-			if(event instanceof KeyEvent){
-				keyCode = ((KeyEvent) event).getKeyCode() ;
-			}else if(event instanceof MouseEvent){
-			a = plateaux[i].getX((MouseEvent) event) ;
-			b = plateaux[i].getY((MouseEvent) event) ;
+
+		Personnage p;
+		if (((ParcelleNavire) getParcelle(x, y)).getNbPersonnage() == 1) {
+			p = ((ParcelleNavire) getParcelle(x, y)).getPersonnage(0);
+			plateaux[i].println(
+					"Seul le personnage " + p.getNom() + " est dans le navire, il a " + p.getEnergie() + " energie.");
+		} else {
+			String[] choix = new String[((ParcelleNavire) getParcelle(x, y)).getNbPersonnage()];
+			for (int j = 0; j < choix.length; j++) {
+				choix[j] = ((ParcelleNavire) getParcelle(x, y)).getPersonnage(j).getNom();
 			}
-		    
-			if (keyCode == 27) { 
+			String nom = (String) JOptionPane.showInputDialog(null, "Quel personnage voulez-vous sortir ?",
+					"Equipage du navire", JOptionPane.QUESTION_MESSAGE, null, choix, choix[0]);
+			p = ((ParcelleNavire) getParcelle(x, y)).getPersonnage(nom);
+			plateaux[i].println(
+					"Vous avez selectionné le personnage " + p.getNom() + ", il a " + p.getEnergie() + " energie.");
+		}
+		plateaux[i].println("Où souhaitez-vous le déplacer ?");
+		while (!action) {
+			event = plateaux[i].waitEvent();
+			if (event instanceof KeyEvent) {
+				keyCode = ((KeyEvent) event).getKeyCode();
+			} else if (event instanceof MouseEvent) {
+				a = plateaux[i].getX((MouseEvent) event);
+				b = plateaux[i].getY((MouseEvent) event);
+			}
+
+			if (keyCode == 27) {
 				plateaux[i].println("Vous avez déselectionné votre personnage.");
-        		action = true ;
-        	}
-		    	
-			//2 choix possible: déplacement ou piège
-			if(getParcelle(a,b).terrainClair() && dansChampsAction(x, y, a, b, 8)){
-				if(((Piegeur)getParcelle(x,y)).getMines()>0){
-	    			String[] option = {"Déplacement" , "Poser un piege"};
-	    			int choix = JOptionPane.showOptionDialog(null, "Choississez votre option",  null, JOptionPane.OK_OPTION, JOptionPane.NO_OPTION, null, option, option[0]);
-	    			//déplacement
-	    			if(choix ==0){   	
-	    				deplacer(x, y, a, b, i);
-	    			//pose un piege	
-	    			}else if(choix ==1){
-	    				if(getParcelle(a,b).estVide()){
-	    					setPiege(i+1,a,b);
-	    					((Piegeur)getParcelle(x,y)).retirerMine();
-	    					((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-5);
-	    					persoMort(x,y,i);
-	    				} else {
-	    					plateaux[i].println("Vous ne pouvez poser de piège, un objet s'y trouve.");
-	    				}
-	    			}
+				action = true;
+			}
+			// sortie du personnage
+			if (getParcelle(a, b).estVide() && dansChampsAction(x, y, a, b, 4)) {
+				setParcelle(a, b, p);
+				plateaux[i].println("Déplacement effectué...");
+				((ParcelleNavire) getParcelle(x, y)).removePersonnage(p);
+				if (getParcelle(x, y).getValeur() % 2 != 0) {
+					plateaux[0].setJeu(jeuJ1);
+				} else {
+					plateaux[1].setJeu(jeuJ2);
+				}
+				action = true;
+				actionEffectuee = 1;
+				// ajoute de la visibilité dans le brouillard
+				add(a, b, i + 1);
+			}
+		}
+		return actionEffectuee;
+	}
+
+	public int actionExplorateurs(int i, int x, int y, int a, int b, boolean action, int keyCode, InputEvent event) {
+		plateaux[i].println("Vous avez choisis un explorateur de J" + (i + 1) + ", il a "
+				+ ((Personnage) getParcelle(x, y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?");
+		highlight(i, x, y);
+		int actionEffectuee = 0;
+
+		while (!action) {
+			event = plateaux[i].waitEvent();
+			if (event instanceof KeyEvent) {
+				keyCode = ((KeyEvent) event).getKeyCode();
+			} else if (event instanceof MouseEvent) {
+				a = plateaux[i].getX((MouseEvent) event);
+				b = plateaux[i].getY((MouseEvent) event);
+			}
+
+			if (keyCode == 27) {
+				plateaux[i].println("Vous avez déselectionné votre personnage.");
+				action = true;
+			}
+
+			// déplacement
+			if (getParcelle(a, b).terrainClair() && dansChampsAction(x, y, a, b, 4)) {
+				deplacer(x, y, a, b, i);
+				action = true;
+				actionEffectuee = 1;
+				// Manger un fruit
+			} else if (dansChampsAction(x, y, a, b, 8) && getParcelle(a, b) instanceof ParcelleArbre
+					|| getParcelle(a, b) instanceof ParcelleBuisson) {
+				mangerFruit(x, y, a, b, i);
+				action = true;
+				actionEffectuee = 1;
+				// Echange avec un personnage
+			} else if (personnageAllieACote(x, y, a, b, 4)) {
+				echangeItem(x, y, a, b, i, false);
+				action = true;
+				actionEffectuee = 1;
+				// Soulève un rocher
+			} else if (rocherACote(x, y, a, b)) {
+				plateaux[i].println("L'explorateur soulève un rocher");
+				event = plateaux[i].waitEvent(500);
+				plateaux[i].println(((ParcelleRocher) getParcelle(a, b)).getMessage());
+				((Personnage) getParcelle(x, y)).setEnergie(((Personnage) getParcelle(x, y)).getEnergie() - 5);
+				if (((ParcelleRocher) getParcelle(a, b)).getTresor()) { // Si trésor
+					((ParcelleRocher) getParcelle(a, b)).visible();
+					monIle.getEquipe(i + 1).setTresor();
+					// modification de l'affichage, affiche le coffre(réaffichage général dans la classe Jouer, juste après qu'une action est faite)
+					if (i == 0) {
+						jeuJ1[a][b] = 8;// coffre
+						plateaux[i].setJeu(jeuJ1);
+					} else {
+						jeuJ2[a][b] = 8;// coffre
+						plateaux[i].setJeu(jeuJ2);
+					}
+
+					if (((Personnage) getParcelle(x, y)).porteClef()) {
+						((Explorateur) getParcelle(x, y)).setPorteTresor();
+						((ParcelleRocher) getParcelle(a, b)).setTresor(); // change le message du trésor
+						plateaux[i].println(
+								"Votre clef rentre parfaitement dans la serrure, vous l'ouvrez et vous emparez du trésor !");
+					} else {
+						plateaux[i].println("Malheureusement, vous n'avez pas la clef...");
+					}
+				} else if (((ParcelleRocher) getParcelle(a, b)).getClef()) { // Si clef
+					((ParcelleRocher) getParcelle(a, b)).visible();
+					// modification de l'affichage, affiche la clef (réaffichage général dans la classe Jouer, juste après qu'une action est faite)
+					if (i == 0) {
+						jeuJ1[a][b] = 7;// clef
+						plateaux[i].setJeu(jeuJ1);
+					} else {
+						jeuJ2[a][b] = 7;// clef
+						plateaux[i].setJeu(jeuJ2);
+					}
+					((Explorateur) getParcelle(x, y)).setPorteClef();
+					((ParcelleRocher) getParcelle(a, b)).setClef(); // passe la clef à false et change le message
+					event = plateaux[i].waitEvent(1000);
+					((ParcelleRocher) getParcelle(a, b)).hide();
+				}
+				persoMort(x, y, i);
+				action = true;
+				actionEffectuee = 1;
+				// Si trésor déjà trouvé, mais qu'on revient avec la clef
+			} else if (getParcelle(a, b).getValeur() == 8 && dansChampsAction(x, y, a, b, 4)) {
+				((Personnage) getParcelle(x, y)).setEnergie(((Personnage) getParcelle(x, y)).getEnergie() - 5);
+				if (!((ParcelleRocher) getParcelle(a, b)).getTresor()) {
+					plateaux[i].println(
+							"Vous avez trouvé le coffre ! Malheureusement pour vous, il a déjà été vidé de son contenu...");
+				} else {
+					if (((Personnage) getParcelle(x, y)).porteClef()) {
+						plateaux[i].println(
+								"Votre clef rentre parfaitement dans la serrure, vous l'ouvrez et vous emparez du trésor !");
+						((Explorateur) getParcelle(x, y)).setPorteTresor();
+						((ParcelleRocher) getParcelle(a, b)).setTresor(); // change le message du trésor
+					} else {
+						plateaux[i].println(
+								"Vous tentez de vous emparer du trésor, malheureusement vous n'avez pas la clef...");
+					}
+				}
+				persoMort(x, y, i);
+				action = true;
+				actionEffectuee = 1;
+				// Rentrer dans le bateau
+			} else if (getParcelle(a, b) instanceof ParcelleNavire && getParcelle(x, y).getValeur() % 2 != i
+					&& dansChampsAction(a, b, x, y, 8)) {
+				if (((ParcelleNavire) getParcelle(a, b)).peutMonterABord(monIle.getEquipe(i + 1).nbPersonnages())) {
+					rentrerDansNavire(x, y, a, b, i);
+					action = true;
+					actionEffectuee = 1;
+				} else {
+					plateaux[i].println(
+							"Vous ne pouvez pas rentrer dans le navire, vous etes le dernier personnage sur l'île."
+									+ "\n Choississez une autre action.");
+				}
+			}
+		}
+		return actionEffectuee;
+	}
+
+	public int actionVoleurs(int i, int x, int y, int a, int b, boolean action, int keyCode, InputEvent event) {
+		plateaux[i].println("Vous avez choisis un voleur de J" + (i + 1) + ", il a "
+				+ ((Personnage) getParcelle(x, y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?");
+		int actionEffectuee = 0;
+		highlight(i, x, y);
+
+		while (!action) {
+			event = plateaux[i].waitEvent();
+			if (event instanceof KeyEvent) {
+				keyCode = ((KeyEvent) event).getKeyCode();
+			} else if (event instanceof MouseEvent) {
+				a = plateaux[i].getX((MouseEvent) event);
+				b = plateaux[i].getY((MouseEvent) event);
+			}
+
+			if (keyCode == 27) {
+				plateaux[i].println("Vous avez déselectionné votre personnage.");
+				action = true;
+			}
+
+			// déplacement
+			if (getParcelle(a, b).terrainClair() && dansChampsAction(x, y, a, b, 8)) {
+				deplacer(x, y, a, b, i);
+				action = true;
+				actionEffectuee = 1;
+				// Manger un fruit
+			} else if (dansChampsAction(x, y, a, b, 8) && getParcelle(a, b) instanceof ParcelleArbre
+					|| getParcelle(a, b) instanceof ParcelleBuisson) {
+				mangerFruit(x, y, a, b, i);
+				action = true;
+				actionEffectuee = 1;
+				// Fouille un personnage
+			} else if (dansChampsAction(x, y, a, b, 8) && getParcelle(a, b) instanceof Personnage
+					&& !personnageAllieACote(x, y, a, b, 8)) {
+				plateaux[i].println("Vous fouillez un personnage...");
+				((Personnage) getParcelle(x, y)).setEnergie(((Personnage) getParcelle(x, y)).getEnergie() - 10);
+				echangeItem(x, y, a, b, i, true); // voler
+				persoMort(x, y, i);
+				action = true;
+				actionEffectuee = 1;
+				// Echange avec un personnage
+			} else if (personnageAllieACote(x, y, a, b, 8)) {
+				echangeItem(x, y, a, b, i, false);
+				action = true;
+				actionEffectuee = 1;
+				// Rentrer dans navire
+			} else if (getParcelle(a, b) instanceof ParcelleNavire && getParcelle(x, y).getValeur() % 2 != i
+					&& dansChampsAction(a, b, x, y, 8)) {
+				if (((ParcelleNavire) getParcelle(a, b)).peutMonterABord(monIle.getEquipe(i + 1).nbPersonnages())) {
+					rentrerDansNavire(x, y, a, b, i);
+					action = true;
+					actionEffectuee = 1;
+				} else {
+					plateaux[i].println(
+							"Vous ne pouvez pas rentrer dans le navire, vous etes le dernier personnage sur l'île."
+									+ "\n Choississez une autre action.");
+				}
+			}
+		}
+		return actionEffectuee;
+	}
+
+	public int actionsPiegeurs(int i, int x, int y, int a, int b, boolean action, int keyCode, InputEvent event) {
+		plateaux[i].println("Vous avez choisis un piegeur de J" + (i + 1) + ", il a "
+				+ ((Personnage) getParcelle(x, y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?");
+		plateaux[i].println("Mines restantes : " + ((Piegeur) getParcelle(x, y)).getMines());
+		int actionEffectuee = 0;
+		highlight(i, x, y);
+
+		while (!action) {
+			event = plateaux[i].waitEvent();
+			if (event instanceof KeyEvent) {
+				keyCode = ((KeyEvent) event).getKeyCode();
+			} else if (event instanceof MouseEvent) {
+				a = plateaux[i].getX((MouseEvent) event);
+				b = plateaux[i].getY((MouseEvent) event);
+			}
+
+			if (keyCode == 27) {
+				plateaux[i].println("Vous avez déselectionné votre personnage.");
+				action = true;
+			}
+
+			// 2 choix possible: déplacement ou piège
+			if (getParcelle(a, b).terrainClair() && dansChampsAction(x, y, a, b, 8)) {
+				if (((Piegeur) getParcelle(x, y)).getMines() > 0) {
+					String[] option = { "Déplacement", "Poser un piege" };
+					int choix = JOptionPane.showOptionDialog(null, "Choississez votre option", null,
+							JOptionPane.OK_OPTION, JOptionPane.NO_OPTION, null, option, option[0]);
+					// déplacement
+					if (choix == 0) {
+						deplacer(x, y, a, b, i);
+						// pose un piege
+					} else if (choix == 1) {
+						if (getParcelle(a, b).estVide()) {
+							setPiege(i + 1, a, b);
+							((Piegeur) getParcelle(x, y)).retirerMine();
+							((Personnage) getParcelle(x, y))
+									.setEnergie(((Personnage) getParcelle(x, y)).getEnergie() - 5);
+							persoMort(x, y, i);
+						} else {
+							plateaux[i].println("Vous ne pouvez poser de piège, un objet s'y trouve.");
+						}
+					}
 				} else {
 					deplacer(x, y, a, b, i);
 				}
-    			action = true; 
-    			actionEffectuee=1;
-    		//Manger un fruit
-			} else if(dansChampsAction(x,y,a,b,8) && getParcelle(a,b) instanceof ParcelleArbre ||  getParcelle(a,b) instanceof ParcelleBuisson){
-				mangerFruit(x,y,a,b,i);
 				action = true;
-				actionEffectuee=1;
-			//Echange avec un personnage	
-			}else if(personnageAllieACote(x, y, a, b, 8)){
+				actionEffectuee = 1;
+				// Manger un fruit
+			} else if (dansChampsAction(x, y, a, b, 8) && getParcelle(a, b) instanceof ParcelleArbre
+					|| getParcelle(a, b) instanceof ParcelleBuisson) {
+				mangerFruit(x, y, a, b, i);
+				action = true;
+				actionEffectuee = 1;
+				// Echange avec un personnage
+			} else if (personnageAllieACote(x, y, a, b, 8)) {
 				echangeItem(x, y, a, b, i, false);
 				action = true;
-				actionEffectuee=1;
-			//Rentrer dans navire
-			} else if(getParcelle(a,b) instanceof ParcelleNavire && getParcelle(x, y).getValeur()%2==i && dansChampsAction(a,b,x,y,8)){
-				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(monIle.getEquipe(i+1).nbPersonnages())){
-					((Piegeur)getParcelle(x,y)).setMinesFull();
-					rentrerDansNavire(x,y,a,b,i);
-					action=true;
-					actionEffectuee=1;
+				actionEffectuee = 1;
+				// Rentrer dans navire
+			} else if (getParcelle(a, b) instanceof ParcelleNavire && getParcelle(x, y).getValeur() % 2 != i
+					&& dansChampsAction(a, b, x, y, 8)) {
+				if (((ParcelleNavire) getParcelle(a, b)).peutMonterABord(monIle.getEquipe(i + 1).nbPersonnages())) {
+					((Piegeur) getParcelle(x, y)).setMinesFull();
+					rentrerDansNavire(x, y, a, b, i);
+					action = true;
+					actionEffectuee = 1;
 				} else {
-					plateaux[i].println("Vous ne pouvez pas rentrer dans le navire, vous etes le dernier personnage sur l'île."
-							+ "\n Choississez une autre action.");
+					plateaux[i].println(
+							"Vous ne pouvez pas rentrer dans le navire, vous etes le dernier personnage sur l'île."
+									+ "\n Choississez une autre action.");
 				}
 			}
-		}  
+		}
 		return actionEffectuee;
-    }
+	}
     
     public int actionsGuerriers(int i,int x,int y,int a,int b,boolean action,int keyCode,InputEvent event){
     	plateaux[i].println("Vous avez choisis un guerrier de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
@@ -644,7 +667,7 @@ public class GestionPlateaux {
 				action = true;
 				actionEffectuee=1;
 			//Rentrer dans navire
-			} else if(getParcelle(a,b) instanceof ParcelleNavire && getParcelle(x, y).getValeur()%2==i  && dansChampsAction(a,b,x,y,8)){
+			} else if(getParcelle(a,b) instanceof ParcelleNavire && getParcelle(x, y).getValeur()%2!=i  && dansChampsAction(a,b,x,y,8)){
 				if (((ParcelleNavire)getParcelle(a,b)).peutMonterABord(monIle.getEquipe(i+1).nbPersonnages())){
 					((Guerrier)getParcelle(x,y)).ramasseEpee();
 					rentrerDansNavire(x,y,a,b,i);
