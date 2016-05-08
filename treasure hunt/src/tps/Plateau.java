@@ -25,7 +25,6 @@ public class Plateau {
 	private JFrame window ;
 	private GraphicPane graphic ;
 	private ConsolePane console ;
-	private JPanel haut;
 	/**
 	 *  Attribut ou est enregistré un événement observé. Cet attribut est
 	 * initialisé à null au début de la scrutation et rempli par l'événement observé 
@@ -106,8 +105,6 @@ public class Plateau {
 	public Plateau(String[] gif,int taille, boolean withTextArea){
 		// Instancie la fenetre principale et et les deux composants.
 		window = new JFrame() ;
-		haut = new JPanel();
-		JPanel stats= new JPanel();
 		graphic = new GraphicPane(gif, taille) ;
 		console = null ;
 
@@ -119,16 +116,8 @@ public class Plateau {
 		// cf Javadoc setDefaultCloseOperation
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		// Ajouts des composants au JPanel stats
-		stats.add(new JLabel("Coucou"));
-
 		// Ajout des deux composants à la fenetre
-		haut.setLayout(new BoxLayout(haut, BoxLayout.X_AXIS));
-		haut.add(graphic);
-		haut.add(stats);
-		
-		window.getContentPane().setLayout(new BorderLayout());
-		window.getContentPane().add(haut, BorderLayout.NORTH);
+		window.getContentPane().add(graphic, BorderLayout.NORTH);
 		if (withTextArea) {
 			console = new ConsolePane() ;
 			window.getContentPane().add(console) ;
@@ -275,13 +264,12 @@ public class Plateau {
 	}
 	// Note la taille initiale est calculée d'après la taille du graphique.
 	private void resizeFromGraphic() {
-		Dimension dim = haut.getPreferredSize() ;
+		Dimension dim = graphic.getGraphicSize() ;
 		if (console == null) {
 			dim.height += 10 ;
 		} else {
 			dim.height += 150 ;
 		}
-		
 		window.getContentPane().setPreferredSize(dim) ;
 		window.pack() ;
 	}
