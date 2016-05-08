@@ -225,7 +225,7 @@ public class GestionPlateaux {
 				int x=pieges1.get(idx).getX();
 				int y=pieges1.get(idx).getY();
 				if(jeuJ2b[x][y]){
-					jeuJ2[x][y]=1; //sable
+					jeuJ2[x][y]=jeuInitial[x][y]; //la valeur initiale
 				}
 			}
 		} else if (pieges2.size()>0) {
@@ -234,7 +234,7 @@ public class GestionPlateaux {
 				int x=pieges2.get(idx).getX();
 				int y=pieges2.get(idx).getY();
 				if(jeuJ1b[x][y]){
-					jeuJ1[x][y]=1; //sable
+					jeuJ1[x][y]=jeuInitial[x][y]; //la valeur initiale
 				}
 			}
 		}
@@ -618,8 +618,7 @@ public class GestionPlateaux {
 						if (getParcelle(a, b).estVide()) {
 							setPiege(i + 1, a, b);
 							((Piegeur) getParcelle(x, y)).retirerMine();
-							((Personnage) getParcelle(x, y))
-									.setEnergie(((Personnage) getParcelle(x, y)).getEnergie() - 5);
+							((Personnage) getParcelle(x, y)).setEnergie(((Personnage) getParcelle(x, y)).getEnergie() - 5);
 							persoMort(x, y, i);
 						} else {
 							plateaux[i].println("Vous ne pouvez poser de piège, un objet s'y trouve.");
@@ -794,21 +793,21 @@ public class GestionPlateaux {
 			persoMort(a,b,i);
 		}else{
 			((Personnage)getParcelle(x,y)).setEnergie(((Personnage)getParcelle(x,y)).getEnergie()-1);
-			if(getParcelle(a,b).getValeur()==7){
+			if(getParcelle(a,b).getValeur()==10){
 				((Personnage)getParcelle(x,y)).ramasseClef();
 				plateaux[i].println("Vous avez ramassé la clef.");
 				Parcelle p=new Parcelle();
 				p.setValeur(jeuInitial[x][y]);
 				setParcelle(x,y, p);
 				persoMort(x,y,i);	
-			} else if(getParcelle(a,b).getValeur()==10){
+			} else if(getParcelle(a,b).getValeur()==13){
 				((Personnage)getParcelle(x,y)).ramasseTresor();
 				plateaux[i].println("Vous avez ramassé le trésor.");
 				Parcelle p=new Parcelle();
 				p.setValeur(jeuInitial[x][y]);
 				setParcelle(x,y, p);
 				persoMort(x,y,i);	
-			} else if (getParcelle(a,b).getValeur()==11){
+			} else if (getParcelle(a,b).getValeur()==14){
 				((Personnage)getParcelle(x,y)).ramasseEpee();
 				plateaux[i].println("Vous avez ramassé une épée.");
 				Parcelle p=new Parcelle();
