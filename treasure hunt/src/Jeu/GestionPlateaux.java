@@ -353,7 +353,7 @@ public class GestionPlateaux {
 				action = true;
 			}
 			// sortie du personnage
-			if (getParcelle(a, b).estVide() && dansChampsAction(x, y, a, b, 4)) {
+			if (getParcelle(a, b).terrainClair() && dansChampsAction(x, y, a, b, 4)) {
 				setParcelle(a, b, p);
 				plateaux[i].println("Déplacement effectué...");
 				((ParcelleNavire) getParcelle(x, y)).removePersonnage(p);
@@ -616,7 +616,7 @@ public class GestionPlateaux {
 						// pose un piege
 					} else if (choix == 1) {
 						if (getParcelle(a, b).estVide()) {
-							setPiege(i + 1, a, b);
+							setPiege(i+1, a, b);
 							((Piegeur) getParcelle(x, y)).retirerMine();
 							((Personnage) getParcelle(x, y)).setEnergie(((Personnage) getParcelle(x, y)).getEnergie() - 5);
 							persoMort(x, y, i);
