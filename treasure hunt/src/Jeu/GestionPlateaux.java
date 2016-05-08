@@ -50,6 +50,10 @@ public class GestionPlateaux {
 	 */
 	private int[][] jeu;
 	/**
+	 * Tableau des valeurs de chaque parcelle de l'ile dans leur position initiale (contient tous les éléments sauf les personnages).
+	 */
+	private int[][] jeuInitial;
+	/**
 	 * L'ile liée aux plateaux.
 	 */
 	private Ile monIle;
@@ -109,6 +113,7 @@ public class GestionPlateaux {
 				jeuJ2b[c][l]=true;
 			}
 		}
+		jeuInitial=monIle.getIleTabIni();
 		coordTresor=monIle.getTresor();
 	}
 	
@@ -132,6 +137,7 @@ public class GestionPlateaux {
 				jeuJ2b[c][l]=!brouillard;
 			}
 		}
+		jeuInitial=monIle.getIleTabIni();
 		coordTresor=monIle.getTresor();
 		add(monIle.getNavire(1)[0], monIle.getNavire(1)[1], 1);
 		add(monIle.getNavire(2)[0], monIle.getNavire(2)[1], 2);
@@ -720,8 +726,7 @@ public class GestionPlateaux {
 			} else {
 				pieges2.remove(piege);
 			}
-			setParcelle(a,b, getParcelle(x,y));
-			setParcelle(x,y, new Parcelle());
+			echangeParcelles(x, y, a, b);
 			//ajoute de la visibilité dans le brouillard
 			add(a,b,i+1);
 			persoMort(a,b,i);
@@ -730,17 +735,23 @@ public class GestionPlateaux {
 			if(getParcelle(a,b).getValeur()==7){
 				((Personnage)getParcelle(x,y)).ramasseClef();
 				plateaux[i].println("Vous avez ramassé la clef.");
-				setParcelle(a,b, new Parcelle());
+				Parcelle p=new Parcelle();
+				p.setValeur(jeuInitial[x][y]);
+				setParcelle(x,y, p);
 				persoMort(x,y,i);	
 			} else if(getParcelle(a,b).getValeur()==10){
 				((Personnage)getParcelle(x,y)).ramasseTresor();
 				plateaux[i].println("Vous avez ramassé le trésor.");
-				setParcelle(a,b, new Parcelle());
+				Parcelle p=new Parcelle();
+				p.setValeur(jeuInitial[x][y]);
+				setParcelle(x,y, p);
 				persoMort(x,y,i);	
 			} else if (getParcelle(a,b).getValeur()==11){
 				((Personnage)getParcelle(x,y)).ramasseEpee();
 				plateaux[i].println("Vous avez ramassé une épée.");
-				setParcelle(a,b, new Parcelle());
+				Parcelle p=new Parcelle();
+				p.setValeur(jeuInitial[x][y]);
+				setParcelle(x,y, p);
 				persoMort(x,y,i);	
 			} else {
 				plateaux[i].println("Déplacement effectué...");
@@ -815,15 +826,17 @@ public class GestionPlateaux {
 	}
 	
 	/**
-	 * Méthode permetant d'échanger de position la parcelle de coordonnée a,b avec celle de coordonnée x,y.
+	 * Méthode permetant d'échanger de position la parcelle de coordonnée a,b avec celle de coordonnée x,y, en redonnant la valeur initiale à la parcelle x,y.
 	 * @param x un entier.
 	 * @param y un entier.
 	 * @param a un entier.
 	 * @param b un entier.
 	 */
 	public void echangeParcelles(int x, int y, int a, int b){
-		 monIle.echangeParcelles(x, y, a, b);
-		
+		setParcelle(a,b, getParcelle(x,y));
+		Parcelle p = new Parcelle();
+		p.setValeur(jeuInitial[x][y]);
+		setParcelle(x,y, p);
 	}
 	
 	/**

@@ -28,6 +28,10 @@ public class Ile {
 	 */
 	private Parcelle[][] grille;
 	/**
+	 * Tableau des valeurs de chaque parcelle de l'ile dans leur position initiale (contient tous les éléments sauf les personnages).
+	 */
+	private int[][] jeuInitial;
+	/**
 	 * Attribut servant à la création de nombres aléatoires.
 	 */
 	private Aleatoire alea=new Aleatoire();
@@ -332,21 +336,7 @@ public class Ile {
 	public void setParcelle(int x, int y, Parcelle p){
 		grille[x][y]=p;
 	}
-	
-	/**
-	 * Méthode permetant d'échanger de position la parcelle de coordonnée a,b avec celle de coordonnée x,y.
-	 * @param x un entier.
-	 * @param y un entier.
-	 * @param a un entier.
-	 * @param b un entier.
-	 */
-	public void echangeParcelles(int x, int y, int a, int b){
-		 Parcelle p = grille[x][y];
-		 grille[x][y] = grille[a][b];
-		 grille[a][b] = p;
-		
-	}
-	
+
 	/**
 	 * Methode qui renvoie un boolean pour savoir si le personnage de coord (x,y) peut se déplacer sur une case de coord (a,b).
 	 * @param x un entier
@@ -610,6 +600,45 @@ public class Ile {
 	}
 	
 	/**
+	 * Méthode plaçant l'herbe au sol (herbe et herbe sèche).
+	 */
+	private void setHerbes(){
+		Aleatoire a=new Aleatoire();
+		for (int x=2;x<grille.length-2;x++){
+			for (int y=a.tirage(2)+2,max=a.tirage(2)+grille[0].length-3;y<max;y++) {
+				grille[x][y].setValeur(3);
+			}
+		}
+		for (int y=2; y<grille[0].length-2;y++){
+			for(int x=2, max=a.tirage(2)+2; x<max; x++){
+				grille[x][y].setValeur(1);
+			}
+			for(int x=grille.length-3, max=a.tirage(2)+grille.length-3; x<max ; x++){
+				grille[x][y].setValeur(1);
+			}
+		}
+		
+		for(int x=1; x<grille.length-1; x++) {
+			for(int y=1; y<grille[0].length-1; y++) {
+				if(grille[x][y].getValeur() == 3 && voisinDuSable(x,y)){
+					grille[x][y].setValeur(2);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Méthode permettant de savoir si une case a parmis ses voisins adjacents au moins une case étant du sable.
+	 * @param x la coordonnée x
+	 * @param y la coordonnée y
+	 * @return vrai si parmis ses voisins adjacents au moins une case étant du sable faux sinon.
+	 */
+	private boolean voisinDuSable(int x, int y){
+		return grille[x+1][y].getValeur() == 1 || grille[x-1][y].getValeur() == 1 
+			|| grille[x][y+1].getValeur() == 1 || grille[x][y-1].getValeur() == 1;
+	}
+	
+	/**
 	 * Méthode plaçant la mer.
 	 */
 	private void setMers(){
@@ -761,17 +790,27 @@ public class Ile {
 	}
 	
 	/**
+	 * Méthode retournant le tableau des valeurs de chaque parcelle de l'ile dans leur position initiale (contient tous les éléments sauf les personnages).
+	 * @return
+	 */
+	public int[][] getIleTabIni(){
+		return jeuInitial;
+	}
+	
+	/**
 	 * Méthode permettant d'initialiser l'ile en plaçant tous les éléments fixes.
 	 * @param pourcentage entier entre 0 et 100 correspondant au pourcentage de case étant des rochers.
 	 */
 	public void initialiser(int pourcentage){
 		setMers();	
+		setHerbes();
 		setTresor();
 		setClef();
 		setRochers(pourcentage);
 		setNavires();
 		setArbres();
 		setBuissons();
+		jeuInitial=getIleTab();
 	}	
 	
 	/**
