@@ -22,7 +22,7 @@ public class GestionPlateaux {
 	 * Attribut servant à charger les images du jeu.
 	 */
 	private final String[] IMGS={"../ressources/tps/sable.png",
-			"../treasure hunt/tps/herbe_Seche.png",
+			"../treasure hunt/tps/herbe_seche.png",
 			"../treasure hunt/tps/herbe.png",
 			"../ressources/tps/mer.png",
 			"../ressources/tps/rocher1.png",
@@ -97,6 +97,7 @@ public class GestionPlateaux {
 	/**
 	 * Constructeur du gestionnaire de plateaux, le brouillard est désactivé par défaut.
 	 * @param monIle l'ile liée aux plateaux.
+	 * @param taille taille des plateaux
 	 */
 	public GestionPlateaux(Ile monIle, int taille){
 		this.monIle=monIle;
@@ -121,6 +122,7 @@ public class GestionPlateaux {
 	 * Constructeur du gestionnaire de plateaux.
 	 * @param monIle l'ile liée aux plateaux.
 	 * @param brouillard un booléen permettant d'activer ou non le brouillard de guerre.
+	 * @param taille taille des plateaux
 	 */
 	public GestionPlateaux(Ile monIle, boolean brouillard, int taille){
 		this.monIle=monIle;
@@ -252,12 +254,12 @@ public class GestionPlateaux {
 	/**
 	 * Méthode permettant à un joueur d'effectuer une action.
 	 * @param i le numéro du plateau (donc le numéro du joueur -1).
+	 * @return 1 si une action a été faite, 0 si le joueur a passé son tour.
 	 */
 	public int action(int i){
 		int actionEffectuee=0;
 		InputEvent event ;
 		int x = 0,y = 0,a = 0,b =0;
-		boolean action = false;
 		int keyCode = 0;
 
 		plateaux[i].affichage();
@@ -273,25 +275,29 @@ public class GestionPlateaux {
 	    } while(!((getParcelle(x, y) instanceof Personnage || (getParcelle(x,y) instanceof ParcelleNavire && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0)) && getParcelle(x, y).getValeur()%2!=i ));
     	
     	if(getParcelle(x,y) instanceof ParcelleNavire && getParcelle(x, y).getValeur()%2!=i && ((ParcelleNavire)getParcelle(x,y)).getNbPersonnage()!=0){ 
-    		actionEffectuee+=actionNavires(i,x,y,a,b, action, keyCode, event);
+    		actionEffectuee+=actionNavires(i,x,y, keyCode, event);
     	}		
     	if(getParcelle(x,y) instanceof Explorateur && getParcelle(x, y).getValeur()%2!=i ){ 
-    		actionEffectuee+=actionExplorateurs(i,x,y,a,b,action,keyCode,event);
+    		actionEffectuee+=actionExplorateurs(i,x,y,keyCode,event);
     	}
     	if(getParcelle(x,y) instanceof Voleur && getParcelle(x, y).getValeur()%2!=i ){ 
-    		actionEffectuee+=actionVoleurs(i,x,y,a,b,action,keyCode,event);
+    		actionEffectuee+=actionVoleurs(i,x,y,keyCode,event);
     	}
     	if(getParcelle(x,y) instanceof Piegeur && getParcelle(x, y).getValeur()%2!=i ){ 
-    		actionEffectuee+=actionsPiegeurs(i,x,y,a,b,action,keyCode,event);
+    		actionEffectuee+=actionsPiegeurs(i,x,y,keyCode,event);
     	}
     	if(getParcelle(x,y) instanceof Guerrier && getParcelle(x, y).getValeur()%2!=i ){ 
-    		actionEffectuee+=actionsGuerriers(i,x,y,a,b,action,keyCode,event);
+    		actionEffectuee+=actionsGuerriers(i,x,y,keyCode,event);
     	}
     	update();
 		event = plateaux[i].waitEvent(500);	// Délai pour permettre la lecture.
 		return actionEffectuee;
 	}
 	
+	/**
+	 * Méthode permettant de régénérer la vie des personnages dans le navire
+	 * @param i numéro du plateau courant
+	 */
 	public void recuperationDansNavire(int i){
     	int[] coordNavire= monIle.getNavire(i+1);
     	for(int p=0; p<((ParcelleNavire)getParcelle(coordNavire[0],coordNavire[1])).getNbPersonnage(); p++){
@@ -299,8 +305,19 @@ public class GestionPlateaux {
     	}
 	}
 	
-	public int actionNavires(int i, int x, int y, int a, int b, boolean action, int keyCode, InputEvent event) {
+	/**
+	 * Méthode regroupant toutes les actions possibles lorsque l'on clique sur un navire.
+	 * @param i numéro du plateau courant
+	 * @param x coordonnée x du navire
+	 * @param y coordonnée y du navire
+	 * @param keyCode
+	 * @param event
+	 * @return 1 si une action a été faite, 0 si le joueur a passé son tour.
+	 */
+	public int actionNavires(int i, int x, int y, int keyCode, InputEvent event) {
 		int actionEffectuee = 0;
+		int a=0,b=0;
+		boolean action=false;
 
 		plateaux[i].println("Vous avez choisis votre navire");
 		highlight(i, x, y);
@@ -354,11 +371,22 @@ public class GestionPlateaux {
 		return actionEffectuee;
 	}
 
-	public int actionExplorateurs(int i, int x, int y, int a, int b, boolean action, int keyCode, InputEvent event) {
+	/**
+	 * Méthode regroupant toutes les actions possibles lorsque l'on clique sur un explorateur.
+	 * @param i numéro du plateau courant
+	 * @param x coordonnée x de l'explorateur
+	 * @param y coordonnée y de l'explorateur
+	 * @param keyCode
+	 * @param event
+	 * @return 1 si une action a été faite, 0 si le joueur a passé son tour.
+	 */
+	public int actionExplorateurs(int i, int x, int y, int keyCode, InputEvent event) {
 		plateaux[i].println("Vous avez choisis un explorateur de J" + (i + 1) + ", il a "
 				+ ((Personnage) getParcelle(x, y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?");
 		highlight(i, x, y);
 		int actionEffectuee = 0;
+		int a=0, b=0;
+		boolean action=false;
 
 		while (!action) {
 			event = plateaux[i].waitEvent();
@@ -471,10 +499,21 @@ public class GestionPlateaux {
 		return actionEffectuee;
 	}
 
-	public int actionVoleurs(int i, int x, int y, int a, int b, boolean action, int keyCode, InputEvent event) {
+	/**
+	 * Méthode regroupant toutes les actions possibles lorsque l'on clique sur un voleur.
+	 * @param i numéro du plateau courant
+	 * @param x coordonnée x du voleur
+	 * @param y coordonnée y du voleur
+	 * @param keyCode
+	 * @param event
+	 * @return 1 si une action a été faite, 0 si le joueur a passé son tour.
+	 */
+	public int actionVoleurs(int i, int x, int y, int keyCode, InputEvent event) {
 		plateaux[i].println("Vous avez choisis un voleur de J" + (i + 1) + ", il a "
 				+ ((Personnage) getParcelle(x, y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?");
 		int actionEffectuee = 0;
+		int a=0, b=0;
+		boolean action=false;
 		highlight(i, x, y);
 
 		while (!action) {
@@ -533,11 +572,22 @@ public class GestionPlateaux {
 		return actionEffectuee;
 	}
 
-	public int actionsPiegeurs(int i, int x, int y, int a, int b, boolean action, int keyCode, InputEvent event) {
+	/**
+	 * Méthode regroupant toutes les actions possibles lorsque l'on clique sur un piegeur.
+	 * @param i numéro du plateau courant
+	 * @param x coordonnée x du piegeur
+	 * @param y coordonnée y du piegeur
+	 * @param keyCode
+	 * @param event
+	 * @return 1 si une action a été faite, 0 si le joueur a passé son tour.
+	 */
+	public int actionsPiegeurs(int i, int x, int y, int keyCode, InputEvent event) {
 		plateaux[i].println("Vous avez choisis un piegeur de J" + (i + 1) + ", il a "
 				+ ((Personnage) getParcelle(x, y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?");
 		plateaux[i].println("Mines restantes : " + ((Piegeur) getParcelle(x, y)).getMines());
 		int actionEffectuee = 0;
+		int a=0, b=0;
+		boolean action=false;
 		highlight(i, x, y);
 
 		while (!action) {
@@ -609,9 +659,21 @@ public class GestionPlateaux {
 		return actionEffectuee;
 	}
     
-    public int actionsGuerriers(int i,int x,int y,int a,int b,boolean action,int keyCode,InputEvent event){
+	/**
+	 * Méthode regroupant toutes les actions possibles lorsque l'on clique sur un guerrier.
+	 * @param i numéro du plateau courant
+	 * @param x coordonnée x du guerrier
+	 * @param y coordonnée y du guerrier
+	 * @param keyCode
+	 * @param event
+	 * @return 1 si une action a été faite, 0 si le joueur a passé son tour.
+	 */
+    public int actionsGuerriers(int i,int x,int y,int keyCode,InputEvent event){
     	plateaux[i].println("Vous avez choisis un guerrier de J"+(i+1)+", il a "+ ((Personnage)getParcelle(x,y)).getEnergie() + " points d'energie, que souhaitez-vous faire ?") ;
 		int actionEffectuee=0;
+		int a=0, b=0;
+		boolean action=false; 
+		
 		highlight(i, x, y);
 		while(!action){
 			event=  plateaux[i].waitEvent();
@@ -845,7 +907,6 @@ public class GestionPlateaux {
 	 * @param y un entier
 	 * @param a un entier
 	 * @param b un entier
-	 * @param plateaux les plateaux des deux joueurs
 	 * @param i le numéro du plateau courrant
 	 */
 	public void rentrerDansNavire(int x, int y, int a, int b, int i){
@@ -858,7 +919,6 @@ public class GestionPlateaux {
 	 * @param y un entier
 	 * @param a un entier
 	 * @param b un entier
-	 * @param plateaux les plateaux des deux joueurs
 	 * @param i le numéro du plateau courrant
 	 * @param vole booléen permettant de savoir s'il s'agit d'un vol ou d'un échange
 	 */
@@ -870,7 +930,6 @@ public class GestionPlateaux {
 	 * Methode permettant de supprimer un personnage de coord (x,y) si celui-ci est mort
 	 * @param x un entier
 	 * @param y un entiter
-	 * @param plateaux les plateaux des deux joueurs
 	 * @param i le numéro du plateau
 	 */
 	public void persoMort(int x, int y, int i){
