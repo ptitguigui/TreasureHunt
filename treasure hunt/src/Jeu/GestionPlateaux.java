@@ -798,21 +798,21 @@ public class GestionPlateaux {
 				plateaux[i].println("Vous avez ramassé la clef.");
 				Parcelle p=new Parcelle();
 				p.setValeur(jeuInitial[x][y]);
-				setParcelle(x,y, p);
+				setParcelle(a,b, p);
 				persoMort(x,y,i);	
 			} else if(getParcelle(a,b).getValeur()==13){
 				((Personnage)getParcelle(x,y)).ramasseTresor();
 				plateaux[i].println("Vous avez ramassé le trésor.");
 				Parcelle p=new Parcelle();
 				p.setValeur(jeuInitial[x][y]);
-				setParcelle(x,y, p);
+				setParcelle(a,b, p);
 				persoMort(x,y,i);	
 			} else if (getParcelle(a,b).getValeur()==14){
 				((Personnage)getParcelle(x,y)).ramasseEpee();
 				plateaux[i].println("Vous avez ramassé une épée.");
 				Parcelle p=new Parcelle();
 				p.setValeur(jeuInitial[x][y]);
-				setParcelle(x,y, p);
+				setParcelle(a,b, p);
 				persoMort(x,y,i);	
 			} else {
 				plateaux[i].println("Déplacement effectué...");
