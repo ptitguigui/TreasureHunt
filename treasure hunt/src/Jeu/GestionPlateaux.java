@@ -259,7 +259,7 @@ public class GestionPlateaux {
 	public int action(int i){
 		int actionEffectuee=0;
 		InputEvent event ;
-		int x = 0,y = 0,a = 0,b =0;
+		int x = 0,y = 0;
 		int keyCode = 0;
 
 		plateaux[i].affichage();
